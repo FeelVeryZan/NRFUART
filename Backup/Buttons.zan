@@ -1,0 +1,201 @@
+/*
+        Chart_Suspend = (Button)findViewById(R.id.control);
+        loadButton = (Button)findViewById(R.id.load);
+        //Settings_Button = (Button)findViewById(R.id.OpenSettings);
+        Saverunner_Suspend = (Button)findViewById(R.id.SaveRunnerSuspend);
+        Saverunner_Stop = (Button)findViewById(R.id.SaveRunnerStop);
+
+
+        Buttons' Design Canceled.
+
+
+
+
+
+
+        Chart_Suspend.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                if (save.getState() == SaveRunner.State.STOP) {
+                    Toast.makeText(getApplicationContext(),"Unavailable Option.",Toast.LENGTH_SHORT).show();
+                } else if (isRun) {
+                    Message msg = new Message();
+                    msg.what = MSG_SUSPEND;
+                    mHandler.sendMessage(msg);
+
+                } else {
+                    Message msg = new Message();
+                    msg.what = MSG_RESUME;
+                    mHandler.sendMessage(msg);
+
+                }
+            }
+        });
+    */
+        /*
+        loadButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                if(save.getState() != SaveRunner.State.STOP) {
+                    Toast.makeText(getApplicationContext(),"Unavailable Option.",Toast.LENGTH_SHORT).show();
+                    /*
+                    //save.shutdown();
+                    try {
+                        out.write(Stop.getBytes());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    while(save.getState() != SaveRunner.State.STOP)
+                    {
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    Chart_Suspend.setTextColor(NoRespCo);
+                    Saverunner_Suspend.setTextColor(NoRespCo);
+                    Saverunner_Stop.setTextColor(NoRespCo);
+                    */
+        /*
+                }
+                else {
+                    Message msg = new Message();
+                    msg.what = MSG_SUSPEND;
+                    mHandler.sendMessage(msg);
+
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setType("*/*");
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    try {
+                        startActivityForResult(Intent.createChooser(intent, "Load a file"), FILE_SELECTT_CODE);
+                    } catch (android.content.ActivityNotFoundException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getApplicationContext(), "Please install a File Manager", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        });
+
+    */
+/*        Settings_Button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                SettingsActivity.activitystart(MainActivity.this);
+            }
+        });
+*/
+
+        Saverunner_Suspend.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                if (save.getState() == SaveRunner.State.STOP) {
+                    Toast.makeText(getApplicationContext(),"Unavailable Option.",Toast.LENGTH_SHORT).show();
+                } else if (save.getState() == SaveRunner.State.RUN){
+
+                    try {
+                        out.write(Suspend.getBytes());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    while(save.getState() != SaveRunner.State.SUSPEND)
+                    {
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    Saverunner_Suspend.setText("ResumeSaving");
+                } else {
+                    try
+                    {
+                         out.write(Resume.getBytes());
+                    } catch (IOException e) {
+                            e.printStackTrace();
+                    }
+                    while(save.getState() != SaveRunner.State.RUN)
+                    {
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    Saverunner_Suspend.setText("SuspendSaving");
+                }
+            }
+        });
+
+
+        Saverunner_Stop.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+                if(btnConnectDisconnect.getText().equals("Connect")) {
+                    Toast.makeText(getApplicationContext(), "Unavailable Option.", Toast.LENGTH_SHORT).show();
+                } else if (save.getState() == SaveRunner.State.STOP) {
+                    /*try {
+                        out.write(Start.getBytes());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }*/
+                    String intentAction;
+                    intentAction=SaveRunner.SaveRunner_On;
+                    Log.e(TAG, "onReceive: 1231232131651651");
+                    broadcastUpdate(intentAction);
+                  /*  while (save.getState() != SaveRunner.State.RUN) {
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }*/
+                    Saverunner_Stop.setText("StopSaveing");
+                    Saverunner_Suspend.setTextColor(RespCo);
+
+                } else {
+                    /*try {
+                        out.write(Stop.getBytes());
+                    } catch (IOException e){
+                        e.printStackTrace();
+                    }*/
+                    String intentAction;
+                    intentAction=SaveRunner_Off;
+                    broadcastUpdate(intentAction);
+                    while(save.getState() != SaveRunner.State.STOP)
+                    {
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    Saverunner_Stop.setText("RestartSaving");
+                    Saverunner_Suspend.setTextColor(NoRespCo);
+                    if(save.getState() == SaveRunner.State.SUSPEND){
+                        Saverunner_Suspend.setText("SuspendSaving");
+                    }
+                }
+            }
+        });
+
+
+
+*/
+
+
+
+btnConnectDisconnect=(Button) findViewById(R.id.btn_select);
+
+        btnSend=(Button) findViewById(R.id.sendButton);
+        edtMessage = (EditText) findViewById(R.id.sendText);

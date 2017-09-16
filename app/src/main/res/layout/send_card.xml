@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width = "match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius = "4dp"
+    app:elevation = "5dp">
+
+    <!--
+        //发送卡片具体布局写在这
+        //需要为关闭按钮注册监听器和更换图片
+        //需要为各个TextView更新内容
+    -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/Cardtitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:layout_margin="5dp"
+                android:text="Send Thread" />
+
+            <ImageView
+                android:id="@+id/CloseCardButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/icon" />
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_weight = "4"
+            >
+
+            <TextView
+                android:id = "@+id/Now_Channel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:text = "Now Channel Number is :"
+                />
+
+            <TextView
+                android:id = "@+id/ChannelNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_toRightOf="@id/Now_Channel"
+                android:text = "XX"
+                />
+
+            <TextView
+                android:id = "@+id/NowState"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_alignParentRight = "true"
+                android:text = "State:              "
+                />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/massage_list_rec_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft = "@id/Now_Channel"
+                android:layout_below = "@id/Now_Channel"
+
+                />
+
+
+        </RelativeLayout>
+
+
+
+
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
+
