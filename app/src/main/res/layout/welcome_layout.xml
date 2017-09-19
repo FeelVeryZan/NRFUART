@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ZanDeeperBackgound"
+    android:background="@color/ZanDeeperBackground"
     >
 
     <ImageView
@@ -11,6 +11,7 @@
         android:layout_height="0dp"
         android:layout_weight="2"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
         android:src="@drawable/logo"
         />
 
@@ -25,9 +26,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:weightSum="1">
-        <Button
+        <!-- <Button
             android:id="@+id/StartButton"
             android:layout_width="141dp"
             android:layout_height="wrap_content"
@@ -35,16 +36,60 @@
             android:text="Start"
             android:textAllCaps="false"
             android:textSize="24sp"
-            android:background="@color/ZanButtonBackgound"
-            android:layout_weight="0.3" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/testFlow"/>
+            android:background="@color/ZanButtonBackground"
+            android:layout_weight="0.3" /> -->
 
 
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="130dp"
+            android:layout_weight="0.5">
 
+            <ImageView
+                android:id="@+id/StartOldVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/lamp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/StartOldVersion"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:text="Old Version"
+                />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="130dp">
+
+            <ImageView
+                android:id="@+id/testFlow"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/gear" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/testFlow"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:text="New Version (test)"
+                />
+
+            <!--<Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/testFlow"/> -->
+
+        </RelativeLayout>
 
     </LinearLayout>
 

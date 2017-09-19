@@ -56,7 +56,7 @@
     <string name="removeBond">Remove Bond</string>
     <string name="paired">paired</string>
     <string name="popup_title">Quit nRF UART?</string>
-    <string name="popup_message">Do you want to quit this Application?</string>
+    <string name="popup_message">All things done?</string>
     <string name="popup_yes">YES</string>
     <string name="popup_no">NO</string>
     <string name="ble_not_supported">Bluetooth Low Energy not supported</string>

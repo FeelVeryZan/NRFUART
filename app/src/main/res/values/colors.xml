@@ -5,9 +5,9 @@
     <color name="colorAccent">#00695C</color>
 
 
-    <color name="ZanBackgound">#E0F2F1</color>
-    <color name="ZanDeeperBackgound">#B2DFDB</color>
-    <color name="ZanButtonBackgound">#4DB6AC</color>
+    <color name="ZanBackground">#E0F2F1</color>
+    <color name="ZanDeeperBackground">#B2DFDB</color>
+    <color name="ZanButtonBackground">#4DB6AC</color>
     <color name="ZanLight">#B2DFDB</color>
     <color name="ZanDark">#004D40</color>
 

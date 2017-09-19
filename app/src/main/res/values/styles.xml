@@ -51,7 +51,7 @@
 
         <item name="android:colorPrimary">#607D8B</item>
         <item name="android:colorPrimaryDark">#546E7A</item>
-        <item name="android:windowBackground">@color/ZanBackgound</item>
+        <item name="android:windowBackground">@color/ZanBackground</item>
 
 
 
@@ -68,6 +68,19 @@
         <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
 
+    </style>
+
+
+
+    <style name="EditWindowAnimation">
+        <item name="android:windowEnterAnimation">@anim/edit_window_popup_in</item>
+        <item name="android:windowExitAnimation">@anim/edit_window_popup_out</item>
+    </style>
+
+
+    <style name="DeviceWindowAnimation">
+        <item name="android:windowEnterAnimation">@anim/device_window_popup_in</item>
+        <item name="android:windowExitAnimation">@anim/device_window_popup_out</item>
     </style>
 
 </resources>

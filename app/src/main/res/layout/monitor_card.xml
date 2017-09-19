@@ -3,10 +3,12 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width = "match_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius = "4dp"
-    app:elevation = "5dp">
+    android:layout_margin="4dp"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="5dp"
+    >
 
     <!--
         //监视卡片具体布局写在这
@@ -20,95 +22,88 @@
         android:orientation="vertical"
         >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/Cardtitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:layout_margin="5dp"
-                android:text="Send Thread" />
-
-            <ImageView
-                android:id="@+id/CloseCardButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@drawable/icon" />
-
-
-        </LinearLayout>
-
+        <!-- 标题和关闭 -->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:layout_weight = "4"
+            android:layout_height="40dp"
             >
 
             <TextView
-                android:id = "@+id/Now_Channel"
+                android:id="@+id/card_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="7dp"
+                android:textSize="20sp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="8dp"
                 android:layout_alignParentTop="true"
-                android:textSize="16sp"
-                android:layout_alignParentLeft="true"
-                android:text = "Now Channel Number is :"
+                android:layout_alignParentStart="true"
+                android:text="Monitor Card Title"
                 />
 
+            <ImageButton
+                android:id="@+id/close_card"
+                android:layout_width="36dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="2dp"
+                android:src="@drawable/close"
+                />
 
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:orientation="vertical"
+            >
 
             <LinearLayout
+                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:layout_toRightOf="@id/Now_Channel"
-                android:layout_above="@+id/massage_list_rec_view">
+                >
+
+                <TextView
+                    android:id="@+id/this_id_is"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:textSize="16sp"
+                    android:text="This Channel's ID is :"
+                    />
 
                 <EditText
-                    android:id="@+id/TypeID"
+                    android:id="@+id/id_editer"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
+                    android:maxWidth="50dp"
                     android:maxLines="1"
                     android:textSize="12sp"
-                    android:hint="XX"
+                    android:text="XX"
                     />
 
-                <ImageView
+                <Button
+                    android:id="@+id/jump_to"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:src="@drawable/plus_sign_my"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="12"
+                    android:layout_weight="3"
+                    android:scaleType="centerInside"
+                    android:text="Jump to"
+                    android:textSize="12sp"
                     />
 
             </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/massage_list_rec_view"
-                android:layout_width="wrap_content"
+            <lecho.lib.hellocharts.view.LineChartView
+                android:id="@+id/line_chart"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft = "@id/Now_Channel"
-                android:layout_below = "@id/Now_Channel"
-
+                android:minHeight="100dp"
+                android:layout_margin="5dp"
                 />
 
-
-        </RelativeLayout>
-
-
-
-
+        </LinearLayout>
 
     </LinearLayout>
 

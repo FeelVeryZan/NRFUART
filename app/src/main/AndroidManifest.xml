@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.hh.nrfuart">
+    package="com.example.Zan.nrfuart">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -11,9 +11,9 @@
         android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:theme="@style/ZanTheme"
-        android:name="com.example.hh.nrfuart.MyApplication">
+        android:name="com.example.Zan.nrfuart.MyApplication">
         <activity
-            android:name=".SplashActivity"
+            android:name="com.example.Zan.nrfuart.SplashActivity"
             android:theme="@style/ZanTheme.Transparent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +25,7 @@
 
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.Zan.nrfuart.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:windowSoftInputMode="stateHidden"
@@ -38,27 +38,28 @@
         </activity>
 
         <activity
-            android:name=".WelcomeActivity"
+            android:name="com.example.Zan.nrfuart.WelcomeActivity"
             android:label="@string/app_name"
 
             />
 
         <activity
-            android:name=".WorkFlow"
+            android:name="com.example.Zan.nrfuart.WorkFlow"
             android:label="@string/app_name"
 
             />
 
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.example.Zan.nrfuart.SettingsActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".DeviceListActivity"
+            android:name="com.example.Zan.nrfuart.DeviceListActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".NewDeviceChoosingWindow"/>
 
         <service
-            android:name=".UartService"
+            android:name="com.example.Zan.nrfuart.UartService"
             android:enabled="true" />
 
     </application>

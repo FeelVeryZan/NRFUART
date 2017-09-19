@@ -1,28 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout android:layout_height="match_parent"
     android:layout_width="match_parent"
-    xmlns:ndroid="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    animateLayoutChanges="true">
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/ZanBackground"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@color/ZanButtonBackground"
+                >
+
+                <ImageButton
+                    android:id="@+id/connect_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:scaleType="fitCenter"
+                    android:background="@color/ZanButtonBackground"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/bluetoothsearch"
+
+                    />
+
+
+                <TextView
+                    android:id="@+id/device_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:text="Device: "
+                    android:layout_margin="5dp"
+                    android:textSize="16sp"
+                    />
+
+            </RelativeLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view_send"
+                        android:layout_width="match_parent"
+                        android:background="@color/ZanDeeperBackground"
+                        android:layout_height="250dp"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view_save"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view_monitor"
+                        android:layout_width="match_parent"
+                        android:background="@color/ZanDeeperBackground"
+                        android:layout_height="350dp"/>
+                </LinearLayout>
+
+            </ScrollView>
+            
+        </LinearLayout>
+
+
+
+
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/FloatingButton"
-            android:layout_width="44dp"
+            android:layout_width="66dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_marginBottom="10dp"
-            ndroid:layout_marginRight="10dp"
-            android:src="@drawable/plus_sign"/>
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/plus"
+            />
+
 
 
 
