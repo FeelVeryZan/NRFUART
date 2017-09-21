@@ -10,5 +10,7 @@
     <color name="ZanButtonBackground">#4DB6AC</color>
     <color name="ZanLight">#B2DFDB</color>
     <color name="ZanDark">#004D40</color>
+    <color name="ZanBlur">#BFB2DFDB</color>
+    <color name="ZanDeeperBlur">#7F4DB6AC</color>
 
 </resources>

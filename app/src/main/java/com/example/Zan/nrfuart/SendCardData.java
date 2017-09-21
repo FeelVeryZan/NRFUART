@@ -19,7 +19,59 @@ class SendCardData {
     private String title = null;
     private int id = 0;
     private int state = 0;
+    private int count = 0;
+    private int data[];
+    private int channel;
+    private int identifier = 0;
     private List<Integer> messageFlow = null;
+    private SendRunner send;
+    private Thread sendthread;
+
+
+    public SendCardData() {
+    }
+
+    public SendCardData(SendCardData SCD) {
+        super();
+        data = SCD.getData().clone();
+    }
+
+    public void DataReview() {
+        count = count + 1;
+        if (count < data.length)
+            add(data[count]);
+    }
+
+    public void start() {
+        send = new SendRunner(data, channel, id);
+        sendthread = new Thread(send);
+        sendthread.start();
+    }
+
+    public void setData(int a[]) {
+        data = a.clone();
+    }
+
+    public int[] getData() {
+        return data;
+    }
+
+    public void setIdentifier(int Identifier) {
+        identifier = Identifier;
+    }
+
+    public int getIdentifier() {
+        return identifier;
+    }
+
+
+    public void setChannel(int Channel) {
+        channel = Channel;
+    }
+
+    public int getChannel() {
+        return channel;
+    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -70,7 +122,7 @@ class SendCardData {
     }
 
     public void add(List<Integer> msg) {
-        for(Integer msgItem: msg) {
+        for (Integer msgItem : msg) {
             messageFlow.add(msgItem);
         }
     }

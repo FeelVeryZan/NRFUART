@@ -29,13 +29,11 @@ public class CreateCardChooseAdapter extends RecyclerView.Adapter<CreateCardChoo
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private RelativeLayout mRelativeLayout;
         private TextView mTextView;
         private CheckBox mCheckBox;
 
         public ViewHolder(View view) {
             super(view);
-            mRelativeLayout = (RelativeLayout) view;
             mTextView = (TextView) view.findViewById(R.id.edit_choose_item_text);
             mCheckBox = (CheckBox) view.findViewById(R.id.edit_choose_item_checkbox);
         }
@@ -58,7 +56,7 @@ public class CreateCardChooseAdapter extends RecyclerView.Adapter<CreateCardChoo
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(mContext == null) {
+        if (mContext == null) {
             mContext = parent.getContext();
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.create_card_choose_item, parent, false);
@@ -67,16 +65,26 @@ public class CreateCardChooseAdapter extends RecyclerView.Adapter<CreateCardChoo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
-        Log.d(TAG, "onBindViewHolder");
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        Log.d(TAG, "onBindViewHolder " + position + " " + mAllOptionList.get(position));
         holder.mTextView.setText(mAllOptionList.get(position));
         holder.mCheckBox.setChecked(mAllStateList.get(position));
         holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onCheckedChanged(CompoundButton view, boolean isChecked) {
                 mAllStateList.set(position, isChecked);
             }
         });
+    }
+
+    public int getChooseItemCound() {
+        int cnt = 0;
+        for (int i = 0; i < mAllStateList.size(); i++) {
+            if (mAllStateList.get(i)) {
+                cnt++;
+            }
+        }
+        return cnt;
     }
 
     public void chooseAll() {
@@ -85,22 +93,25 @@ public class CreateCardChooseAdapter extends RecyclerView.Adapter<CreateCardChoo
         }
         notifyDataSetChanged();
     }
+
     public void chooseNone() {
         for (int i = 0; i < mAllOptionList.size(); i++) {
             mAllStateList.set(i, false);
         }
         notifyDataSetChanged();
     }
+
     public void chooseInvert() {
         for (int i = 0; i < mAllOptionList.size(); i++) {
             mAllStateList.set(i, !mAllStateList.get(i));
         }
         notifyDataSetChanged();
     }
+
     public String getRadio() {
         String radio = "{";
         for (int i = 0; i < mAllOptionList.size(); i++) {
-            radio = radio + mAllOptionList.get(i) + ":" + (mAllStateList.get(i)?"1":"0") + ",";
+            radio = radio + mAllOptionList.get(i) + ":" + (mAllStateList.get(i) ? "1" : "0") + ",";
         }
         radio = radio + "}\n";
         return radio;

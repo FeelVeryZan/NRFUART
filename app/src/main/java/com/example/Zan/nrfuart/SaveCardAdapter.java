@@ -17,8 +17,7 @@ import java.util.List;
  * Created by nodgd on 2017/09/17.
  */
 
-public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.ViewHolder>
-{
+public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.ViewHolder> {
     public static String TAG = "SaveCardAdapterTag";
 
     private Context mContext;
@@ -31,8 +30,7 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.ViewHo
         private TextView mThisId;
         private TextView mContentView;
 
-        public ViewHolder(View view)
-        {
+        public ViewHolder(View view) {
             super(view);
             //获取各个View
             mCardView = (CardView) view;
@@ -85,7 +83,7 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.ViewHo
     //由唯一标识符得到pos。这个函数只在内部调用
     private int getPosFromIdentifier(int ide) {
         for (int i = 0; i < mDataList.size(); i++) {
-            if(mDataList.get(i).getIdentifier() == ide) {
+            if (mDataList.get(i).getIdentifier() == ide) {
                 return i;
             }
         }
@@ -115,6 +113,8 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.ViewHo
     //修改唯一标识符为ide的卡片的标题。返回是否成功
     public boolean setItemTitle(int ide, String title) {
         int pos = getPosFromIdentifier(ide);
+        if (pos == -1)
+            return false;
         mDataList.get(pos).setTitle(title);
         notifyItemChanged(pos);
         return true;
@@ -123,6 +123,8 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.ViewHo
     //修改唯一标识符为ide卡片显示的ID。返回是否成功
     public boolean setItemId(int ide, int id) {
         int pos = getPosFromIdentifier(ide);
+        if (pos == -1)
+            return false;
         mDataList.get(pos).setId(id);
         notifyItemChanged(pos);
         return true;
@@ -131,6 +133,8 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.ViewHo
     //给唯一标识符为ide的卡片上显示的内容添加数据。返回是否成功
     public boolean addItemContent(int ide, String moreContent) {
         int pos = getPosFromIdentifier(ide);
+        if (pos == -1)
+            return false;
         mDataList.get(pos).addContent(moreContent);
         notifyItemChanged(pos);
         return true;
@@ -139,6 +143,8 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.ViewHo
     //清空并重新设置唯一标识符为ide的卡片上显示的内容。返回是否成功
     public boolean setItemContent(int ide, String content) {
         int pos = getPosFromIdentifier(ide);
+        if (pos == -1)
+            return false;
         mDataList.get(pos).setContent(content);
         notifyItemChanged(pos);
         return true;

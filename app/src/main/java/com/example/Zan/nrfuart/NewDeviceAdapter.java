@@ -67,7 +67,7 @@ public class NewDeviceAdapter extends RecyclerView.Adapter<NewDeviceAdapter.View
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
-        if(mContext == null) {
+        if (mContext == null) {
             mContext = parent.getContext();
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.new_device_item, parent, false);

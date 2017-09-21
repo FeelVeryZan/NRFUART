@@ -7,19 +7,17 @@ package com.example.Zan.nrfuart;
 public class Card {
     private String id;
     private int type;
-    public Card(String id, int type)
-    {
+
+    public Card(String id, int type) {
         this.id = id;
         this.type = type;
     }
 
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 
-    public int getType()
-    {
+    public int getType() {
         return type;
     }
 }

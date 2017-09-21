@@ -19,25 +19,19 @@ class MonitorCardData {
     private String title = null;
     private int id = 0;
     private List<Integer> messageFlow = null;
-    private int Channellist[];
+    private int Channel;
 
-    public void setChannellst(int channellist[]){
-        Channellist=channellist.clone();
+    public void setChannel(int channel) {
+        Channel = channel;
     }
 
-    public int[] getChannellist(){
-        return Channellist;
+    public int getChannel() {
+        return Channel;
     }
 
-    public MonitorCardData(MonitorCardData SCD){
-        super();
-        Channellist=SCD.getChannellist().clone();
-    }
-    public boolean checkchannel(int channel){
-        if (Channellist[channel]==1)
-            return true;
-        else
-            return false;
+
+    public boolean checkchannel(int channel) {
+        return (Channel == channel);
     }
 
 
@@ -71,7 +65,7 @@ class MonitorCardData {
     }
 
     public void add(List<Integer> msg) {
-        for(Integer msgItem: msg) {
+        for (Integer msgItem : msg) {
             messageFlow.add(msgItem);
         }
     }

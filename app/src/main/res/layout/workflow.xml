@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout android:layout_height="match_parent"
+<android.support.v4.widget.DrawerLayout
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:id="@+id/drawer_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     animateLayoutChanges="true">
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                     android:orientation="vertical"
+                                                     android:layout_width="match_parent"
+                                                     android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,20 +21,31 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="180dp"
                 android:background="@color/ZanButtonBackground"
                 >
 
                 <ImageButton
                     android:id="@+id/connect_hint"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:scaleType="fitCenter"
                     android:background="@color/ZanButtonBackground"
-                    android:layout_centerInParent="true"
+                    android:layout_centerHorizontal="true"
                     android:src="@drawable/bluetoothsearch"
 
+                    />
+
+                <TextView
+                    android:id="@+id/connect_hint_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tap to select a device to connect."
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/connect_hint"
+                    android:textSize="18sp"
                     />
 
 
@@ -45,7 +58,7 @@
                     android:layout_alignParentTop="true"
                     android:text="Device: "
                     android:layout_margin="5dp"
-                    android:textSize="16sp"
+                    android:textSize="24sp"
                     />
 
             </RelativeLayout>
@@ -61,10 +74,11 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     >
+
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recycler_view_send"
                         android:layout_width="match_parent"
-                        android:background="@color/ZanDeeperBackground"
+                        android:background="@color/ZanBackground"
                         android:layout_height="250dp"/>
 
                     <android.support.v7.widget.RecyclerView
@@ -75,16 +89,13 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recycler_view_monitor"
                         android:layout_width="match_parent"
-                        android:background="@color/ZanDeeperBackground"
+                        android:background="@color/ZanBackground"
                         android:layout_height="350dp"/>
                 </LinearLayout>
 
             </ScrollView>
-            
+
         </LinearLayout>
-
-
-
 
 
         <android.support.design.widget.FloatingActionButton
@@ -98,10 +109,70 @@
             />
 
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/add_card_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="88dp"
+            android:layout_gravity="bottom"
+            android:visibility="gone"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:background="@color/ZanDeeperBackground"
+                >
 
 
-    </FrameLayout>
+                <ImageView
+                    android:id="@+id/add_save_card"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:layout_margin="20dp"
+                    android:layout_marginLeft="30dp"
+                    android:src="@drawable/disk"
+                    android:scaleType="fitCenter"
+                    />
 
+                <ImageView
+                    android:id="@+id/add_monitor_card"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2.4"
+                    android:layout_margin="20dp"
+                    android:src="@drawable/monitor"
+                    android:scaleType="fitCenter"
+                    />
+
+                <ImageView
+                    android:id="@+id/add_send_card"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:layout_margin="20dp"
+                    android:src="@drawable/send"
+                    android:scaleType="fitCenter"
+
+                    />
+
+                <ImageView
+                    android:id="@+id/close_toobar"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:layout_margin="20dp"
+                    />
+
+
+            </LinearLayout>
+
+
+        </android.support.v7.widget.Toolbar>
+
+
+    </android.support.design.widget.CoordinatorLayout>
 
 
 </android.support.v4.widget.DrawerLayout>

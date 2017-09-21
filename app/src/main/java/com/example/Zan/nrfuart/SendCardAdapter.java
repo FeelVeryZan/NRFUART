@@ -67,7 +67,7 @@ public class SendCardAdapter extends RecyclerView.Adapter<SendCardAdapter.ViewHo
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(mContext == null) {
+        if (mContext == null) {
             mContext = parent.getContext();
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.send_card, parent, false);
@@ -125,42 +125,63 @@ public class SendCardAdapter extends RecyclerView.Adapter<SendCardAdapter.ViewHo
      *  注意，卡片的id和卡片的编号并不是同一个东西
      */
     //在底部增加一张卡片。返回它的编号
+    private int getPosFromIdentifier(int ide) {
+        for (int i = 0; i < mDataList.size(); i++) {
+            if (mDataList.get(i).getIdentifier() == ide) {
+                return i;
+            }
+        }
+        Log.e(TAG, "错误的标识符：ide = " + ide);
+        return -1;
+    }
+
     public int addOneCard(SendCardData data) {
+        int ide = IdentifierManager.getNewIdentifier();
+        data.setIdentifier(ide);
         mDataList.add(data);
         notifyItemInserted(mDataList.size());
-        return mDataList.size();
+        mDataList.get(mDataList.size()).start();
+        return ide;
     }
 
     //删除当前的第pos张卡片，编号从0开始。返回是否成功
-    public boolean removeOneCard(int pos) {
-        if (pos < 0 || pos >= mDataList.size()) {
-            Log.e(TAG, "错误的编号：pos=" + pos);
+    public boolean removeOneCard(int ide) {
+        int pos = getPosFromIdentifier(ide);
+        if (pos == -1)
             return false;
-        }
         mDataList.remove(pos);
         notifyItemRemoved(pos);
         return true;
     }
 
     //修改第pos张卡片的标题。返回是否成功
-    public boolean setItemTitle(int pos, String title) {
-        if (pos < 0 || pos >= mDataList.size()) {
-            Log.e(TAG, "错误的编号：pos=" + pos);
+    public boolean setItemTitle(int ide, String title) {
+        int pos = getPosFromIdentifier(ide);
+        if (pos == -1)
             return false;
-        }
         mDataList.get(pos).setTitle(title);
         notifyItemChanged(pos);
         return true;
     }
 
     //修改第pos张卡片显示的ID。返回是否成功
-    public boolean setItemId(int pos, int id) {
-        if (pos < 0 || pos >= mDataList.size()) {
-            Log.e(TAG, "错误的编号：pos=" + pos);
+    public boolean setItemId(int ide, int id) {
+        int pos = getPosFromIdentifier(ide);
+        if (pos == -1)
             return false;
-        }
         mDataList.get(pos).setId(id);
         notifyItemChanged(pos);
         return true;
     }
+
+    public boolean DataReview(int ide) {
+        int pos = getPosFromIdentifier(ide);
+        if (pos == -1)
+            return false;
+        mDataList.get(pos).DataReview();
+        notifyItemChanged(pos);
+        return true;
+    }
+
+
 }

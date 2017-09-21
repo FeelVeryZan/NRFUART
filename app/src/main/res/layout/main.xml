@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="@color/ZanBackground"
         android:theme="@style/ZanTheme.Main"
         >
 
@@ -29,6 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:background="@color/ZanBackground"
             >
 
             <Button
@@ -47,6 +49,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:id="@+id/linearLayout21"
+            android:background="@color/ZanBackground"
             >
 
             <Button
@@ -62,6 +65,7 @@
         </LinearLayout>
 
         <RelativeLayout
+            android:background="@color/ZanBackground"
             android:id="@+id/RelativeLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -109,6 +113,7 @@
             android:layout_height="160dp"
             android:layout_weight="0.31"
             android:orientation="vertical"
+            android:background="@color/ZanBackground"
             >
 
             <RelativeLayout

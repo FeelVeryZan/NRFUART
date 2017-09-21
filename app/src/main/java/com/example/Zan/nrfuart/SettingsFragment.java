@@ -8,7 +8,7 @@ import com.example.Zan.nrfuart.R;
 /**
  * Created by 恒 on 2017/2/17.
  */
-public class SettingsFragment extends PreferenceFragment{
+public class SettingsFragment extends PreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

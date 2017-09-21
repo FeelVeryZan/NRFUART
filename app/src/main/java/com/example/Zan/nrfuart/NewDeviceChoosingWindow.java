@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,7 +104,7 @@ public class NewDeviceChoosingWindow {
         Bitmap bmp1 = BlurBitmap.printScreen(mContext);
         Bitmap bmp2 = BlurBitmap.blurBitmap(mContext, bmp1, 15.0f);
         mContentView.findViewById(R.id.new_device_window).setBackgroundDrawable(new BitmapDrawable(bmp2));
-        mPopupWindow.showAtLocation(((Activity)mContext).getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+        mPopupWindow.showAtLocation(((Activity) mContext).getWindow().getDecorView(), Gravity.CENTER, 0, 0);
         //再开一个线程加载蓝牙设备。注意一定要在弹出窗口之后才开始加载，不然会产生多线程专属爆炸
         findDevice();
     }
@@ -120,7 +121,12 @@ public class NewDeviceChoosingWindow {
                 mBluetoothAdapter.startLeScan(new BluetoothAdapter.LeScanCallback() {
                     @Override
                     public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-                        mDeviceAdapter.addDevice(device);
+                        try {
+                            mDeviceAdapter.addDevice(device);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.d(TAG, e.getMessage());
+                        }
                     }
                 });
             }

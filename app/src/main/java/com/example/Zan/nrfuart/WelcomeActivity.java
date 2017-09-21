@@ -10,7 +10,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 
-
 public class WelcomeActivity extends BaseActivity {
     public static ImageView mGoToOldVersion = null;
     public static ImageView mTestFlow = null;
@@ -47,8 +46,7 @@ public class WelcomeActivity extends BaseActivity {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle(R.string.popup_title)
                 .setMessage(R.string.popup_message)
-                .setPositiveButton(R.string.popup_yes, new DialogInterface.OnClickListener()
-                {
+                .setPositiveButton(R.string.popup_yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ActivityCollecter.finishall();

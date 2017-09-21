@@ -64,7 +64,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(mContext == null) {
+        if (mContext == null) {
             mContext = parent.getContext();
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.monitor_card, parent, false);
@@ -100,6 +100,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
     public int getItemCount() {
         return mDataList.size();
     }
+
     //尝试关闭搜索模块默认开启的输入法
     public void closeInputMethodAnyaway() {
         Log.d(TAG, "closeInputMethodAnyaway");
@@ -154,9 +155,9 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         return true;
     }
 
-    public void adddata(int channel,int v){
-        int len=mDataList.size();
-        for (int i=1;i<=len;i++)
+    public void adddata(int channel, int v) {
+        int len = mDataList.size();
+        for (int i = 1; i <= len; i++)
             if (mDataList.get(i).checkchannel(channel))
                 mDataList.get(i).add(v);
     }

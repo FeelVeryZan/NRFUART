@@ -18,7 +18,7 @@ import java.util.Date;
 
 
 public class SaveRunner implements Runnable {
-    public  static String SaveRunner_Off="SaveRunner_off";
+    public final static String SaveRunner_Off = "com.example.Zan.nrfuart.SaveRunner_off";
     private static final String TAG = "SaveRunner";
     private static final long MAX_LENGTH = 1000000;
     public String name;
@@ -39,26 +39,25 @@ public class SaveRunner implements Runnable {
     private File file = null;
     private long filelen = 0;
 
-    SaveRunner(int SaveRunnerCounter,int Channelnum,int a[]) {
-        name=String.valueOf(SaveRunnerCounter);
-        channelnum=Channelnum;
-        ChannelList=a;
-        channellist="";
-        channellist2="";
-        for (int i=0;i<channelnum;i++)
-            if (a[i]==1)
-            {
-                channellist=channellist+String.valueOf(i)+',';
-                channellist2=channellist2+String.valueOf(i)+'_';
+    SaveRunner(int SaveRunnerCounter, int Channelnum, int a[]) {
+        name = String.valueOf(SaveRunnerCounter);
+        channelnum = Channelnum;
+        ChannelList = a;
+        channellist = "";
+        channellist2 = "";
+        for (int i = 0; i < channelnum; i++)
+            if (a[i] == 1) {
+                channellist = channellist + String.valueOf(i) + ',';
+                channellist2 = channellist2 + String.valueOf(i) + '_';
             }
-        int Len=channellist.length();
-        channellist=channellist.substring(0,Len-1);
-        channellist2=channellist2.substring(0,Len-1);
-        channellist=channellist+'\n';
+        int Len = channellist.length();
+        channellist = channellist.substring(0, Len - 1);
+        channellist2 = channellist2.substring(0, Len - 1);
+        channellist = channellist + '\n';
 
     }
 
-    @SuppressLint({ "SimpleDateFormat", "SdCardPath" })
+    @SuppressLint({"SimpleDateFormat", "SdCardPath"})
     private void init() {
         try {
             String path;
@@ -78,7 +77,7 @@ public class SaveRunner implements Runnable {
             Date date = new Date(System.currentTimeMillis());
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
             String strDate = formatter.format(date);
-            String filename = "/sdcard/HMILab/Data/" + "data_" + strDate+'_'+ channellist2 + ".txt";
+            String filename = "/sdcard/HMILab/Data/" + "data_" + strDate + '_' + channellist2 + ".txt";
             //Log.e(TAG, "init: trytocreat"+filename);
             file = new File(filename);
             if (!file.exists()) {
@@ -86,28 +85,27 @@ public class SaveRunner implements Runnable {
                 Log.d(TAG, "create file:" + filename);
             }
             raf = new RandomAccessFile(file, "rw");
-            SharedPreferences SP= PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext());
-            String SPi=SP.getString("channel_number", "4");
+            SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext());
+            String SPi = SP.getString("channel_number", "4");
             //channelnum=Integer.getInteger(SPi);
             //raf.writeChars(SPi+"\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     @Override
-    public void run()
-    {
+    public void run() {
         // TODO Auto-generated method stub
 
         service_init();
         init();
         try {
             raf.write(channellist.getBytes());
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        while(state== State.RUN)
-        {
+        while (state == State.RUN) {
 
         }
         //Log.e(TAG, "run: STOP 123  "+name);
@@ -122,14 +120,13 @@ public class SaveRunner implements Runnable {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-            if (action.equals(UartService.ACTION_DATA_AVAILABLE) && state==State.RUN){
+            if (action.equals(UartService.ACTION_DATA_AVAILABLE) && state == State.RUN) {
                 final byte[] txValue = intent.getByteArrayExtra(UartService.EXTRA_DATA);
-                for (int i = 0; i < txValue.length; i ++) {
+                for (int i = 0; i < txValue.length; i++) {
                     if (channel == 0) {
-                        saveline = "" + System.currentTimeMillis()+' ';
+                        saveline = "" + System.currentTimeMillis() + ' ';
                     }
-                    if (ChannelList[channel]==1)
-                    {
+                    if (ChannelList[channel] == 1) {
                         saveline = saveline + " " + txValue[i];
                     }
                     if (channel == channelnum - 1) {
@@ -145,17 +142,18 @@ public class SaveRunner implements Runnable {
                     channel = (channel + 1) % channelnum;
                 }
 
-            }
-            else if (action.equals(SaveRunner_Off))	{
-                String NAME =intent.getStringExtra("name");
+            } else if (action.equals(SaveRunner_Off)) {
+                String NAME = intent.getStringExtra("name");
                 if (NAME.equals(name))
-                    state= State.STOP;
+                    state = State.STOP;
             }
         }
     };
+
     private void service_init() {
         LocalBroadcastManager.getInstance(MyApplication.getContext()).registerReceiver(UARTStatusChangeReceiver, makeGattUpdateIntentFilter());
     }
+
     static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(UartService.ACTION_DATA_AVAILABLE);

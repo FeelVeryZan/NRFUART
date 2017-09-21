@@ -49,7 +49,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         public void onItemLongClick(View view, int postion);
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener {
+    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private CardView mCardView;
         private TextView mTextView;
         private ImageView mShowImageView;
@@ -70,7 +70,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             mShowImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mLineChartView.getVisibility() == View.GONE) {
+                    if (mLineChartView.getVisibility() == View.GONE) {
                         mLineChartView.setVisibility(View.VISIBLE);
                         mShowImageView.setRotation(90);
                     } else {
@@ -85,15 +85,17 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             view.setOnClickListener(this);
             view.setOnLongClickListener(this);
         }
+
         @Override
         public void onClick(View view) {
-            if(mListener != null){
+            if (mListener != null) {
                 mListener.onItemClick(view, getPosition());
             }
         }
+
         @Override
         public boolean onLongClick(View view) {
-            if(mLongClickListener != null){
+            if (mLongClickListener != null) {
                 mLongClickListener.onItemLongClick(view, getPosition());
             }
             return true;
@@ -106,7 +108,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(mContext == null) {
+        if (mContext == null) {
             mContext = parent.getContext();
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.message_flow_layout, parent, false);
@@ -118,17 +120,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         mMessageList.add(msg);
         notifyItemInserted(mMessageList.size());
     }
+
     public void removeOneCard(int pos) {
         notifyItemRemoved(pos);
         mMessageList.remove(pos);
     }
+
     public void addItemMessage(int pos, List<Integer> msg) {
-        for (Integer x: msg) {
+        for (Integer x : msg) {
             mMessageList.get(pos).add(x);
         }
         notifyItemChanged(pos);
     }
-
 
 
     @Override
@@ -154,11 +157,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     }
 
     //RecyclerView不带有这两个函数，就自己添加
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(OnItemClickListener listener) {
         this.mItemClickListener = listener;
     }
 
-    public void setOnItemLongClickListener(OnItemLongClickListener listener){
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
         this.mItemLongClickListener = listener;
     }
 
@@ -167,7 +170,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         //流数据变成点序列
         List<PointValue> valueList = new ArrayList<>();
-        for(int i = 0; i < messageFlow.size(); i++) {
+        for (int i = 0; i < messageFlow.size(); i++) {
             valueList.add(new PointValue(i, messageFlow.get(i)));
         }
         //点序列变成线

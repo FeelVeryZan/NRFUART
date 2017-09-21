@@ -1,177 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/creat_card_window"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
     >
 
-    <!-- 输入标题 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="horizontal"
         >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="5dp"
-            android:text="Card title:"
-            android:textSize="30sp"
+        <View
+            android:layout_height="match_parent"
+            android:layout_width="1dp"
+            android:layout_weight="3"
             />
 
-        <EditText
-            android:id="@+id/edit_title"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/creat_card_main"
+            android:layout_width="1dp"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:textSize="24sp"
-            />
-
-    </LinearLayout>
-
-    <!-- 输入通道编号 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="5dp"
-            android:text="Channel ID:"
-            android:textSize="30sp"
-            />
-
-        <EditText
-            android:id="@+id/edit_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:textSize="24sp"
-            />
-
-    </LinearLayout>
-
-    <!-- 如果是SaveCard模式，此处用来多项选择 -->
-    <LinearLayout
-        android:id="@+id/edit_savecard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        >
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="14"
+            android:background="@color/ZanBlur"
             >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="5dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:text="Choose channel(s) to save:"
-                android:textSize="30sp"
-                />
-
+            <!-- 输入标题 -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:orientation="horizontal"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
                 >
 
-                <Button
-                    android:id="@+id/edit_choose_all"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="全选"
-                    android:textSize="20sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Card title:"
+                    android:textSize="30sp"
                     />
 
-                <Button
-                    android:id="@+id/edit_choose_none"
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/edit_title"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:text="全不选"
-                    android:textSize="20sp"
-                    />
-
-                <Button
-                    android:id="@+id/edit_choose_invert"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="反选"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     />
 
             </LinearLayout>
 
-        </RelativeLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/edit_choose_recview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            >
-
-            <Button
-                android:id="@+id/edit_submit"
-                android:layout_width="wrap_content"
+            <!-- 输入通道编号 -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="Submit"
-                android:textSize="30sp"
+                android:layout_margin="10dp"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Channel ID:"
+                    android:textSize="30sp"
+                    />
+
+                <EditText
+                    android:id="@+id/edit_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:textSize="24sp"
+                    />
+
+            </LinearLayout>
+
+            <!-- 如果是SaveCard模式，此处用来多项选择 -->
+            <LinearLayout
+                android:id="@+id/edit_savecard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="vertical"
+                android:visibility="visible"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Choose channel(s) to save:"
+                    android:textSize="30sp"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/edit_choose_fast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="end"
+                    >
+
+                    <Button
+                        android:id="@+id/edit_choose_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="全选"
+                        android:textSize="20sp"
+                        />
+
+                    <Button
+                        android:id="@+id/edit_choose_none"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="全不选"
+                        android:textSize="20sp"
+                        />
+
+                    <Button
+                        android:id="@+id/edit_choose_invert"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="反选"
+                        android:textSize="20sp"
+                        />
+
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/edit_choose_recview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
                 />
 
-            <Button
-                android:id="@+id/edit_close"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="Close"
-                android:textSize="30sp"
-                />
+                android:layout_margin="10dp"
+                android:orientation="vertical"
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    >
+
+                    <Button
+                        android:id="@+id/edit_submit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Submit"
+                        android:textSize="30sp"
+                        />
+
+                    <Button
+                        android:id="@+id/edit_close"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Close"
+                        android:textSize="30sp"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
+
+        <View
+            android:layout_height="match_parent"
+            android:layout_width="1dp"
+            android:layout_weight="3"
+            />
 
     </LinearLayout>
 

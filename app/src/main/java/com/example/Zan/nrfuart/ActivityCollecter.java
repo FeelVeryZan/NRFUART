@@ -16,25 +16,20 @@ public class ActivityCollecter {
 
     public static List<Activity> activities = new ArrayList<>();
 
-    public static void addActivity(Activity activity)
-    {
+    public static void addActivity(Activity activity) {
         activities.add(activity);
     }
 
-    public static void removeActivity(Activity activity)
-    {
+    public static void removeActivity(Activity activity) {
         activities.remove(activity);
     }
 
-    public static void finishall()
-    {
+    public static void finishall() {
         Log.d("ActivityCollecter", "finishall() is used.");
-        for(Activity activity : activities)
-        {
-            if (!activity.isFinishing())
-            {
+        for (Activity activity : activities) {
+            if (!activity.isFinishing()) {
                 activity.finish();
-                Log.d("ActivityCollecter", ""+activity+" is finished.");
+                Log.d("ActivityCollecter", "" + activity + " is finished.");
             }
         }
     }
