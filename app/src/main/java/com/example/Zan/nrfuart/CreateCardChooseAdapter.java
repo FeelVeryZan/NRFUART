@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -108,12 +107,11 @@ public class CreateCardChooseAdapter extends RecyclerView.Adapter<CreateCardChoo
         notifyDataSetChanged();
     }
 
-    public String getRadio() {
-        String radio = "{";
-        for (int i = 0; i < mAllOptionList.size(); i++) {
-            radio = radio + mAllOptionList.get(i) + ":" + (mAllStateList.get(i) ? "1" : "0") + ",";
-        }
-        radio = radio + "}\n";
+    public int[] getStateInArray() {
+        int n = getItemCount();
+        int radio[] = new int[n];
+        for (int i = 0; i < n; i++)
+            radio[i] = mAllStateList.get(i) ? 1 : 0;
         return radio;
     }
 }

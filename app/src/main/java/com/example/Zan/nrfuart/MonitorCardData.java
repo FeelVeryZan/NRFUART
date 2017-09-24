@@ -14,79 +14,79 @@ import lecho.lib.hellocharts.model.PointValue;
  * Created by nodgd on 2017/09/16.
  */
 
-class MonitorCardData {
+class MonitorCardData extends BaseCardData {
 
-    private String title = null;
-    private int id = 0;
-    private List<Integer> messageFlow = null;
-    private int Channel;
+    private static final String TAG = "MonitorCardData";
 
+    private int channel;
+    private List<Integer> message;
+
+    public MonitorCardData() {
+        super();
+        message = new ArrayList<>();
+    }
+
+    @Override
+    public String getTitle() {
+        if (title.equals("")) {
+            return "No title" + " (MonitorCard)";
+        } else {
+            return title + " (MonitorCard)";
+        }
+    }
+
+    //选择的通道
     public void setChannel(int channel) {
-        Channel = channel;
+        this.channel = channel;
     }
 
     public int getChannel() {
-        return Channel;
+        return channel;
     }
 
-
-    public boolean checkchannel(int channel) {
-        return (Channel == channel);
-    }
-
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setMessageFlow(int[] msg) {
-        messageFlow = new ArrayList<>();
-        for (int i = 0; i < msg.length; i++) {
-            messageFlow.add(msg[i]);
+    //显示出来的数据数组
+    public void setMessage(int[] message) {
+        this.message = new ArrayList<>();
+        for (int i = 0; i < message.length; i++) {
+            this.message.add(message[i]);
         }
     }
 
-    public void setMessageFlow(List<Integer> msg) {
-        messageFlow = msg;
+    public void setMessage(List<Integer> message) {
+        this.message = message == null ? new ArrayList<Integer>() : message;
     }
 
-    public void add(int msgItem) {
-        messageFlow.add(msgItem);
+    public void addMessage(int moreMessage) {
+        message.add(moreMessage);
     }
 
-    public void add(int[] msg) {
-        for (int msgItem : msg) {
-            messageFlow.add(msgItem);
+    public void addMessage(int[] moreMessage) {
+        for (int moreMessageItem : moreMessage) {
+            message.add(moreMessageItem);
         }
     }
 
-    public void add(List<Integer> msg) {
-        for (Integer msgItem : msg) {
-            messageFlow.add(msgItem);
+    public void addMessage(List<Integer> moreMessage) {
+        for (Integer moreMessageItem : moreMessage) {
+            message.add(moreMessageItem);
         }
     }
 
-    public String getTitle() {
-        if (title == null || title.equals("")) {
-            return "Monitor Card Title";
-        }
-        return title;
+    public void clearMessage() {
+        message.clear();
     }
 
-    public String getIdInString() {
-        return "" + id;
+    public List<Integer> getMessage() {
+        return message;
     }
 
+    //把数据数组变成LineChartData类型
     public LineChartData getLineChartData() {
         //流数据变成点序列
         List<PointValue> valueList = new ArrayList<>();
-        if (messageFlow != null) {
-            for (int i = 0; i < messageFlow.size(); i++) {
-                valueList.add(new PointValue(i, messageFlow.get(i)));
+        if (message != null) {
+            for (int i = 0; i < message.size(); i++) {
+                valueList.add(new PointValue(i, message.get(i)));
             }
         }
         //点序列变成线

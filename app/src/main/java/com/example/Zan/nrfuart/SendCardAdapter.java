@@ -1,7 +1,6 @@
 package com.example.Zan.nrfuart;
 
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,11 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.example.Zan.nrfuart.R;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import lecho.lib.hellocharts.gesture.ContainerScrollType;
@@ -27,11 +24,11 @@ import lecho.lib.hellocharts.view.LineChartView;
 
 public class SendCardAdapter extends RecyclerView.Adapter<SendCardAdapter.ViewHolder> {
 
-    public static String TAG = "MonitorCardAdapterTag";
+    public static String TAG = "SendCardAdapter";
 
     private Context mContext;
     private List<SendCardData> mDataList;
-    private PopupWindow mPopupWindow;
+    private SendCardEditWindow mEditWindow;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         private CardView mCardView;
@@ -61,8 +58,16 @@ public class SendCardAdapter extends RecyclerView.Adapter<SendCardAdapter.ViewHo
         }
     }
 
+    public interface OnEditCallBack {
+        public void onEdit();
+    }
+
     public SendCardAdapter(List<SendCardData> dataList) {
         mDataList = dataList;
+    }
+
+    public SendCardAdapter() {
+        mDataList = new ArrayList<>();
     }
 
     @Override
@@ -75,42 +80,36 @@ public class SendCardAdapter extends RecyclerView.Adapter<SendCardAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
-        if (mPopupWindow == null) {
-            //弹出设置窗口的属性
-            View contentView = LayoutInflater.from(mContext).inflate(R.layout.send_card_edit_window, null);
-            mPopupWindow = new PopupWindow(contentView);
-            mPopupWindow.setFocusable(true);
-            mPopupWindow.setBackgroundDrawable(new ColorDrawable(0x20FFFFFF));
-            mPopupWindow.setAnimationStyle(R.style.EditWindowAnimation);
-            //监听弹出窗口的关闭按钮
-            Button closeButton = (Button) contentView.findViewById(R.id.close);
-            closeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mPopupWindow.dismiss();
-                }
-            });
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        if (mEditWindow == null) {
+            mEditWindow = new SendCardEditWindow(mContext);
         }
         //把数据灌进去
-        Log.d(TAG, "把数据灌进去, position=" + position);
-        SendCardData data = mDataList.get(position);
-        holder.mTitleView.setText(data.getTitle());
-        holder.mThisId.setText(data.getIdInString());
-        holder.mNowState.setText(data.getStateInString());
-        holder.mLineChartView.setLineChartData(data.getLineChartData());
+        final SendCardData cardData = mDataList.get(position);
+        Log.d(TAG, "把数据灌进去, position = " + position + " identifier = " + cardData.getIdentifier());
+        holder.mTitleView.setText(cardData.getTitle());
+        holder.mThisId.setText(String.valueOf(cardData.getChannel()));
+        holder.mNowState.setText(cardData.getStateInString());
+        holder.mLineChartView.setLineChartData(cardData.getLineChartData());
         //监听关闭按钮
         holder.mCloseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                removeOneCard(position);
+                Log.d(TAG, "close: identifier = " + cardData.getIdentifier());
+                removeOneCardByIdentifier(cardData.getIdentifier());
             }
         });
         //监听设置按钮
         holder.mEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPopupWindow.showAsDropDown(view);
+                Log.d(TAG, "edit: identifier = " + cardData.getIdentifier());
+                mEditWindow.show(new OnEditCallBack() {
+                    @Override
+                    public void onEdit() {
+                        //TODO 修改SendThread等信息的回调函数，可以自行添加onEdit的函数参数
+                    }
+                });
             }
         });
     }
@@ -122,66 +121,48 @@ public class SendCardAdapter extends RecyclerView.Adapter<SendCardAdapter.ViewHo
 
     /*
      *  接口函数
-     *  注意，卡片的id和卡片的编号并不是同一个东西
      */
-    //在底部增加一张卡片。返回它的编号
-    private int getPosFromIdentifier(int ide) {
+    //由标识符获取位置
+    public int getPositionFromIdentifier(int identifier) {
         for (int i = 0; i < mDataList.size(); i++) {
-            if (mDataList.get(i).getIdentifier() == ide) {
+            if (mDataList.get(i).getIdentifier() == identifier) {
                 return i;
             }
         }
-        Log.e(TAG, "错误的标识符：ide = " + ide);
+        Log.e(TAG, "The identifier is wrong: " + identifier);
         return -1;
     }
 
-    public int addOneCard(SendCardData data) {
-        int ide = IdentifierManager.getNewIdentifier();
-        data.setIdentifier(ide);
-        mDataList.add(data);
-        notifyItemInserted(mDataList.size());
-        mDataList.get(mDataList.size()).start();
-        return ide;
+    //在底部增加一张卡片
+    public void addOneCard(SendCardData cardData) {
+        mDataList.add(cardData);
+        notifyItemInserted(mDataList.size() - 1);
+        //新增的同时要让send线程跑起来
+        cardData.startSendThread();
     }
 
-    //删除当前的第pos张卡片，编号从0开始。返回是否成功
-    public boolean removeOneCard(int ide) {
-        int pos = getPosFromIdentifier(ide);
-        if (pos == -1)
-            return false;
-        mDataList.remove(pos);
-        notifyItemRemoved(pos);
-        return true;
+    //通过位置删除一张卡片，位置编号从0开始
+    public void removeOneCardByPosition(int position) {
+        if (position < 0 || position >= mDataList.size()) {
+            Log.e(TAG, "The position is wrong: " + position);
+        }
+        SendCardData cardData = mDataList.get(position);
+        cardData.stopSendThread();
+        mDataList.remove(position);
+        notifyItemRemoved(position);
     }
 
-    //修改第pos张卡片的标题。返回是否成功
-    public boolean setItemTitle(int ide, String title) {
-        int pos = getPosFromIdentifier(ide);
-        if (pos == -1)
-            return false;
-        mDataList.get(pos).setTitle(title);
-        notifyItemChanged(pos);
-        return true;
+    //通过标识符删除一张卡片
+    public void removeOneCardByIdentifier(int identifier) {
+        removeOneCardByPosition(getPositionFromIdentifier(identifier));
     }
 
-    //修改第pos张卡片显示的ID。返回是否成功
-    public boolean setItemId(int ide, int id) {
-        int pos = getPosFromIdentifier(ide);
-        if (pos == -1)
-            return false;
-        mDataList.get(pos).setId(id);
-        notifyItemChanged(pos);
-        return true;
+    public void reviewDataByIdentifier(int identifier) {
+        int pos = getPositionFromIdentifier(identifier);
+        if (pos != -1) {
+            mDataList.get(pos).DataReview();
+            notifyItemChanged(pos);
+        }
     }
-
-    public boolean DataReview(int ide) {
-        int pos = getPosFromIdentifier(ide);
-        if (pos == -1)
-            return false;
-        mDataList.get(pos).DataReview();
-        notifyItemChanged(pos);
-        return true;
-    }
-
-
+    //TODO 修改卡片内容（标题等）的各种接口
 }

@@ -33,7 +33,7 @@
             android:layout_width="141dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Start"
+            android:text="startSaveThread"
             android:textAllCaps="false"
             android:textSize="24sp"
             android:background="@color/ZanButtonBackground"

@@ -15,17 +15,14 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,9 +36,6 @@ import java.util.List;
 
 
 public class WorkFlow extends BaseActivity {
-    private SaveCardAdapter saveCardAdapter;
-    private MonitorCardAdapter monitorCardAdapter;
-    private SendCardAdapter sendCardAdapter;
 
     private String TAG = "WorkFlow";
     private static final int REQUEST_SELECT_DEVICE = 1;
@@ -56,26 +50,25 @@ public class WorkFlow extends BaseActivity {
     private UartService mService = null;
     private BluetoothDevice mDevice = null;
     private BluetoothAdapter mBtAdapter = null;
-    private ListView messageListView;
-    private ArrayAdapter<String> listAdapter;
-    private Button btnSend;
-    private ImageButton btnConnect;
-    private TextView btnConnectHint;
-    private TextView device_name;
-    private FloatingActionButton floatingActionButton;
-    private Toolbar toolbar;
-    private EditText edtMessage;
+    private ImageButton mConnectBtn;
+    private TextView mConnectBtnHint;
+    private TextView mDeviceName;
+    private FloatingActionButton mFloatingActionButton;
+    private Toolbar mToolbar;
 
-    public static NavigationView navView;
-
-    private final Context context = this;
+    private RecyclerView mSendCardRecView;
+    private SendCardAdapter mSendCardAdapter;
+    private RecyclerView mSaveCardRecView;
+    private SaveCardAdapter mSaveCardAdapter;
+    private RecyclerView mMonitorCardRecView;
+    private MonitorCardAdapter mMonitorCardAdapter;
 
     private static int NoRespCo = Color.rgb(0x9f, 0x9f, 0x9f);
     private static int RespCo = Color.BLACK;
 
     private static int channel = 0;
 
-    public static int channelnum = 4;
+    public static int channelNumber = 4;
 
 
     @Override
@@ -84,17 +77,30 @@ public class WorkFlow extends BaseActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.workflow);
 
-        toolbar = (Toolbar) findViewById(R.id.add_card_toolbar);
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.FloatingButton);
+        //悬浮按钮部分
+        initFloatActionButton();
+        //蓝牙部分
+        initBluetooth();
+        //卡片列表部分
+        initCardList();
+        //什么部分
+        initService();
+        //之前通道数的设置项
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(WorkFlow.this);
+        String chnstr = sp.getString("channel_number", "4");
+        channelNumber = Integer.parseInt(chnstr);
 
+    }
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+    //悬浮按钮部分
+    private void initFloatActionButton() {
+        mToolbar = (Toolbar) findViewById(R.id.add_card_toolbar);
+        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.FloatingButton);
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (toolbar.getVisibility() == View.GONE) {
-
-
-                    toolbar.animate()
+                if (mToolbar.getVisibility() == View.GONE) {
+                    mToolbar.animate()
                             .alpha(1.0f)
                             .translationY(0)
                             .setDuration(400)
@@ -102,12 +108,11 @@ public class WorkFlow extends BaseActivity {
                                 @Override
                                 public void onAnimationStart(Animator animation) {
                                     super.onAnimationEnd(animation);
-                                    toolbar.setVisibility(View.VISIBLE);
-                                    Log.d("animate()", "set toolbar visible");
+                                    mToolbar.setVisibility(View.VISIBLE);
+                                    Log.d("animate()", "set mToolbar visible");
                                 }
                             });
-
-                    floatingActionButton.animate()
+                    mFloatingActionButton.animate()
                             .alpha(0.5f)
                             .rotation(0)
                             .setDuration(300)
@@ -115,27 +120,23 @@ public class WorkFlow extends BaseActivity {
                                 @Override
                                 public void onAnimationEnd(Animator animation) {
                                     super.onAnimationEnd(animation);
-                                    floatingActionButton.setImageResource(R.drawable.down);
+                                    mFloatingActionButton.setImageResource(R.drawable.down);
                                 }
                             });
-
-
                 } else {
-                    toolbar.animate()
+                    mToolbar.animate()
                             .alpha(0.0f)
-                            .translationY(toolbar.getHeight())
+                            .translationY(mToolbar.getHeight())
                             .setDuration(400)
                             .setListener(new AnimatorListenerAdapter() {
                                 @Override
                                 public void onAnimationEnd(Animator animation) {
                                     super.onAnimationEnd(animation);
-                                    toolbar.setVisibility(View.GONE);
-                                    Log.d("animate()", "set toolbar gone");
+                                    mToolbar.setVisibility(View.GONE);
+                                    Log.d("animate()", "set mToolbar gone");
                                 }
                             });
-
-
-                    floatingActionButton.animate()
+                    mFloatingActionButton.animate()
                             .rotation(180)
                             .alpha(1.0f)
                             .setDuration(300)
@@ -143,28 +144,22 @@ public class WorkFlow extends BaseActivity {
                                 @Override
                                 public void onAnimationEnd(Animator animation) {
                                     super.onAnimationEnd(animation);
-                                    floatingActionButton.setImageResource(R.drawable.plus);
+                                    mFloatingActionButton.setImageResource(R.drawable.plus);
                                 }
                             });
-
-
                 }
 
             }
         });
-
+        //悬浮按钮点开之后，三个创建卡片的按钮
         findViewById(R.id.add_save_card).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CreateCardWindow window = new CreateCardWindow(WorkFlow.this, CreateCardWindow.MODE_SAVECARD);
                 List<String> optionList = new ArrayList<>();
-                optionList.add("通道1");
-                optionList.add("通道2");
-                optionList.add("通道3");
-                optionList.add("通道4");
-                optionList.add("通道5");
-                optionList.add("通道6");
-                optionList.add("通道7");
+                for (int i = 0; i < channelNumber; i++) {
+                    optionList.add("通道" + i);
+                }
                 window.setOptions(optionList);
                 window.show();
             }
@@ -183,8 +178,10 @@ public class WorkFlow extends BaseActivity {
                 window.show();
             }
         });
+    }
 
-
+    //蓝牙部分
+    private void initBluetooth() {
         mBtAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBtAdapter == null) {
             Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
@@ -194,56 +191,11 @@ public class WorkFlow extends BaseActivity {
 
 
         }
-        btnConnect = (ImageButton) findViewById(R.id.connect_hint);
-        btnConnectHint = (TextView) findViewById(R.id.connect_hint_text);
-
-        service_init();
-
-        //之前通道数的设置项
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String chnstr = sp.getString("channel_number", "4");
-        channelnum = Integer.parseInt(chnstr);
-
-
-        //貌似是画图用的？
-        //WindowManager wm = this.getWindowManager();
-        //Point point = new Point();
-        //wm.getDefaultDisplay().getSize(point);
-        //Log.d(TAG, point.x + " " + point.y);
-
-        //navView=(NavigationView)findViewById(R.id.nav_view);
-
-        //navView.setCheckedItem(R.id.nav_About);
-        //navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
-/*
-            @Override
-            public boolean onNavigationItemSelected(MenuItem Item){
-                switch (Item.getItemId())
-                {
-                    case R.id.nav_Setting:
-                        SettingsActivity.activitystart(WorkFlow.this);
-                        break;
-                }
-                return true;
-            }
-        });
-*/
-        btnConnect.setOnClickListener(new View.OnClickListener() {
+        mConnectBtn = (ImageButton) findViewById(R.id.connect_hint);
+        mConnectBtnHint = (TextView) findViewById(R.id.connect_hint_text);
+        mConnectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                //旧版蓝牙
-                if (mBtAdapter == null || !mBtAdapter.isEnabled()) {
-                    Log.i(TAG, "onClick - BT not enabled yet");
-                    Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                    startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-                } else {
-                    Intent newIntent = new Intent(WorkFlow.this, DeviceListActivity.class);
-                    startActivityForResult(newIntent, REQUEST_SELECT_DEVICE);
-                    btnConnect.setVisibility(View.GONE);
-                    btnConnectHint.setVisibility(View.GONE);
-                }
-                */
                 //新版蓝牙
                 NewDeviceChoosingWindow window = new NewDeviceChoosingWindow(WorkFlow.this);
                 window.show();
@@ -251,23 +203,24 @@ public class WorkFlow extends BaseActivity {
         });
     }
 
-    /*
-        private ServiceConnection mServiceConnection = new ServiceConnection() {
-            public void onServiceConnected(ComponentName className, IBinder rawBinder) {
-                mService = ((UartService.LocalBinder) rawBinder).getService();
-                Log.d(TAG, "onServiceConnected mService= " + mService);
-                if (!mService.initialize()) {
-                    Log.e(TAG, "Unable to initialize Bluetooth");
-                }
-            }
+    private void initCardList() {
+        //SendCard
+        mSendCardRecView = (RecyclerView) findViewById(R.id.recycler_view_send);
+        mSendCardRecView.setLayoutManager(new LinearLayoutManager(WorkFlow.this));
+        mSendCardAdapter = new SendCardAdapter();
+        mSendCardRecView.setAdapter(mSendCardAdapter);
+        //SaveCard
+        mSaveCardRecView = (RecyclerView) findViewById(R.id.recycler_view_save);
+        mSaveCardRecView.setLayoutManager(new LinearLayoutManager(WorkFlow.this));
+        mSaveCardAdapter = new SaveCardAdapter();
+        mSaveCardRecView.setAdapter(mSaveCardAdapter);
+        //MonitorCard
+        mMonitorCardRecView = (RecyclerView) findViewById(R.id.recycler_view_monitor);
+        mMonitorCardRecView.setLayoutManager(new LinearLayoutManager(WorkFlow.this));
+        mMonitorCardAdapter = new MonitorCardAdapter();
+        mMonitorCardRecView.setAdapter(mMonitorCardAdapter);
+    }
 
-            public void onServiceDisconnected(ComponentName classname) {
-                ////     mService.disconnect(mDevice);
-                mService = null;
-            }
-        };
-
-    */
     @Override
     public void onStart() {
         super.onStart();
@@ -329,46 +282,59 @@ public class WorkFlow extends BaseActivity {
         finish();
     }
 
+    //收广播
     private final BroadcastReceiver UARTStatusChangeReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action == UartService.ACTION_DATA_AVAILABLE) {
+            Log.d(TAG, "onReceive: " + action);
+            if (action.equals(UartService.ACTION_DATA_AVAILABLE)) {
                 final byte[] txValue = intent.getByteArrayExtra(UartService.EXTRA_DATA);
                 for (int i = 0; i < txValue.length; i++) {
-                    monitorCardAdapter.adddata(channel, txValue[i]);
+                    mMonitorCardAdapter.addMessageByChannel(channel, txValue[i]);
                     channel = channel + 1;
                 }
-            } else if (action == CreateCardWindow.Action_CreatSaveCard) {
+            } else if (action.equals(CreateCardWindow.Action_CreateSaveCard)) {
+                Log.d(TAG, "onReceive: " + CreateCardWindow.Action_CreateSaveCard);
                 SaveCardData saveCardData = new SaveCardData();
-                int a[] = intent.getIntArrayExtra("channellist");
-                saveCardData.setChannellist(a);
-                saveCardData.setChannelnum(channelnum);
-                saveCardData.setTitle(intent.getStringExtra("title"));
-                String ss = "";
-                for (int i = 0; i < channelnum; i++)
-                    if (a[i] == 1)
-                        ss = ss + String.valueOf(i) + ',';
-                ss = ss.substring(0, ss.length() - 1);
-                saveCardData.setContent(ss);
-                saveCardAdapter.addOneCard(saveCardData);
-            } else if (action == CreateCardWindow.Action_CreatMONITORCARD) {
+                saveCardData.setChannelNumber(channelNumber);
+                int channelList[] = intent.getIntArrayExtra("ChannelList");
+                saveCardData.setChannelList(channelList);
+                saveCardData.setTitle(intent.getStringExtra("Title"));
+                String cardDataContent = "";
+                for (int i = 0; i < channelNumber; i++) {
+                    if (channelList[i] == 1) {
+                        if (cardDataContent.length() != 0) {
+                            cardDataContent = cardDataContent + ", ";
+                        }
+                        cardDataContent = cardDataContent + String.valueOf(i);
+                    }
+                }
+                saveCardData.setContent(cardDataContent);
+                mSaveCardAdapter.addOneCard(saveCardData);
+                Log.d(TAG, "onReceive: Success to Creat Save");
+            } else if (action.equals(CreateCardWindow.Action_CreateMonitorCard)) {
+                Log.d(TAG, "onReceive: " + CreateCardWindow.Action_CreateMonitorCard);
                 MonitorCardData monitorCardData = new MonitorCardData();
-                monitorCardData.setChannel(intent.getIntExtra("channel", 0));
+                //monitorCardData.setChannel(intent.getIntExtra("channel", 0));
                 monitorCardData.setTitle(intent.getStringExtra("title"));
-                monitorCardAdapter.addOneCard(monitorCardData);
-            } else if (action == CreateCardWindow.Action_CreatSENDCARD) {
+                mMonitorCardAdapter.addOneCard(monitorCardData);
+                Log.d(TAG, "nodgd: " + mMonitorCardAdapter.getItemCount());
+                Log.d(TAG, "onReceive: Success to Creat Monitor");
+            } else if (action.equals(CreateCardWindow.Action_CreateSendCard)) {
+                Log.d(TAG, "onReceive: " + CreateCardWindow.Action_CreateSendCard);
                 SendCardData sendCardData = new SendCardData();
                 sendCardData.setTitle(intent.getStringExtra("title"));
-                sendCardAdapter.addOneCard(sendCardData);
-            } else if (action == SendRunner.DataReview) {
+                mSendCardAdapter.addOneCard(sendCardData);
+                Log.d(TAG, "onReceive: Success to Creat Send");
+            } else if (action.equals(SendRunner.DataReview)) {
                 int id = intent.getIntExtra("ID", -1);
-                sendCardAdapter.DataReview(id);
+                mSendCardAdapter.reviewDataByIdentifier(id);
             }
 
         }
     };
 
-    private void service_init() {
+    private void initService() {
         LocalBroadcastManager.getInstance(this).registerReceiver(UARTStatusChangeReceiver, makeGattUpdateIntentFilter());
     }
 
@@ -379,9 +345,9 @@ public class WorkFlow extends BaseActivity {
         intentFilter.addAction(UartService.ACTION_GATT_SERVICES_DISCOVERED);
         intentFilter.addAction(UartService.ACTION_DATA_AVAILABLE);
         intentFilter.addAction(UartService.DEVICE_DOES_NOT_SUPPORT_UART);
-        intentFilter.addAction(CreateCardWindow.Action_CreatSaveCard);
-        intentFilter.addAction(CreateCardWindow.Action_CreatSaveCard);
-        intentFilter.addAction(CreateCardWindow.Action_CreatMONITORCARD);
+        intentFilter.addAction(CreateCardWindow.Action_CreateSaveCard);
+        intentFilter.addAction(CreateCardWindow.Action_CreateSendCard);
+        intentFilter.addAction(CreateCardWindow.Action_CreateMonitorCard);
         intentFilter.addAction(SendRunner.DataReview);
         return intentFilter;
     }
@@ -409,15 +375,15 @@ public class WorkFlow extends BaseActivity {
 
                     Log.d(TAG, "... onActivityResultdevice.address==" + mDevice + "mserviceValue" + mService);
 
-                    device_name = (TextView) findViewById(R.id.device_name);
-                    device_name.setText("Device: " + mDevice.getName());
-                    device_name.setVisibility(View.VISIBLE);
+                    mDeviceName = (TextView) findViewById(R.id.device_name);
+                    mDeviceName.setText("Device: " + mDevice.getName());
+                    mDeviceName.setVisibility(View.VISIBLE);
 
                     mService.connect(deviceAddress);
 
                 } else {
-                    btnConnect.setVisibility(View.VISIBLE);
-                    btnConnectHint.setVisibility(View.VISIBLE);
+                    mConnectBtn.setVisibility(View.VISIBLE);
+                    mConnectBtnHint.setVisibility(View.VISIBLE);
                 }
                 break;
             case REQUEST_ENABLE_BT:
@@ -426,8 +392,8 @@ public class WorkFlow extends BaseActivity {
                     Toast.makeText(this, "Bluetooth has turned on ", Toast.LENGTH_SHORT).show();
                     Intent newIntent = new Intent(WorkFlow.this, DeviceListActivity.class);
                     startActivityForResult(newIntent, REQUEST_SELECT_DEVICE);
-                    btnConnect.setVisibility(View.GONE);
-                    btnConnectHint.setVisibility(View.GONE);
+                    mConnectBtn.setVisibility(View.GONE);
+                    mConnectBtnHint.setVisibility(View.GONE);
 
                 } else {
                     // User did not enable Bluetooth or an error occurred

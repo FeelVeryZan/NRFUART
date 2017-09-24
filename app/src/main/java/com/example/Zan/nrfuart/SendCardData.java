@@ -1,6 +1,7 @@
 package com.example.Zan.nrfuart;
 
 import android.graphics.Color;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,38 +15,53 @@ import lecho.lib.hellocharts.model.PointValue;
  * Created by nodgd on 2017/09/16.
  */
 
-class SendCardData {
+class SendCardData extends BaseCardData {
 
-    private String title = null;
-    private int id = 0;
+    private static final String TAG = "SendCardData";
+
     private int state = 0;
     private int count = 0;
-    private int data[];
-    private int channel;
-    private int identifier = 0;
+    private int data[] = new int[0];
+    private int channel = 0;
     private List<Integer> messageFlow = null;
     private SendRunner send;
-    private Thread sendthread;
-
+    private Thread sendThread;
 
     public SendCardData() {
+        super();
     }
 
-    public SendCardData(SendCardData SCD) {
-        super();
-        data = SCD.getData().clone();
+    public SendCardData(SendCardData cardData) {
+        super(cardData);
+        data = cardData.getData().clone();
     }
+
+    @Override
+    public String getTitle() {
+        if (title.equals("")) {
+            return "No title" + " (SendCard)";
+        } else {
+            return title + " (SendCard)";
+        }
+    }
+
+
+    public void startSendThread() {
+        new Thread(new SendRunner(data, channel, getIdentifier())).start();
+    }
+
+    public void stopSendThread() {
+        //TODO 安全的结束
+        Log.i(TAG, "stopSendThread(): TODO");
+    }
+
+    //TODO 整理下面这些乱七八糟的函数，没有用的就删了
+
 
     public void DataReview() {
         count = count + 1;
         if (count < data.length)
             add(data[count]);
-    }
-
-    public void start() {
-        send = new SendRunner(data, channel, id);
-        sendthread = new Thread(send);
-        sendthread.start();
     }
 
     public void setData(int a[]) {
@@ -56,14 +72,6 @@ class SendCardData {
         return data;
     }
 
-    public void setIdentifier(int Identifier) {
-        identifier = Identifier;
-    }
-
-    public int getIdentifier() {
-        return identifier;
-    }
-
 
     public void setChannel(int Channel) {
         channel = Channel;
@@ -71,25 +79,6 @@ class SendCardData {
 
     public int getChannel() {
         return channel;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getTitle() {
-        if (title == null || title.equals("")) {
-            return "Send Card Title";
-        }
-        return title;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getIdInString() {
-        return "" + id;
     }
 
     public void setState(int state) {

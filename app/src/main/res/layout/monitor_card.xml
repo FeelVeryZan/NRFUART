@@ -73,7 +73,7 @@
                     />
 
                 <EditText
-                    android:id="@+id/id_editer"
+                    android:id="@+id/channel_editer"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
@@ -81,6 +81,7 @@
                     android:maxLines="1"
                     android:textSize="12sp"
                     android:text="XX"
+                    android:singleLine="true"
                     />
 
                 <Button

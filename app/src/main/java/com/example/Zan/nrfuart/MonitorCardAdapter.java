@@ -1,5 +1,6 @@
 package com.example.Zan.nrfuart;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -12,8 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lecho.lib.hellocharts.gesture.ContainerScrollType;
@@ -36,7 +37,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         private CardView mCardView;
         private TextView mTitleView;
         private ImageButton mCloseButton;
-        private EditText mEditIDView;
+        private EditText mEditChannelView;
         private Button mJumpToButton;
         private LineChartView mLineChartView;
 
@@ -46,7 +47,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
             mCardView = (CardView) itemView;
             mTitleView = (TextView) itemView.findViewById(R.id.card_title);
             mCloseButton = (ImageButton) itemView.findViewById(R.id.close_card);
-            mEditIDView = (EditText) itemView.findViewById(R.id.id_editer);
+            mEditChannelView = (EditText) itemView.findViewById(R.id.channel_editer);
             mJumpToButton = (Button) itemView.findViewById(R.id.jump_to);
             mLineChartView = (LineChartView) itemView.findViewById(R.id.line_chart);
             //设置LineChartView的一些基本属性
@@ -62,6 +63,10 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         mDataList = dataList;
     }
 
+    public MonitorCardAdapter() {
+        mDataList = new ArrayList<>();
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (mContext == null) {
@@ -72,25 +77,49 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         //把数据灌进去
-        MonitorCardData data = mDataList.get(position);
+        final MonitorCardData data = mDataList.get(position);
         holder.mTitleView.setText(data.getTitle());
-        holder.mEditIDView.setText(data.getIdInString());
+        holder.mEditChannelView.setText(String.valueOf(data.getChannel()));
         holder.mLineChartView.setLineChartData(data.getLineChartData());
         //监听关闭按钮
         holder.mCloseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                removeOneCard(position);
+                removeOneCardByIdentifier(data.getIdentifier());
+            }
+        });
+        //监听输入框失去焦点
+        holder.mEditChannelView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    closeInputMethodAnyaway();
+                }
             }
         });
         //监听跳转按钮
         holder.mJumpToButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                //TODO 获取新数据的接口
-                Toast.makeText(mContext, "TODO: 跳转到第 " + holder.mEditIDView.getText() + " 个通道", Toast.LENGTH_SHORT).show();
+            public void onClick(View view) {
+                String channelText = holder.mEditChannelView.getText().toString().trim();
+                int channelInt = -1;
+                try {
+                    channelInt = Integer.parseInt(channelText);
+                } catch (NumberFormatException e) {
+                    Log.d(TAG, "NumberFormatException: " + e.getMessage());
+                }
+                if (channelInt < 0 || channelInt >= WorkFlow.channelNumber) {
+                    CreateCardIgnoreFragment ignoreFragment = new CreateCardIgnoreFragment("Wrong channel.");
+                    ignoreFragment.show(((Activity) mContext).getFragmentManager(), "？蛤？");
+                    closeInputMethodAnyaway();
+                    return;
+                }
+                if (data.getChannel() != channelInt) {
+                    Log.d(TAG, "从通道" + data.getChannel() + "跳转到" + channelInt);
+                    changeChannelByIdentifier(data.getIdentifier(), channelInt);
+                }
                 closeInputMethodAnyaway();
             }
         });
@@ -107,7 +136,11 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm.isActive()) {
             //imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
-            imm.hideSoftInputFromWindow(((MainActivity) mContext).getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            try {
+                imm.hideSoftInputFromWindow(((Activity) mContext).getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            } catch (NullPointerException e) {
+                Log.e(TAG, "关闭输入法失败");
+            }
         }
     }
 
@@ -115,50 +148,52 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
      *  接口函数
      *  注意，卡片的id和卡片的编号并不是同一个东西
      */
-    //在底部增加一张卡片。返回它的编号
-    public int addOneCard(MonitorCardData data) {
-        mDataList.add(data);
-        notifyItemInserted(mDataList.size());
-        return mDataList.size();
-    }
-
-    //删除当前的第pos张卡片，编号从0开始。返回是否成功
-    public boolean removeOneCard(int pos) {
-        if (pos < 0 || pos >= mDataList.size()) {
-            Log.e(TAG, "错误的编号：pos=" + pos);
-            return false;
+    //由标识符获取位置
+    public int getPositionFromIdentifier(int identifier) {
+        for (int i = 0; i < mDataList.size(); i++) {
+            if (mDataList.get(i).getIdentifier() == identifier) {
+                return i;
+            }
         }
-        mDataList.remove(pos);
-        notifyItemRemoved(pos);
-        return true;
+        Log.e(TAG, "The identifier is wrong: " + identifier);
+        return -1;
     }
 
-    //修改第pos张卡片的标题。返回是否成功
-    public boolean setItemTitle(int pos, String title) {
-        if (pos < 0 || pos >= mDataList.size()) {
-            Log.e(TAG, "错误的编号：pos=" + pos);
-            return false;
+    //在底部增加一张卡片
+    public void addOneCard(MonitorCardData cardData) {
+        mDataList.add(cardData);
+        notifyItemInserted(mDataList.size() - 1);
+    }
+
+    //通过位置删除一张卡片，位置编号从0开始
+    public void removeOneCardByPosition(int position) {
+        if (position < 0 || position >= mDataList.size()) {
+            Log.e(TAG, "The position is wrong: " + position);
         }
-        mDataList.get(pos).setTitle(title);
-        notifyItemChanged(pos);
-        return true;
+        mDataList.remove(position);
+        notifyItemRemoved(position);
     }
 
-    //修改第pos张卡片显示的ID。返回是否成功
-    public boolean setItemId(int pos, int id) {
-        if (pos < 0 || pos >= mDataList.size()) {
-            Log.e(TAG, "错误的编号：pos=" + pos);
-            return false;
+    //通过标识符删除一张卡片
+    public void removeOneCardByIdentifier(int identifier) {
+        removeOneCardByPosition(getPositionFromIdentifier(identifier));
+    }
+
+    //给某个通道的所有卡片添加一个数据
+    public void addMessageByChannel(int channel, int message) {
+        int n = mDataList.size();
+        for (int i = 0; i < n; i++) {
+            if (mDataList.get(i).getChannel() == channel) {
+                mDataList.get(i).addMessage(message);
+            }
         }
-        mDataList.get(pos).setId(id);
-        notifyItemChanged(pos);
-        return true;
     }
 
-    public void adddata(int channel, int v) {
-        int len = mDataList.size();
-        for (int i = 1; i <= len; i++)
-            if (mDataList.get(i).checkchannel(channel))
-                mDataList.get(i).add(v);
+    //将一张卡片跳转到一个新的通道
+    public void changeChannelByIdentifier(int identifier, int channel) {
+        int position = getPositionFromIdentifier(identifier);
+        mDataList.get(position).setChannel(channel);
+        mDataList.get(position).clearMessage();
+        notifyItemChanged(position);
     }
 }

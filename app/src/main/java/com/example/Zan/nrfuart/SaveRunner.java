@@ -87,7 +87,7 @@ public class SaveRunner implements Runnable {
             raf = new RandomAccessFile(file, "rw");
             SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext());
             String SPi = SP.getString("channel_number", "4");
-            //channelnum=Integer.getInteger(SPi);
+            //channelNumber=Integer.getInteger(SPi);
             //raf.writeChars(SPi+"\n");
         } catch (IOException e) {
             e.printStackTrace();

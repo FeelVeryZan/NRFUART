@@ -2,9 +2,11 @@ package com.example.Zan.nrfuart;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,7 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -31,9 +32,9 @@ public class CreateCardWindow {
     public static int MODE_SENDCARD = 2;
     public static int MODE_MONITORCARD = 3;
 
-    public final static String Action_CreatSaveCard = "com.example.Zan.nrfuart.Action_CreatSaveCard";
-    public final static String Action_CreatSENDCARD = "com.example.Zan.nrfuart.Action_CreatSENDCARD";
-    public final static String Action_CreatMONITORCARD = "com.example.Zan.nrfuart.Action_CreatMONITORCARD";
+    public final static String Action_CreateSaveCard = "com.example.Zan.nrfuart.Action_CreateSaveCard";
+    public final static String Action_CreateSendCard = "com.example.Zan.nrfuart.Action_CreateSendCard";
+    public final static String Action_CreateMonitorCard = "com.example.Zan.nrfuart.Action_CreateMonitorCard";
 
 
     private Context mContext;
@@ -42,7 +43,7 @@ public class CreateCardWindow {
     private View mContentView;
     private PopupWindow mPopupWindow;
     private EditText mEditTitleText;
-    private EditText mEditIdText;
+    private EditText mEditChannelText;
     private RecyclerView mChooseRecView;
     private CreateCardChooseAdapter mChooseAdapter;
     private Button mChooseAllBtn;
@@ -51,7 +52,7 @@ public class CreateCardWindow {
     private Button mSubmitBtn;
     private Button mCloseBtn;
 
-    public CreateCardWindow(Context context, int cardType) {
+    public CreateCardWindow(Context context, final int cardType) {
         mContext = context;
         mCardType = cardType;
         //设置弹出窗口的属性
@@ -62,24 +63,55 @@ public class CreateCardWindow {
         mPopupWindow.setAnimationStyle(R.style.DeviceWindowAnimation);
         //获取窗口内部各个控件
         mEditTitleText = (EditText) mContentView.findViewById(R.id.edit_title);
-        mEditIdText = (EditText) mContentView.findViewById(R.id.edit_id);
+        mEditChannelText = (EditText) mContentView.findViewById(R.id.edit_channel);
         mSubmitBtn = (Button) mContentView.findViewById(R.id.edit_submit);
         mContentView.findViewById(R.id.edit_savecard).setVisibility(View.GONE);
         //提交按钮的事件
         mSubmitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String title = mEditTitleText.getText().toString().trim();
-                String id = mEditIdText.getText().toString().trim();
-                //TODO 检测输入的合法性
-                String radio = "发送广播：\n";
-                radio = radio + "title = " + title + "\n";
-                radio = radio + "id = " + id + "\n";
-                if (mCardType == MODE_SAVECARD) {
-                    radio += mChooseAdapter.getRadio();
+                //检测输入的合法性
+                //MonitorCard必须输入一个通道
+                int channelInt = -1;
+                if (mCardType == MODE_MONITORCARD) {
+                    String channelText = mEditChannelText.getText().toString().trim();
+                    try {
+                        channelInt = Integer.parseInt(channelText);
+                    } catch (NumberFormatException e) {
+                        Log.d(TAG, "NumberFormatException " + e.getMessage());
+                    }
+                    if (channelInt < 0 || channelInt >= WorkFlow.channelNumber) {
+                        CreateCardIgnoreFragment ignoreFragment = new CreateCardIgnoreFragment("Wrong channel id.");
+                        ignoreFragment.show(((Activity) mContext).getFragmentManager(), "？蛤？");
+                        return;
+                    }
                 }
-                //TODO 发送广播
-                Toast.makeText(mContext, radio, Toast.LENGTH_SHORT).show();
+                //SaveCard至少要选一个通道
+                if (mCardType == MODE_SAVECARD) {
+                    if (mChooseAdapter.getChooseItemCound() == 0) {
+                        CreateCardIgnoreFragment ignoreFragment = new CreateCardIgnoreFragment("Please choose at least one channel.");
+                        ignoreFragment.show(((Activity) mContext).getFragmentManager(), "？蛤？");
+                        return;
+                    }
+                }
+                //发广播
+                String title = mEditTitleText.getText().toString().trim();
+                String action = "";
+                if (mCardType == MODE_MONITORCARD) {
+                    action = Action_CreateMonitorCard;
+                } else if (mCardType == MODE_SAVECARD) {
+                    action = Action_CreateSaveCard;
+                } else if (mCardType == MODE_SENDCARD) {
+                    action = Action_CreateSendCard;
+                }
+                final Intent intent = new Intent(action);
+                intent.putExtra("Id", channelInt);
+                intent.putExtra("Title", title);
+                if (mCardType == MODE_SAVECARD) {
+                    intent.putExtra("ChannelList", mChooseAdapter.getStateInArray());
+                }
+                LocalBroadcastManager.getInstance(MyApplication.getContext()).sendBroadcast(intent);
+                //发完广播把弹窗关了
                 mPopupWindow.dismiss();
             }
         });
@@ -110,7 +142,7 @@ public class CreateCardWindow {
         if (mEditTitleText != null && mEditTitleText.getText().toString().trim().length() > 0) {
             return false;
         }
-        if (mEditIdText != null && mEditIdText.getText().toString().trim().length() > 0) {
+        if (mEditChannelText != null && mEditChannelText.getText().toString().trim().length() > 0) {
             return false;
         }
         if (mCardType == MODE_SAVECARD && mChooseAdapter != null && mChooseAdapter.getChooseItemCound() > 0) {

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,6 +47,10 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.ViewHo
         mDataList = cardList;
     }
 
+    public SaveCardAdapter() {
+        mDataList = new ArrayList<>();
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (mContext == null) {
@@ -58,15 +63,16 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         //把数据灌进去
-        SaveCardData data = mDataList.get(position);
-        holder.mTitleView.setText(data.getTitle());
-        holder.mThisId.setText(data.getIdInString());
-        holder.mContentView.setText(data.getContent());
+        final SaveCardData cardData = mDataList.get(position);
+        holder.mTitleView.setText(cardData.getTitle());
+        holder.mThisId.setText(String.valueOf(cardData.getIdentifier()));
+        holder.mContentView.setText(cardData.getContent());
         //监听关闭事件
         holder.mCloseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                removeOneCard(position);
+                Log.d(TAG, "close: identifier = " + cardData.getIdentifier());
+                removeOneCardByIdentifier(cardData.getIdentifier());
             }
         });
     }
@@ -78,38 +84,43 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.ViewHo
 
     /*
      *  接口函数
-     *  注意，卡片的id和卡片的编号并不是同一个东西
      */
-    //由唯一标识符得到pos。这个函数只在内部调用
-    private int getPosFromIdentifier(int ide) {
+    //由标识符获取位置
+    public int getPositionFromIdentifier(int identifier) {
         for (int i = 0; i < mDataList.size(); i++) {
-            if (mDataList.get(i).getIdentifier() == ide) {
+            if (mDataList.get(i).getIdentifier() == identifier) {
                 return i;
             }
         }
-        Log.e(TAG, "错误的标识符：ide = " + ide);
+        Log.e(TAG, "The identifier is wrong: " + identifier);
         return -1;
     }
 
-    //在底部增加一张卡片。返回它的唯一标识符
-    public int addOneCard(SaveCardData data) {
-        int ide = IdentifierManager.getNewIdentifier();
-        data.setIdentifier(ide);
-        mDataList.add(data);
-        notifyItemInserted(mDataList.size());
-        mDataList.get(mDataList.size()).Start();
-        return ide;
+    //在底部增加一张卡片
+    public void addOneCard(SaveCardData cardData) {
+        mDataList.add(cardData);
+        notifyItemInserted(mDataList.size() - 1);
+        cardData.startSaveThread();
     }
 
-    //删除唯一标识符为ide的卡片。返回是否成功
-    public boolean removeOneCard(int ide) {
-        int pos = getPosFromIdentifier(ide);
-        mDataList.get(pos).shutdown();
-        mDataList.remove(pos);
-        notifyItemRemoved(pos);
-        return true;
+    //通过位置删除一张卡片，位置编号从0开始
+    public void removeOneCardByPosition(int position) {
+        if (position < 0 || position >= mDataList.size()) {
+            Log.e(TAG, "The position is wrong: " + position);
+        }
+        SaveCardData cardData = mDataList.get(position);
+        cardData.stopSaveThread();
+        mDataList.remove(position);
+        notifyItemRemoved(position);
     }
 
+    //通过标识符删除一张卡片
+    public void removeOneCardByIdentifier(int identifier) {
+        removeOneCardByPosition(getPositionFromIdentifier(identifier));
+    }
+
+    //TODO 修改卡片内容（标题等）的各种接口
+    /*
     //修改唯一标识符为ide的卡片的标题。返回是否成功
     public boolean setItemTitle(int ide, String title) {
         int pos = getPosFromIdentifier(ide);
@@ -119,7 +130,6 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.ViewHo
         notifyItemChanged(pos);
         return true;
     }
-
     //修改唯一标识符为ide卡片显示的ID。返回是否成功
     public boolean setItemId(int ide, int id) {
         int pos = getPosFromIdentifier(ide);
@@ -129,7 +139,6 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.ViewHo
         notifyItemChanged(pos);
         return true;
     }
-
     //给唯一标识符为ide的卡片上显示的内容添加数据。返回是否成功
     public boolean addItemContent(int ide, String moreContent) {
         int pos = getPosFromIdentifier(ide);
@@ -139,7 +148,6 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.ViewHo
         notifyItemChanged(pos);
         return true;
     }
-
     //清空并重新设置唯一标识符为ide的卡片上显示的内容。返回是否成功
     public boolean setItemContent(int ide, String content) {
         int pos = getPosFromIdentifier(ide);
@@ -149,6 +157,7 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.ViewHo
         notifyItemChanged(pos);
         return true;
     }
+    */
 }
 
 

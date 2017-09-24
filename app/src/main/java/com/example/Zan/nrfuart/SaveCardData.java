@@ -7,93 +7,76 @@ import android.support.v4.content.LocalBroadcastManager;
  * Created by nodgd on 2017-09-17.
  */
 
-public class SaveCardData {
-    private int identifier = 0;
-    private String title = null;
-    private int id = 0;
-    private String content = "";
-    private SaveRunner Save;
-    private Thread Savethread;
-    private int Channelnum;
-    private int Channellist[];
+public class SaveCardData extends BaseCardData {
 
-    public void setChannelnum(int channelnun) {
-        Channelnum = channelnun;
-    }
+    public static final String TAG = "SaveCardData";
 
-    public int getChannelnum() {
-        return Channelnum;
-    }
+    private int channelNumber;
+    private int[] channelList;
+    private String content;
 
-    public void setChannellist(int channellst[]) {
-        Channellist = channellst.clone();
-    }
-
-    public int[] getChannellist() {
-        return Channellist;
+    public SaveCardData() {
+        super();
+        content = "";
     }
 
     public SaveCardData(SaveCardData SCD) {
         super();
-        Channellist = SCD.getChannellist().clone();
+        channelList = SCD.getChannellist().clone();
     }
 
-    public SaveCardData() {
-        super();
-    }
-
-    public void Start() {
-        Save = new SaveRunner(identifier, Channelnum, Channellist);
-        Savethread = new Thread(Save);
-        Savethread.start();
-    }
-
-    public void shutdown() {
-        broadcastUpdate(SaveRunner.SaveRunner_Off, String.valueOf(identifier));
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
+    @Override
     public String getTitle() {
-        if (title == null || title.equals("")) {
-            return "Send Card Title";
+        if (title.equals("")) {
+            return "No title" + " (SaveCard)";
+        } else {
+            return title + " (SaveCard)";
         }
-        return title;
     }
 
-    public void setIdentifier(int identifier) {
-        this.identifier = identifier;
+    //通道数目
+    public void setChannelNumber(int channelNumber) {
+        this.channelNumber = channelNumber;
     }
 
-    public int getIdentifier() {
-        return identifier;
+    public int getChannelNumber() {
+        return channelNumber;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    //通道集合
+    public void setChannelList(int channelList[]) {
+        this.channelList = channelList.clone();
     }
 
-    public String getIdInString() {
-        return "" + id;
+    public int[] getChannellist() {
+        return channelList;
     }
 
+    //设置初始内容、增加内容、清空内容
     public void setContent(String content) {
-        this.content = content;
+        this.content = content == null ? "" : content;
     }
 
     public void addContent(String moreContent) {
         content = content + moreContent;
     }
 
+    public void clearContent() {
+        content = "";
+    }
+
     public String getContent() {
         return content;
     }
 
-    private void broadcastUpdate(final String action, String name) {
-        final Intent intent = new Intent(action);
-        intent.putExtra("name", name);
+    //开启和结束存储线程
+    public void startSaveThread() {
+        new Thread(new SaveRunner(getIdentifier(), channelNumber, channelList)).start();
+    }
+
+    public void stopSaveThread() {
+        Intent intent = new Intent(SaveRunner.SaveRunner_Off);
+        intent.putExtra("name", String.valueOf(getIdentifier()));
         LocalBroadcastManager.getInstance(MyApplication.getContext()).sendBroadcast(intent);
     }
 }

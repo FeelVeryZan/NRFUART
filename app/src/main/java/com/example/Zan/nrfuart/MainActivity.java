@@ -256,7 +256,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                     aa[1] = 1;
                     aa[2] = 1;
                     aa[3] = 0;
-                    Log.e(TAG, "onClick: try to start");
+                    Log.e(TAG, "onClick: try to startSendThread");
                     save2 = new SaveRunner(SaveRunnerCounter, channelnum, aa);
                     saveThread2 = new Thread(save2);
                     saveThread2.start();
@@ -367,7 +367,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                     public void run() {
                         String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
                         Log.d(TAG, "UART_DISCONNECT_MSG");
-                        //save.shutdown();
+                        //save.stopSaveThread();
                         mConnectBtn.setText("Connect");
                         mStopSavingBtn.setTextColor(NoRespCo);
                         mSendEditText.setEnabled(false);
@@ -522,7 +522,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                     mService.connect(deviceAddress);
 
                 /*try {
-                    out.write(Start.getBytes());
+                    out.write(startSaveThread.getBytes());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

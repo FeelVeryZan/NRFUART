@@ -35,9 +35,9 @@ public class SaveCard {
         Flag=flag;
     }
 
-    public void start()
+    public void startSendThread()
     {
-        //saveThread.start();
+        //saveThread.startSendThread();
         String str;
         str=Flag;
         Log.d(TAG, "Flag:"+str);
@@ -74,7 +74,7 @@ public class SaveCard {
         }
     }
 
-    public void shutdown()
+    public void stopSaveThread()
     {
         String intentAction;
         intentAction=SaveRunner_Off+Flag;

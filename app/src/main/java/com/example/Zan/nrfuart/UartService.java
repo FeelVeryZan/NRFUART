@@ -89,7 +89,7 @@ public class UartService extends Service {
                 broadcastUpdate(intentAction);
                 Log.i(TAG, "Connected to GATT server.");
                 // Attempts to discover services after successful connection.
-                Log.i(TAG, "Attempting to start service discovery:" +
+                Log.i(TAG, "Attempting to startSendThread service discovery:" +
                         mBluetoothGatt.discoverServices());
 
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
@@ -312,7 +312,7 @@ public class UartService extends Service {
      */
     public void enableTXNotification() {
         /*
-    	if (mBluetoothGatt == null) {
+        if (mBluetoothGatt == null) {
     		showMessage("mBluetoothGatt null" + mBluetoothGatt);
     		broadcastUpdate(DEVICE_DOES_NOT_SUPPORT_UART);
     		return;

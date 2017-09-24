@@ -23,15 +23,17 @@ import java.util.Date;
 
 
 public class SendRunner implements Runnable {
-    private int data[];
+    private int data[] = new int[0];
     private int Channel;
     private int id;
-    public final static String DataReview = "com.example.Zan.nrfuart.DataReview";
+    public final static String DataReview = "com.example.Zan.nrfuart.reviewDataByIdentifier";
     private final int T = 10;
 
-    public SendRunner(int a[], int channel, int id) {
+    public SendRunner(int a[], int channel, int Id) {
         Channel = channel;
-        data = a.clone();
+        id = Id;
+        if (a.length > 0)
+            data = a.clone();
     }
 
     public void run() {

@@ -54,6 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:textSize="24sp"
+                    android:singleLine="true"
                     />
 
             </LinearLayout>
@@ -78,11 +79,12 @@
                     />
 
                 <EditText
-                    android:id="@+id/edit_id"
+                    android:id="@+id/edit_channel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:textSize="24sp"
+                    android:singleLine="true"
                     />
 
             </LinearLayout>
