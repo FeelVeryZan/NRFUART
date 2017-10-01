@@ -35,7 +35,7 @@
                 android:textSize="20sp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="8dp"
-                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
                 android:layout_alignParentStart="true"
                 android:text="Monitor Card Title"
                 />
@@ -43,10 +43,13 @@
             <ImageButton
                 android:id="@+id/close_card"
                 android:layout_width="36dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
+                android:layout_height="36dp"
                 android:layout_margin="2dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
                 android:src="@drawable/close"
+                android:scaleType="fitCenter"
+                android:background="@android:color/white"
                 />
 
         </RelativeLayout>
