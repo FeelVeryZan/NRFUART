@@ -9,18 +9,18 @@
     >
 
     <TextView
-        android:id="@+id/edit_choose_item_text"
+        android:id="@+id/edit_select_item_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:text="通道的编号"
+        android:text="channel #x"
         android:textSize="20sp"
         />
 
     <CheckBox
-        android:id="@+id/edit_choose_item_checkbox"
+        android:id="@+id/edit_select_item_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"

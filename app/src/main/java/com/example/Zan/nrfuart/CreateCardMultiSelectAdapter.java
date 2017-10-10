@@ -2,7 +2,6 @@ package com.example.Zan.nrfuart;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Administrator_nodgd on 2017/09/17.
+ * Created by nodgd on 2017/09/17.
  */
 
-public class CreateCardChooseAdapter extends RecyclerView.Adapter<CreateCardChooseAdapter.ViewHolder> {
+public class CreateCardMultiSelectAdapter extends RecyclerView.Adapter<CreateCardMultiSelectAdapter.ViewHolder> {
 
-    public static String TAG = "CreateCardChooseAdapterTag";
+    public static String TAG = "CreateCardMultiSelectAdapterTag";
 
     private Context mContext;
     private List<String> mAllOptionList;
@@ -33,13 +32,12 @@ public class CreateCardChooseAdapter extends RecyclerView.Adapter<CreateCardChoo
 
         public ViewHolder(View view) {
             super(view);
-            mTextView = (TextView) view.findViewById(R.id.edit_choose_item_text);
-            mCheckBox = (CheckBox) view.findViewById(R.id.edit_choose_item_checkbox);
+            mTextView = (TextView) view.findViewById(R.id.edit_select_item_text);
+            mCheckBox = (CheckBox) view.findViewById(R.id.edit_select_item_checkbox);
         }
     }
 
-
-    public CreateCardChooseAdapter(List<String> allOptionList) {
+    public CreateCardMultiSelectAdapter(List<String> allOptionList) {
         mAllOptionList = allOptionList;
         mAllStateList = new ArrayList<>();
         for (int i = 0; i < mAllOptionList.size(); i++) {
@@ -52,20 +50,18 @@ public class CreateCardChooseAdapter extends RecyclerView.Adapter<CreateCardChoo
         return mAllOptionList.size();
     }
 
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (mContext == null) {
             mContext = parent.getContext();
         }
-        View view = LayoutInflater.from(mContext).inflate(R.layout.create_card_choose_item, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.create_card_select_item, parent, false);
         mViewHolder = new ViewHolder(view);
         return mViewHolder;
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        Log.d(TAG, "onBindViewHolder " + position + " " + mAllOptionList.get(position));
         holder.mTextView.setText(mAllOptionList.get(position));
         holder.mCheckBox.setChecked(mAllStateList.get(position));
         holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

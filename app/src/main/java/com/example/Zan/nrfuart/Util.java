@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Properties;
+import java.util.Locale;
 
 /**
  * Created by 恒 on 2016/12/2.
@@ -19,6 +20,8 @@ public class Util {
     public static byte[] buffer = new byte[LENGTH];
     public static short ch1, ch2, ch3, ch4;
     public static int index = 0;
+
+    private final static String mHexStr = "0123456789ABCDEF";
 
     public static int add(byte v) {
         buffer[index] = v;
@@ -177,6 +180,21 @@ public class Util {
         }
         return true;
 
+    }
+    public static byte[] hexStr2byte(String src){
+        /*对输入值进行规范化整理*/
+        src = src.trim().replace(" ", "").toUpperCase(Locale.US);
+        //处理值初始化
+        int m=0,n=0;
+        int iLen=src.length()/2; //计算长度
+        byte[] ret = new byte[iLen]; //分配存储空间
+
+        for (int i = 0; i < iLen; i++){
+            m=i*2+1;
+            n=m+1;
+            ret[i] = (byte)(Integer.decode("0x"+ src.substring(i*2, m) + src.substring(m,n)) & 0xFF);
+        }
+        return ret;
     }
 
 }

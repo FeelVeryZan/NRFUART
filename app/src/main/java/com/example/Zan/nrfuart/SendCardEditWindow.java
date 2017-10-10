@@ -63,7 +63,7 @@ public class SendCardEditWindow {
             }
         });
         //弹窗界面的空白处点击事件：空事件。否则会响应外部点击事件
-        mContentView.findViewById(R.id.creat_card_main).setOnClickListener(new View.OnClickListener() {
+        mContentView.findViewById(R.id.creat_card_window).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             }

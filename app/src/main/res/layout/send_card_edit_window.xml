@@ -21,7 +21,7 @@
             />
 
         <LinearLayout
-            android:id="@+id/creat_card_main"
+            android:id="@+id/creat_card_window"
             android:layout_width="1dp"
             android:layout_height="wrap_content"
             android:layout_weight="14"

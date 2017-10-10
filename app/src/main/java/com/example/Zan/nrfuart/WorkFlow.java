@@ -10,11 +10,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,9 +28,6 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -69,10 +69,14 @@ public class WorkFlow extends BaseActivity {
     private static int channel = 0;
 
     public static int channelNumber = 4;
+    public static boolean[] channelHasSendThread = {false, false, false, false};    //这个数组大小应该和通道数相同
+
+
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.workflow);
@@ -89,6 +93,15 @@ public class WorkFlow extends BaseActivity {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(WorkFlow.this);
         String chnstr = sp.getString("channel_number", "4");
         channelNumber = Integer.parseInt(chnstr);
+
+
+        if (!(ContextCompat.checkSelfPermission(MyApplication.getContext(),android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED))
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+        if (!(ContextCompat.checkSelfPermission(MyApplication.getContext(),android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED))
+            Log.d(TAG, "onCreate: no root");
+        else
+            Log.d(TAG, "onCreate: root");
+        new Thread(new DataSource()).start();
 
     }
 
@@ -156,11 +169,6 @@ public class WorkFlow extends BaseActivity {
             @Override
             public void onClick(View v) {
                 CreateCardWindow window = new CreateCardWindow(WorkFlow.this, CreateCardWindow.MODE_SAVECARD);
-                List<String> optionList = new ArrayList<>();
-                for (int i = 0; i < channelNumber; i++) {
-                    optionList.add("通道" + i);
-                }
-                window.setOptions(optionList);
                 window.show();
             }
         });
@@ -317,6 +325,7 @@ public class WorkFlow extends BaseActivity {
                 MonitorCardData monitorCardData = new MonitorCardData();
                 //monitorCardData.setChannel(intent.getIntExtra("channel", 0));
                 monitorCardData.setTitle(intent.getStringExtra("title"));
+                monitorCardData.setChannel(intent.getIntExtra("cha", -1));
                 mMonitorCardAdapter.addOneCard(monitorCardData);
                 Log.d(TAG, "nodgd: " + mMonitorCardAdapter.getItemCount());
                 Log.d(TAG, "onReceive: Success to Creat Monitor");
@@ -324,11 +333,15 @@ public class WorkFlow extends BaseActivity {
                 Log.d(TAG, "onReceive: " + CreateCardWindow.Action_CreateSendCard);
                 SendCardData sendCardData = new SendCardData();
                 sendCardData.setTitle(intent.getStringExtra("title"));
+                sendCardData.setChannel(intent.getIntExtra("cha", -1));
                 mSendCardAdapter.addOneCard(sendCardData);
                 Log.d(TAG, "onReceive: Success to Creat Send");
             } else if (action.equals(SendRunner.DataReview)) {
                 int id = intent.getIntExtra("ID", -1);
                 mSendCardAdapter.reviewDataByIdentifier(id);
+            } else if (action.equals(SendRunner.DataSend)){
+                byte[] data=intent.getByteArrayExtra("Data");
+                mService.writeRXCharacteristic(data);
             }
 
         }
@@ -349,6 +362,7 @@ public class WorkFlow extends BaseActivity {
         intentFilter.addAction(CreateCardWindow.Action_CreateSendCard);
         intentFilter.addAction(CreateCardWindow.Action_CreateMonitorCard);
         intentFilter.addAction(SendRunner.DataReview);
+        intentFilter.addAction(SendRunner.DataSend);
         return intentFilter;
     }
 
@@ -406,6 +420,10 @@ public class WorkFlow extends BaseActivity {
                 Log.e(TAG, "wrong request code");
                 break;
         }
+    }
+
+    public void SendData(){
+
     }
 }
 

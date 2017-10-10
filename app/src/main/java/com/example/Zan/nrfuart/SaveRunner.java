@@ -59,25 +59,41 @@ public class SaveRunner implements Runnable {
 
     @SuppressLint({"SimpleDateFormat", "SdCardPath"})
     private void init() {
+
         try {
             String path;
-            path = "/sdcard/HMILab";
+            //path = "/sdcard";
+            path=String.valueOf(android.os.Environment.getExternalStorageDirectory());
             file = new File(path);
             if (!file.exists()) {
-                file.mkdir();
-                Log.d(TAG, "mkdir:/sdcard/HMILab");
+                file.mkdirs();
+                //Log.d(TAG, "mkdir:/sdcard");
+                Log.d(TAG, "mkdir:/"+path);
             }
-            path = "/sdcard/HMILab/Data";
+            path = path+"/HMILab";
             file = new File(path);
             if (!file.exists()) {
-                file.mkdir();
-                Log.d(TAG, "mkdir:/sdcard/HMILab/Data");
+                file.mkdirs();
+                //Log.d(TAG, "mkdir:/sdcard/HMILab");
+                Log.d(TAG, "mkdir:/"+path);
+            }
+            path = path+"/Data";
+            file = new File(path);
+            if (!file.exists()) {
+                file.mkdirs();
+                //Log.d(TAG, "mkdir:/sdcard/HMILab/Data");
+                Log.d(TAG, "mkdir:/"+path);
+            }
+            if (file.exists()) {
+                //file.mkdir();
+                //Log.d(TAG, "mkdir:/sdcard/HMILab/Data");
+                Log.d(TAG, "mkdir:/"+path);
             }
 
             Date date = new Date(System.currentTimeMillis());
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
             String strDate = formatter.format(date);
-            String filename = "/sdcard/HMILab/Data/" + "data_" + strDate + '_' + channellist2 + ".txt";
+            String filename = path + "/data_" + strDate + '_' + channellist2 + ".txt";
             //Log.e(TAG, "init: trytocreat"+filename);
             file = new File(filename);
             if (!file.exists()) {
@@ -97,6 +113,12 @@ public class SaveRunner implements Runnable {
     @Override
     public void run() {
         // TODO Auto-generated method stub
+        if (android.os.Environment.getExternalStorageState().equals(
+                android.os.Environment.MEDIA_MOUNTED))
+            Log.d(TAG, "run: Sdcard:"+android.os.Environment.getExternalStorageDirectory());
+        File ff=new File(String.valueOf(android.os.Environment.getExternalStorageDirectory())+"/amap/data");
+        if (ff.exists())
+            Log.d(TAG, "run: lalala");
 
         service_init();
         init();
@@ -147,6 +169,30 @@ public class SaveRunner implements Runnable {
                 if (NAME.equals(name))
                     state = State.STOP;
             }
+            else if (action.equals(DataTransport.DataTransport) && state == State.RUN){
+                final int[] intValue=intent.getIntArrayExtra("data");
+                for (int i = 0; i < intValue.length; i++) {
+                    if (channel == 0) {
+                        saveline = "" + System.currentTimeMillis() + ' ';
+                    }
+                    if (ChannelList[channel] == 1) {
+                        saveline = saveline + " " + String.valueOf(intValue[i]);
+                    }
+                    if (channel == channelnum - 1) {
+                        try {
+                            saveline = saveline + "\n";
+                            Log.d(TAG, "saveline =" + saveline);
+                            raf.write(saveline.getBytes());
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                    channel = (channel + 1) % channelnum;
+                }
+
+
+            }
         }
     };
 
@@ -157,6 +203,7 @@ public class SaveRunner implements Runnable {
     static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(UartService.ACTION_DATA_AVAILABLE);
+        intentFilter.addAction(DataTransport.DataTransport);
         intentFilter.addAction(SaveRunner_Off);
         return intentFilter;
     }
