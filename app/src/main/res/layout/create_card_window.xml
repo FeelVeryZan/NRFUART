@@ -31,14 +31,16 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_weight="16"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:background="@color/ZanBlur"
+            android:elevation="8dp"
             >
 
             <LinearLayout
                 android:id="@+id/creat_card_window"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="16"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 >
 
@@ -91,9 +93,9 @@
 
                 <!-- 如果是SendCard模式，在这里设置信号各个参数 -->
                 <include
-                    android:id="@+id/edit_parameter_layout"
                     layout="@layout/create_card_parameter"
-                    android:visibility="visible"
+                    android:id="@+id/edit_parameter_layout"
+                    android:visibility="gone"
                     />
 
                 <!-- 适当的间隔 -->

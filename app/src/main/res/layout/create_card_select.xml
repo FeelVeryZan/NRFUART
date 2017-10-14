@@ -40,10 +40,13 @@
             android:layout_width="60dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:text="all"
             android:textSize="14sp"
+            android:textAllCaps="false"
             android:background="@color/ZanLight"
+            android:elevation="6dp"
             />
 
         <Button
@@ -51,10 +54,13 @@
             android:layout_width="60dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:text="none"
             android:textSize="14sp"
+            android:textAllCaps="false"
             android:background="@color/ZanLight"
+            android:elevation="6dp"
             />
 
         <Button
@@ -62,9 +68,13 @@
             android:layout_width="60dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:text="others"
             android:textSize="14sp"
+            android:textAllCaps="false"
             android:background="@color/ZanLight"
+            android:elevation="6dp"
             />
 
     </LinearLayout>
@@ -97,5 +107,11 @@
             />
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/ZanDeeperBlur"
+        />
 
 </LinearLayout>
