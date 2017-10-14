@@ -60,7 +60,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="Create a SaveCard"
-                        android:textSize="20sp"
+                        android:textSize="20px"
                         />
 
                 </LinearLayout>
@@ -138,7 +138,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Choose a channel for monitor:"
+                        android:text="Choose one channel:"
                         android:textSize="16sp"
                         />
 
@@ -148,7 +148,9 @@
                     android:id="@+id/edit_mo_choose_recview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
+                    android:minHeight="40dp"
+                    android:layout_centerVertical="true"
+                    android:scrollbars="none"
                     />
 
                 <View

@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
@@ -56,7 +57,7 @@ public class CreateCardWindow {
     private List<String> mOptionList;
     //单选通道部分
     private RecyclerView mSingleSelectRecView;
-    private GridLayoutManager mSingleSelectLayoutManager;
+    private LinearLayoutManager mSingleSelectLayoutManager;
     private CreateCardSingleSelectAdapter mSingleSelectAdapter;
     //多选通道部分
     private RecyclerView mMultiSelectRecView;
@@ -193,19 +194,19 @@ public class CreateCardWindow {
             mMultiSelectLayout.setVisibility(View.GONE);
             //单选模块
             mSingleSelectRecView = (RecyclerView) mContentView.findViewById(R.id.edit_mo_choose_recview);
-            mSingleSelectLayoutManager = new GridLayoutManager(mContext, 2, RecyclerView.VERTICAL, false);
+            mSingleSelectLayoutManager = new LinearLayoutManager(mContext);
+            mSingleSelectLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
             //mSingleSelectLayoutManager = new FullyLinearLayoutManager(mContext);
             mSingleSelectRecView.setLayoutManager(mSingleSelectLayoutManager);
             mSingleSelectAdapter = new CreateCardSingleSelectAdapter(mSingleSelectRecView, mOptionList);
             mSingleSelectRecView.setAdapter(mSingleSelectAdapter);
-            mSingleSelectRecView.setNestedScrollingEnabled(false);
         } else {
             //可见性
             mSingleSelectLayout.setVisibility(View.GONE);
             mMultiSelectLayout.setVisibility(View.VISIBLE);
             //多选模块
             mMultiSelectRecView = (RecyclerView) mContentView.findViewById(R.id.edit_sa_choose_recview);
-            mMultiSelectLayoutManager = new GridLayoutManager(mContext, 2, RecyclerView.VERTICAL, false);
+            mMultiSelectLayoutManager = new GridLayoutManager(mContext, 2, RecyclerView.HORIZONTAL, false);
             mMultiSelectRecView.setLayoutManager(mMultiSelectLayoutManager);
             mMultiSelectAdapter = new CreateCardMultiSelectAdapter(mOptionList);
             mMultiSelectRecView.setAdapter(mMultiSelectAdapter);
