@@ -324,16 +324,16 @@ public class WorkFlow extends BaseActivity {
                 Log.d(TAG, "onReceive: " + CreateCardWindow.Action_CreateMonitorCard);
                 MonitorCardData monitorCardData = new MonitorCardData();
                 //monitorCardData.setChannel(intent.getIntExtra("channel", 0));
-                monitorCardData.setTitle(intent.getStringExtra("title"));
-                monitorCardData.setChannel(intent.getIntExtra("cha", -1));
+                monitorCardData.setTitle(intent.getStringExtra("Title"));
+                monitorCardData.setChannel(intent.getIntExtra("Channel", -1));
                 mMonitorCardAdapter.addOneCard(monitorCardData);
                 Log.d(TAG, "nodgd: " + mMonitorCardAdapter.getItemCount());
                 Log.d(TAG, "onReceive: Success to Creat Monitor");
             } else if (action.equals(CreateCardWindow.Action_CreateSendCard)) {
                 Log.d(TAG, "onReceive: " + CreateCardWindow.Action_CreateSendCard);
                 SendCardData sendCardData = new SendCardData();
-                sendCardData.setTitle(intent.getStringExtra("title"));
-                sendCardData.setChannel(intent.getIntExtra("cha", -1));
+                sendCardData.setTitle(intent.getStringExtra("Title"));
+                sendCardData.setChannel(intent.getIntExtra("Channel", -1));
                 mSendCardAdapter.addOneCard(sendCardData);
                 Log.d(TAG, "onReceive: Success to Creat Send");
             } else if (action.equals(SendRunner.DataReview)) {

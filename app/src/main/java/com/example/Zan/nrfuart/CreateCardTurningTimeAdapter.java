@@ -24,7 +24,9 @@ public class CreateCardTurningTimeAdapter {
     private Context mContext;
     private View mTurningTimeLayout;
     private int mId;
+    //回调接口
     private RangeCallBack mRangeCallBack;
+    private CreateCardParameterAdapter.RedrawPreviewCallBack mRedrawPreviewCallBack;
     //内容
     private EditText mPEditText;
     private String mPStr;
@@ -80,6 +82,7 @@ public class CreateCardTurningTimeAdapter {
                             }
                             mPermillage = p;
                             mPSeekBar.setProgress(p);
+                            mRedrawPreviewCallBack.redraw();
                         } catch (NumberFormatException e) {
                             Toast.makeText(mContext, "The input must be in range.", Toast.LENGTH_SHORT).show();
                         }
@@ -107,18 +110,15 @@ public class CreateCardTurningTimeAdapter {
                     if (progress < mRangeCallBack.getMinimun()) {
                         mPermillage = mRangeCallBack.getMinimun();
                         mPSeekBar.setProgress(mPermillage);
-                        String str = new DecimalFormat("#.#").format(mPermillage * 0.1);
-                        mPEditText.setText(str);
                     } else if (progress > mRangeCallBack.getMaximun()) {
                         mPermillage = mRangeCallBack.getMaximun();
                         mPSeekBar.setProgress(mPermillage);
-                        String str = new DecimalFormat("#.#").format(mPermillage * 0.1);
-                        mPEditText.setText(str);
                     } else {
                         mPermillage = progress;
-                        String str = new DecimalFormat("#.#").format(mPermillage * 0.1);
-                        mPEditText.setText(str);
                     }
+                    String str = new DecimalFormat("#.#").format(mPermillage * 0.1);
+                    mPEditText.setText(str);
+                    mRedrawPreviewCallBack.redraw();
                     mPSyncLock = false;
                 }
             }
@@ -138,9 +138,13 @@ public class CreateCardTurningTimeAdapter {
     public int getPermillage() {
         return mPermillage;
     }
-    //设置回调接口
+    //设置获取范围回调接口
     public void setRangeCallBack(RangeCallBack rangeCallBack) {
         mRangeCallBack = rangeCallBack;
+    }
+    //设置重新绘图回调接口
+    public void setRedrawPreviewCallBack(CreateCardParameterAdapter.RedrawPreviewCallBack redrawPreviewCallBack) {
+        mRedrawPreviewCallBack = redrawPreviewCallBack;
     }
 
     //回调函数，实时获取可调节范围。千分比，0~1000，闭区间。

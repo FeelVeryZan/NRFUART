@@ -117,6 +117,34 @@ public class CreateCardWindow {
         });
     }
 
+    //获取广播的action
+    private String getBroadcastAction() {
+        if (mCardType == MODE_MONITORCARD) {
+            return Action_CreateMonitorCard;
+        } else if (mCardType == MODE_SAVECARD) {
+            return Action_CreateSaveCard;
+        } else if (mCardType == MODE_SENDCARD) {
+            return Action_CreateSendCard;
+        } else {
+            return "";
+        }
+    }
+    //发广播时，获取卡片标题
+    private String getBroadcastCardTag() {
+        String cardTag = mTagEditText.getText().toString().trim();
+        if (cardTag.length() != 0) {
+            return cardTag;
+        } else if (mCardType == MODE_MONITORCARD) {
+            return "No tag Monitor";
+        } else if (mCardType == MODE_SAVECARD) {
+            return "No tag Saver";
+        } else if (mCardType == MODE_SENDCARD) {
+            return "No tag Sender";
+        } else {
+            return "No tag";
+        }
+    }
+
     //把弹窗显示出来
     public void show() {
         //背景高斯模糊
@@ -128,55 +156,38 @@ public class CreateCardWindow {
     }
     //提交
     public void submitPopupWindow() {
-        //检测输入的合法性
-        //MonitorCard和SendCard都必须选一个通道
-        int channelInt = -1;
+        ///一边创建广播，一边检测输入的合法性
+        Intent intent = new Intent(getBroadcastAction());
+        //卡片的标题
+        intent.putExtra("Title", getBroadcastCardTag());
+        //单选或多选通道
         if (mCardType == MODE_MONITORCARD || mCardType == MODE_SENDCARD) {
-            channelInt = mSelectAdapter.getSelectedItemId();
-            if (channelInt < 0 || channelInt >= WorkFlow.channelNumber) {
-                CreateCardIgnoreFragment ignoreFragment = new CreateCardIgnoreFragment("Please choose ONE channel.");
-                ignoreFragment.show(((Activity) mContext).getFragmentManager(), "？蛤？");
+            int selectedChannelId = mSelectAdapter.getSelectedItemId();
+            if (selectedChannelId < 0 || selectedChannelId >= WorkFlow.channelNumber) {
+                new CreateCardIgnoreFragment("Please choose ONE channel.").show(((Activity) mContext).getFragmentManager(), "");
                 return;
             }
-        }
-        //SendCard必须选一个没有被选过的通道
-        if (mCardType == MODE_SENDCARD) {
-            if (WorkFlow.channelHasSendThread[channelInt]) {
-                CreateCardIgnoreFragment ignoreFragment = new CreateCardIgnoreFragment("Please choose a UNSELECTED channel.");
-                ignoreFragment.show(((Activity) mContext).getFragmentManager(), "？蛤？");
-                return;
-            } else {
-                WorkFlow.channelHasSendThread[channelInt] = true;
+            if (mCardType == MODE_SENDCARD) {
+                if (WorkFlow.channelHasSendThread[selectedChannelId]) {
+                    new CreateCardIgnoreFragment("Please choose a UNSELECTED channel.").show(((Activity) mContext).getFragmentManager(), "");
+                    return;
+                }
+                WorkFlow.channelHasSendThread[selectedChannelId] = true;
             }
-        }
-        //SaveCard至少要选一个通道
-        if (mCardType == MODE_SAVECARD) {
+            intent.putExtra("Channel", selectedChannelId);
+        } else if (mCardType == MODE_SAVECARD) {
             if (mSelectAdapter.getSelectedItemCount() == 0) {
-                CreateCardIgnoreFragment ignoreFragment = new CreateCardIgnoreFragment("Please choose AT LEAST ONE channel.");
-                ignoreFragment.show(((Activity) mContext).getFragmentManager(), "？蛤？");
+                new CreateCardIgnoreFragment("Please choose AT LEAST ONE channel.").show(((Activity) mContext).getFragmentManager(), "");
                 return;
             }
+            intent.putExtra("ChannelList", mSelectAdapter.getStateInArray());
         }
         //发广播
-        Log.d(TAG, "发广播");
-        String title = mTagEditText.getText().toString().trim();
-        String action = "";
-        if (mCardType == MODE_MONITORCARD) {
-            action = Action_CreateMonitorCard;
-        } else if (mCardType == MODE_SAVECARD) {
-            action = Action_CreateSaveCard;
-        } else if (mCardType == MODE_SENDCARD) {
-            action = Action_CreateSendCard;
-        }
-        final Intent intent = new Intent(action);
-        intent.putExtra("Id", channelInt);
-        intent.putExtra("Title", title);
-        if (mCardType == MODE_SAVECARD) {
-            intent.putExtra("ChannelList", mSelectAdapter.getStateInArray());
-        } else {
-            intent.putExtra("cha", channelInt);
-        }
         LocalBroadcastManager.getInstance(MyApplication.getContext()).sendBroadcast(intent);
+        //参数单独广播
+        if (mCardType == MODE_SENDCARD) {
+            mParameterAdapter.makeBroadcast(mSelectAdapter.getSelectedItemId());
+        }
         //发完广播把弹窗关了
         mPopupWindow.dismiss();
     }
