@@ -95,14 +95,7 @@
                 <include
                     layout="@layout/create_card_parameter"
                     android:id="@+id/edit_parameter_layout"
-                    android:visibility="gone"
-                    />
-
-                <!-- 适当的间隔 -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_weight="1"
+                    android:visibility="visible"
                     />
 
                 <!-- 两个底部按钮 -->

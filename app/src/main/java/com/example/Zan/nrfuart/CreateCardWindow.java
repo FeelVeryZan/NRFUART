@@ -12,8 +12,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.PopupWindow;
@@ -45,9 +43,9 @@ public class CreateCardWindow {
     //卡片标题输入框
     private EditText mTagEditText;
     //选通道部分
-    private SelectAdapter mSelectAdapter;
+    private CreateCardSelectAdapter mSelectAdapter;
     //参数设置部分
-    private ParameterAdapter mParameterAdapter;
+    private CreateCardParameterAdapter mParameterAdapter;
 
 
     public CreateCardWindow(Context context, final int cardType) {
@@ -59,14 +57,6 @@ public class CreateCardWindow {
         mPopupWindow.setContentView(mContentView);
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(0xDFFFFFFF));
         mPopupWindow.setAnimationStyle(R.style.DeviceWindowAnimation);
-        //共享部分
-        initBasePart();
-        //SendCard专享的参数设置部分
-        initParameterPart();
-    }
-
-    //共享部分
-    private void initBasePart() {
         //窗口的标题
         TextView mWindowTitle = (TextView) mContentView.findViewById(R.id.edit_window_title);
         if (mCardType == MODE_SAVECARD) {
@@ -84,9 +74,17 @@ public class CreateCardWindow {
         //单选模块or多选模块
         View mSelectLayout = (View) mContentView.findViewById(R.id.edit_select_layout);
         if (mCardType == MODE_MONITORCARD || mCardType == MODE_SENDCARD) {
-            mSelectAdapter = new SelectAdapter(mSelectLayout, SelectAdapter.MODE_SINGLE);
+            mSelectAdapter = new CreateCardSelectAdapter(mSelectLayout, CreateCardSelectAdapter.MODE_SINGLE);
         } else {
-            mSelectAdapter = new SelectAdapter(mSelectLayout, SelectAdapter.MODE_MULTI);
+            mSelectAdapter = new CreateCardSelectAdapter(mSelectLayout, CreateCardSelectAdapter.MODE_MULTI);
+        }
+        //SendCard专享的参数设置部分
+        View mParameterLayout = (View) mContentView.findViewById(R.id.edit_parameter_layout);
+        if (mCardType != MODE_SENDCARD) {
+            mParameterLayout.setVisibility(View.GONE);
+        } else {
+            mParameterLayout.setVisibility(View.VISIBLE);
+            mParameterAdapter = new CreateCardParameterAdapter(mContext, mParameterLayout);
         }
         //提交按钮：检查并提交
         Button mSubmitBtn = (Button) mContentView.findViewById(R.id.edit_submit);
@@ -118,29 +116,6 @@ public class CreateCardWindow {
             }
         });
     }
-
-    //SendCard专享的参数设置部分
-    private void initParameterPart() {
-        //设置可见性
-        View mParameterLayout = (View) mContentView.findViewById(R.id.edit_parameter_layout);
-        if (mCardType == MODE_SENDCARD) {
-            mParameterLayout.setVisibility(View.VISIBLE);
-            //频率周期二选一
-
-
-
-
-
-
-            //TODO
-
-
-        } else {
-            mParameterLayout.setVisibility(View.GONE);
-        }
-    }
-
-
 
     //把弹窗显示出来
     public void show() {
@@ -217,7 +192,9 @@ public class CreateCardWindow {
         }
         //检测SendCard专享部分
         if (mCardType == MODE_SENDCARD) {
-
+            if (mParameterAdapter != null && !mParameterAdapter.isEmpty()) {
+                return false;
+            }
         }
         return true;
     }
@@ -231,190 +208,7 @@ public class CreateCardWindow {
         }
     }
 
-    //单选模块或多选模块的适配器
-    public static class SelectAdapter {
-        public static String TAG = "SelectViewHolderTag";
-
-        public static int MODE_SINGLE = 1;
-        public static int MODE_MULTI = 2;
-
-        private int mSelectMode;
-        private CheckBox mCheckBox[] = new CheckBox[4];
-        private int mSelectNow;     //这个变量单选模式才有用
-
-        public SelectAdapter(View selectView, int selectMode) {
-            mSelectMode = selectMode;
-            if (mSelectMode != MODE_SINGLE && mSelectMode != MODE_MULTI) {
-                Log.e(TAG, "错误的selectMode");
-                throw new SelectAdapterException();
-            }
-            mSelectNow = -1;
-            //获取每一个CheckBox控件
-            mCheckBox[0] = (CheckBox) selectView.findViewById(R.id.edit_select_0).findViewById(R.id.edit_select_checkbox);
-            mCheckBox[0].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    oneBoxChanged(0, isChecked);
-                }
-            });
-            mCheckBox[1] = (CheckBox) selectView.findViewById(R.id.edit_select_1).findViewById(R.id.edit_select_checkbox);
-            mCheckBox[1].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    oneBoxChanged(1, isChecked);
-                }
-            });
-            mCheckBox[2] = (CheckBox) selectView.findViewById(R.id.edit_select_2).findViewById(R.id.edit_select_checkbox);
-            mCheckBox[2].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    oneBoxChanged(2, isChecked);
-                }
-            });
-            mCheckBox[3] = (CheckBox) selectView.findViewById(R.id.edit_select_3).findViewById(R.id.edit_select_checkbox);
-            mCheckBox[3].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    oneBoxChanged(3, isChecked);
-                }
-            });
-            //给每个通道选项改名字
-            TextView mChannelName;
-            mChannelName = (TextView) selectView.findViewById(R.id.edit_select_0).findViewById(R.id.edit_select_channelname);
-            mChannelName.setText("#0");
-            mChannelName = (TextView) selectView.findViewById(R.id.edit_select_1).findViewById(R.id.edit_select_channelname);
-            mChannelName.setText("#1");
-            mChannelName = (TextView) selectView.findViewById(R.id.edit_select_2).findViewById(R.id.edit_select_channelname);
-            mChannelName.setText("#2");
-            mChannelName = (TextView) selectView.findViewById(R.id.edit_select_3).findViewById(R.id.edit_select_channelname);
-            mChannelName.setText("#3");
-            //处理介绍文字
-            TextView mDescription = (TextView) selectView.findViewById(R.id.edit_select_description);
-            if (mSelectMode == MODE_SINGLE) {
-                mDescription.setText("Choose one channel:");
-            } else {
-                mDescription.setText("Choose channel(s) to save:");
-            }
-            //处理三个快速选择按钮
-            View mBtns = (View) selectView.findViewById(R.id.edit_select_btns);
-            if (mSelectMode == MODE_SINGLE) {
-                mBtns.setVisibility(View.GONE);
-            } else {
-                Button mAll = (Button) selectView.findViewById(R.id.edit_select_all);
-                mAll.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        selectAll();
-                    }
-                });
-                Button mNone = (Button) selectView.findViewById(R.id.edit_select_none);
-                mNone.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        selectNone();
-                    }
-                });
-                Button mOther = (Button) selectView.findViewById(R.id.edit_select_others);
-                mOther.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        selectOthers();
-                    }
-                });
-            }
-        }
-
-        private void oneBoxChanged(int id, boolean isChecked) {
-            Log.d(TAG, "oneBoxChanged: id = " + id + " isChecked = " + isChecked);
-            Log.d(TAG, "oneBoxChanged: mSelectMode = " + mSelectMode + " mSelectNow = " + mSelectNow);
-            if (mSelectMode == MODE_SINGLE) {
-                if (isChecked) {
-                    if (0 <= mSelectNow && mSelectNow <= 3) {
-                        mCheckBox[mSelectNow].setChecked(false);
-                    }
-                    mSelectNow = id;
-                } else {
-                    mSelectNow = -1;
-                }
-            }
-        }
-        private void selectAll() {
-            for (int i = 0; i < 4; i++) {
-                mCheckBox[i].setChecked(true);
-            }
-        }
-        private void selectNone() {
-            for (int i = 0; i < 4; i++) {
-                mCheckBox[i].setChecked(false);
-            }
-        }
-        private void selectOthers() {
-            for (int i = 0; i < 4; i++) {
-                mCheckBox[i].setChecked(!mCheckBox[i].isChecked());
-            }
-        }
-
-        public int getSelectedItemId() {
-            if (mSelectMode == MODE_MULTI) {
-                throw new SelectAdapterException();
-            } else {
-                return mSelectNow;
-            }
-        }
-        public int getSelectedItemCount() {
-            if (mSelectMode == MODE_SINGLE) {
-                throw new SelectAdapterException();
-            } else {
-                int cnt = 0;
-                for (int i = 0; i < 4; i++) {
-                    if (mCheckBox[i].isChecked()) {
-                        cnt++;
-                    }
-                }
-                return cnt;
-            }
-        }
-        public int[] getStateInArray() {
-            if (mSelectMode == MODE_SINGLE) {
-                throw new SelectAdapterException();
-            } else {
-                int radio[] = new int[4];
-                for (int i = 0; i < 4; i++) {
-                    if (mCheckBox[i].isChecked()) {
-                        radio[i] = 1;
-                    } else {
-                        radio[i] = 0;
-                    }
-                }
-                return radio;
-            }
-        }
-        public boolean isEmpty() {
-            if (mSelectMode == MODE_SINGLE) {
-                return mSelectNow == -1;
-            } else {
-                for (int i = 0; i < 4; i++) {
-                    if (mCheckBox[i].isChecked()) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-        }
-
-        public static class SelectAdapterException extends RuntimeException {
-        }
-    }
-
-    //参数设置模块的适配器
-    public static class ParameterAdapter {
-
-
-
-
-
-    }
-
+    //专属异常
     public static class CreateCardWindowException extends RuntimeException {
     }
 }

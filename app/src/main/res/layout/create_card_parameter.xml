@@ -19,32 +19,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="frequency: f = "
+            android:text="Frequency:"
             android:textSize="16sp"
             />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            />
-
-        <CheckBox
-            android:id="@+id/edit_f_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:checked="false"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="40dp"
-        android:orientation="horizontal"
-        >
 
         <View
             android:layout_width="1dp"
@@ -62,23 +39,16 @@
             android:singleLine="true"
             />
 
-        <Spinner
-            android:id="@+id/edit_f_unit"
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:minWidth="100dp"
+            android:layout_height="wrap_content"
+            android:minWidth="20dp"
             android:layout_gravity="center"
-            android:entries="@array/unit_f"
-            android:spinnerMode="dialog"
+            android:text="Hz"
+            android:textSize="16sp"
             />
 
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/ZanDeeperBlur"
-        />
 
     <!-- 周期 -->
     <LinearLayout
@@ -92,33 +62,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="cycle: T = "
+            android:text="Period:"
             android:textSize="16sp"
             />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            />
-
-        <CheckBox
-            android:id="@+id/edit_t_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="5dp"
-            android:checked="false"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="40dp"
-        android:orientation="horizontal"
-        >
 
         <View
             android:layout_width="1dp"
@@ -136,14 +82,13 @@
             android:singleLine="true"
             />
 
-        <Spinner
-            android:id="@+id/edit_t_unit"
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:minWidth="100dp"
+            android:layout_height="wrap_content"
+            android:minWidth="20dp"
             android:layout_gravity="center"
-            android:entries="@array/unit_t"
-            android:spinnerMode="dialog"
+            android:text="s"
+            android:textSize="16sp"
             />
 
     </LinearLayout>
@@ -166,18 +111,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Maximum: max = "
+            android:text="Maximum:"
             android:textSize="16sp"
             />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="40dp"
-        android:orientation="horizontal"
-        >
 
         <View
             android:layout_width="1dp"
@@ -195,23 +131,16 @@
             android:singleLine="true"
             />
 
-        <Spinner
-            android:id="@+id/edit_max_unit"
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:minWidth="70dp"
+            android:layout_height="wrap_content"
+            android:minWidth="20dp"
             android:layout_gravity="center"
-            android:entries="@array/unit_ex"
-            android:spinnerMode="dialog"
+            android:text="V"
+            android:textSize="16sp"
             />
 
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/ZanDeeperBlur"
-        />
 
     <!-- 谷值 -->
     <LinearLayout
@@ -225,23 +154,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Minimum : min = "
+            android:text="Minimum:"
             android:textSize="16sp"
             />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="40dp"
-        android:orientation="horizontal"
-        >
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="-"
+            android:textSize="16sp"
             />
 
         <EditText
@@ -254,14 +182,13 @@
             android:singleLine="true"
             />
 
-        <Spinner
-            android:id="@+id/edit_min_unit"
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:minWidth="70dp"
+            android:layout_height="wrap_content"
+            android:minWidth="20dp"
             android:layout_gravity="center"
-            android:entries="@array/unit_ex"
-            android:spinnerMode="dialog"
+            android:text="V"
+            android:textSize="16sp"
             />
 
     </LinearLayout>
@@ -272,7 +199,7 @@
         android:background="@color/ZanDeeperBlur"
         />
 
-    <!-- 峰值截止时间cc0 -->
+    <!-- 周期重复次数 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -284,18 +211,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="time_1 = "
+            android:text="Repetition:"
             android:textSize="16sp"
             />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="40dp"
-        android:orientation="horizontal"
-        >
 
         <View
             android:layout_width="1dp"
@@ -304,189 +222,48 @@
             />
 
         <EditText
-            android:id="@+id/edit_cc0_edittext"
+            android:id="@+id/edit_rep_edittext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:minWidth="80dp"
             android:textSize="14sp"
-            android:text="10.0"
             android:singleLine="true"
             />
 
         <TextView
-            android:id="@+id/edit_cc0_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minWidth="20dp"
             android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:text="%"
+            android:text=""
             android:textSize="16sp"
             />
 
     </LinearLayout>
-
-    <SeekBar
-        android:id="@+id/edit_cc0_seekbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="40dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_gravity="center"
-        android:max="1000"
-        android:progress="100"
-        />
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/ZanDeeperBlur"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/ZanDeeperBlur"
+    />
+
+    <!-- 峰值截止时间tt0 -->
+    <include
+        layout="@layout/create_card_parameter_turn"
+        android:id="@+id/edit_tt0"
         />
 
-    <!-- 谷值起始时间cc1 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="40dp"
-        android:orientation="horizontal"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="cc1 = "
-            android:textSize="16sp"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="40dp"
-        android:orientation="horizontal"
-        >
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            />
-
-        <EditText
-            android:id="@+id/edit_cc1_edittext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:minWidth="80dp"
-            android:textSize="14sp"
-            android:text="20.0"
-            android:singleLine="true"
-            />
-
-        <TextView
-            android:id="@+id/edit_cc1_unit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:text="%"
-            android:textSize="16sp"
-            />
-
-    </LinearLayout>
-
-    <SeekBar
-        android:id="@+id/edit_cc1_seekbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="40dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_gravity="center"
-        android:max="1000"
-        android:progress="200"
+    <!-- 谷值起始时间tt1 -->
+    <include
+        layout="@layout/create_card_parameter_turn"
+        android:id="@+id/edit_tt1"
         />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/ZanDeeperBlur"
-        />
-
-    <!-- 谷值截止时间cc2 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="40dp"
-        android:orientation="horizontal"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="cc1 = "
-            android:textSize="14sp"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="40dp"
-        android:orientation="horizontal"
-        >
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            />
-
-        <EditText
-            android:id="@+id/edit_cc2_edittext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:minWidth="80dp"
-            android:textSize="14sp"
-            android:text="30.0"
-            android:singleLine="true"
-            />
-
-        <TextView
-            android:id="@+id/edit_cc2_unit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:text="%"
-            android:textSize="16sp"
-            />
-
-
-    </LinearLayout>
-
-    <SeekBar
-        android:id="@+id/edit_cc2_seekbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="40dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_gravity="center"
-        android:max="1000"
-        android:progress="300"
-        />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/ZanDeeperBlur"
+    <!-- 谷值截止时间t2 -->
+    <include
+        layout="@layout/create_card_parameter_turn"
+        android:id="@+id/edit_tt2"
         />
 
     <!-- 预览图 -->
@@ -511,12 +288,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:orientation="horizontal"
         >
 
         <View
             android:layout_width="1dp"
-            android:layout_height="1dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             />
 
@@ -530,7 +308,7 @@
 
         <View
             android:layout_width="1dp"
-            android:layout_height="1dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             />
 
