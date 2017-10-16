@@ -19,6 +19,11 @@ class SendCardData extends BaseCardData {
 
     private static final String TAG = "SendCardData";
 
+    public double[] cc = new double[4];
+    public double dac_high;
+    public double dac_low;
+    public int cha;
+    public int crp;
     private int state = 0;
     private int count = 0;
     private int data[] = new int[0];
@@ -47,7 +52,10 @@ class SendCardData extends BaseCardData {
 
 
     public void startSendThread() {
-        new Thread(new SendRunner(data, channel, getIdentifier())).start();
+        if (cha == -1)
+            new Thread(new SendRunner(data, channel, getIdentifier())).start();
+        else
+            new Thread(new SendRunner(data, channel, getIdentifier(), cc, dac_high, dac_low, crp)).start();
     }
 
     public void stopSendThread() {

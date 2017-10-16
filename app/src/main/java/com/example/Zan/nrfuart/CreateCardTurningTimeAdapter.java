@@ -97,6 +97,7 @@ public class CreateCardTurningTimeAdapter {
         });
 
     }
+
     //拖拽条模块
     private void initSeekBar() {
         mPSeekBar = (SeekBar) mTurningTimeLayout.findViewById(R.id.edit_turn_seekbar);
@@ -138,18 +139,21 @@ public class CreateCardTurningTimeAdapter {
     public int getPermillage() {
         return mPermillage;
     }
+
     //设置获取范围回调接口
     public void setRangeCallBack(RangeCallBack rangeCallBack) {
         mRangeCallBack = rangeCallBack;
     }
+
     //设置重新绘图回调接口
     public void setRedrawPreviewCallBack(CreateCardParameterAdapter.RedrawPreviewCallBack redrawPreviewCallBack) {
         mRedrawPreviewCallBack = redrawPreviewCallBack;
     }
 
     //回调函数，实时获取可调节范围。千分比，0~1000，闭区间。
-    public static interface RangeCallBack{
+    public static interface RangeCallBack {
         public int getMinimun();
+
         public int getMaximun();
     }
 }

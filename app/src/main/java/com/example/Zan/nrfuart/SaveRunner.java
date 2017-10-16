@@ -63,31 +63,31 @@ public class SaveRunner implements Runnable {
         try {
             String path;
             //path = "/sdcard";
-            path=String.valueOf(android.os.Environment.getExternalStorageDirectory());
+            path = String.valueOf(android.os.Environment.getExternalStorageDirectory());
             file = new File(path);
             if (!file.exists()) {
                 file.mkdirs();
                 //Log.d(TAG, "mkdir:/sdcard");
-                Log.d(TAG, "mkdir:/"+path);
+                Log.d(TAG, "mkdir:/" + path);
             }
-            path = path+"/HMILab";
+            path = path + "/HMILab";
             file = new File(path);
             if (!file.exists()) {
                 file.mkdirs();
                 //Log.d(TAG, "mkdir:/sdcard/HMILab");
-                Log.d(TAG, "mkdir:/"+path);
+                Log.d(TAG, "mkdir:/" + path);
             }
-            path = path+"/Data";
+            path = path + "/Data";
             file = new File(path);
             if (!file.exists()) {
                 file.mkdirs();
                 //Log.d(TAG, "mkdir:/sdcard/HMILab/Data");
-                Log.d(TAG, "mkdir:/"+path);
+                Log.d(TAG, "mkdir:/" + path);
             }
             if (file.exists()) {
                 //file.mkdir();
                 //Log.d(TAG, "mkdir:/sdcard/HMILab/Data");
-                Log.d(TAG, "mkdir:/"+path);
+                Log.d(TAG, "mkdir:/" + path);
             }
 
             Date date = new Date(System.currentTimeMillis());
@@ -115,8 +115,8 @@ public class SaveRunner implements Runnable {
         // TODO Auto-generated method stub
         if (android.os.Environment.getExternalStorageState().equals(
                 android.os.Environment.MEDIA_MOUNTED))
-            Log.d(TAG, "run: Sdcard:"+android.os.Environment.getExternalStorageDirectory());
-        File ff=new File(String.valueOf(android.os.Environment.getExternalStorageDirectory())+"/amap/data");
+            Log.d(TAG, "run: Sdcard:" + android.os.Environment.getExternalStorageDirectory());
+        File ff = new File(String.valueOf(android.os.Environment.getExternalStorageDirectory()) + "/amap/data");
         if (ff.exists())
             Log.d(TAG, "run: lalala");
 
@@ -168,9 +168,8 @@ public class SaveRunner implements Runnable {
                 String NAME = intent.getStringExtra("name");
                 if (NAME.equals(name))
                     state = State.STOP;
-            }
-            else if (action.equals(DataTransport.DataTransport) && state == State.RUN){
-                final int[] intValue=intent.getIntArrayExtra("data");
+            } else if (action.equals(DataTransport.DataTransport) && state == State.RUN) {
+                final int[] intValue = intent.getIntArrayExtra("Data");
                 for (int i = 0; i < intValue.length; i++) {
                     if (channel == 0) {
                         saveline = "" + System.currentTimeMillis() + ' ';

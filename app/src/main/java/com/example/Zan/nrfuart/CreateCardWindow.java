@@ -129,6 +129,7 @@ public class CreateCardWindow {
             return "";
         }
     }
+
     //发广播时，获取卡片标题
     private String getBroadcastCardTag() {
         String cardTag = mTagEditText.getText().toString().trim();
@@ -154,6 +155,7 @@ public class CreateCardWindow {
         //在屏幕中央显示
         mPopupWindow.showAtLocation(((Activity) mContext).getWindow().getDecorView(), Gravity.CENTER, 0, 0);
     }
+
     //提交
     public void submitPopupWindow() {
         ///一边创建广播，一边检测输入的合法性
@@ -182,15 +184,17 @@ public class CreateCardWindow {
             }
             intent.putExtra("ChannelList", mSelectAdapter.getStateInArray());
         }
-        //发广播
-        LocalBroadcastManager.getInstance(MyApplication.getContext()).sendBroadcast(intent);
         //参数单独广播
         if (mCardType == MODE_SENDCARD) {
-            mParameterAdapter.makeBroadcast(mSelectAdapter.getSelectedItemId());
+            intent = mParameterAdapter.makeBroadcast(mSelectAdapter.getSelectedItemId(), intent);
         }
+        //发广播
+        LocalBroadcastManager.getInstance(MyApplication.getContext()).sendBroadcast(intent);
+
         //发完广播把弹窗关了
         mPopupWindow.dismiss();
     }
+
     //检测弹窗是否什么都没填
     private boolean isWindowEmpty() {
         //检测共享部分
@@ -209,6 +213,7 @@ public class CreateCardWindow {
         }
         return true;
     }
+
     //关闭之前检测是否空
     private void closePopupWindow() {
         if (isWindowEmpty()) {

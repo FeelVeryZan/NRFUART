@@ -13,4 +13,7 @@
     <color name="ZanBlur">#BFB2DFDB</color>
     <color name="ZanDeeperBlur">#7F4DB6AC</color>
 
+    <color name="ZanAxis">#FF0000</color>
+    <color name="ZanLine">#004D40</color>
+
 </resources>
