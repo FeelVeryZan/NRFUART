@@ -33,7 +33,7 @@ class SendCardData extends BaseCardData {
     private List<Integer> messageFlow = null;
     private SendRunner send;
     private Thread sendThread;
-
+//233
     public SendCardData() {
         super();
     }
