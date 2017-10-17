@@ -48,10 +48,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="10dp"
-                    android:text="Select a device to connect"
-                    android:textColor="@android:color/black"
-                    android:textSize="30sp"
+                    android:layout_margin="8dp"
+                    android:text="select your device"
+                    android:textColor="@color/ZanDark"
+                    android:textSize="24sp"
                     />
 
             </LinearLayout>
@@ -77,10 +77,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="10dp"
-                    android:text="Cancel"
+                    android:layout_margin="6dp"
+                    android:text="cancel"
                     android:textColor="@color/ZanDark"
-                    android:textSize="30sp"
+                    android:textSize="26sp"
                     />
 
             </LinearLayout>
