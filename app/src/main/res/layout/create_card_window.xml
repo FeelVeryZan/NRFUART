@@ -115,6 +115,8 @@
                             android:id="@+id/edit_submit"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:textAllCaps="false"
+                            android:textStyle="italic"
                             android:text="Submit"
                             android:layout_marginEnd="10dp"
                             android:textSize="16sp"
@@ -124,6 +126,8 @@
                             android:id="@+id/edit_close"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:textAllCaps="false"
+                            android:textStyle="italic"
                             android:text="Close"
                             android:textSize="16sp"
                             />
