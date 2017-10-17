@@ -1,0 +1,21 @@
+2017.3.18	V2.1.1	It is not going to create empty files any more.
+2017.3.25	V2.1.2	Known improvements: 1. Ask for channelnumber when connecting a device. 2. Thread Saverunner(in) is never stopped. 
+2017.3.28	V2.1.3	Successfully get the Sharedpreference data "channel_number".
+2017.3.28	V2.1.4	Delete menu from MainActivity and add a button to replace it. 
+2017.3.31	V2.1.5	Try to make SaveRunnerThread stop but some problems occured--It looks like the thread never breaks the while() in SaveRunner.
+2017.4.1	V2.1.6	Known Errors: 1. Datas in tube might be cutted up. 2. Make SaveRunner.java Simpler.
+2017.4.2	V2.1.7	解决了按钮之间的逻辑问题，给不合法操作添加无效提示。已知bug：在点击Connect后若连接失败或主动取消后按钮不会恢复初始状态。
+2017.4.2	V2.1.8	解决了2.1.7版本中的按钮逻辑Bug，将按钮颜色、状态变化等操作从onClickListener调整到BroadcastReciever中。
+2017.4.7	V2.1.9	将整个包的版本调整至API25，去掉了app标题栏，优化了无蓝牙、蓝牙连接失败时的提示。
+2017.6.28	V2.1.10	调整了logo
+2017.6.29	V2.2.1	开始进行界面大改，先删除了部分按钮，并清除了之前的画图包。
+2017.6.29	V2.2.3	调整了启动顺序，设置了一个欢迎界面。修复若干已知BUG。
+2017.9.16	V2.3.1	进行了card界面的改动。
+2017.9.16	V2.3.2	进一步编写了新的界面，写了用来显示收到数据的图像的CardView相关内容，更新了一套图标，并且替换了老版本的画图工具包。
+2017.9.17	V2.3.3	微小的界面调整等。
+2017.9.19	V2.3.7.1	nodgd写了新版的蓝牙设备搜索界面，以及一个可以通用的将背景高斯模糊的东西，尽管只有他自己会用。目前保留了旧版和新版的蓝牙搜索界面，打开old version之后，点击connect会出现旧的蓝牙搜索界面，长按connect会出现新版的蓝牙搜索界面。然而，还没调试，因为没法调试。
+2017.9.20	V2.3.8	Cue对悬浮按钮编写了非常幼稚的动画操作，但是由于对自带动画实现方式的不熟悉，所以只实现了预想效果的一半。
+
+
+
+2017.10.10  V2.5.7  nodgd磨蹭了很久终于把参数设置界面弄了出来但是居然还没有写listener。。

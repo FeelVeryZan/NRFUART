@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#00695C</color>
+
+
+    <color name="ZanBackground">#E0F2F1</color>
+    <color name="ZanDeeperBackground">#B2DFDB</color>
+    <color name="ZanButtonBackground">#4DB6AC</color>
+    <color name="ZanLight">#B2DFDB</color>
+    <color name="ZanDark">#004D40</color>
+    <color name="ZanBlur">#BFB2DFDB</color>
+    <color name="ZanDeeperBlur">#7F4DB6AC</color>
+
+    <color name="ZanAxis">#FF0000</color>
+    <color name="ZanLine">#004D40</color>
+
+</resources>

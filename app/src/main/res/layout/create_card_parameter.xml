@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="10dp"
+    >
+
+    <!-- 频率 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Frequency:"
+            android:textSize="16sp"
+            />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
+
+        <EditText
+            android:id="@+id/edit_f_edittext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:minWidth="80dp"
+            android:textSize="14sp"
+            android:singleLine="true"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="20dp"
+            android:layout_gravity="center"
+            android:text="Hz"
+            android:textSize="16sp"
+            />
+
+    </LinearLayout>
+
+    <!-- 周期 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Period:"
+            android:textSize="16sp"
+            />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
+
+        <EditText
+            android:id="@+id/edit_t_edittext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:minWidth="80dp"
+            android:textSize="14sp"
+            android:singleLine="true"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="20dp"
+            android:layout_gravity="center"
+            android:text="s"
+            android:textSize="16sp"
+            />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/ZanDeeperBlur"
+        />
+
+    <!-- 峰值 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Maximum:"
+            android:textSize="16sp"
+            />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
+
+        <EditText
+            android:id="@+id/edit_max_edittext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:minWidth="80dp"
+            android:textSize="14sp"
+            android:singleLine="true"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="20dp"
+            android:layout_gravity="center"
+            android:text="V"
+            android:textSize="16sp"
+            />
+
+    </LinearLayout>
+
+    <!-- 谷值 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Minimum:"
+            android:textSize="16sp"
+            />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="-"
+            android:textSize="16sp"
+            />
+
+        <EditText
+            android:id="@+id/edit_min_edittext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:minWidth="80dp"
+            android:textSize="14sp"
+            android:singleLine="true"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="20dp"
+            android:layout_gravity="center"
+            android:text="V"
+            android:textSize="16sp"
+            />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/ZanDeeperBlur"
+        />
+
+    <!-- 周期重复次数 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Repetition:"
+            android:textSize="16sp"
+            />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
+
+        <EditText
+            android:id="@+id/edit_rep_edittext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:minWidth="80dp"
+            android:textSize="14sp"
+            android:singleLine="true"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="20dp"
+            android:layout_gravity="center"
+            android:text=""
+            android:textSize="16sp"
+            />
+
+    </LinearLayout>
+
+    <View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/ZanDeeperBlur"
+    />
+
+    <!-- 峰值截止时间tt0 -->
+    <include
+        layout="@layout/create_card_parameter_turn"
+        android:id="@+id/edit_tt0"
+        />
+
+    <!-- 谷值起始时间tt1 -->
+    <include
+        layout="@layout/create_card_parameter_turn"
+        android:id="@+id/edit_tt1"
+        />
+
+    <!-- 谷值截止时间t2 -->
+    <include
+        layout="@layout/create_card_parameter_turn"
+        android:id="@+id/edit_tt2"
+        />
+
+    <!-- 预览图 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="5dp"
+            android:text="Signal waveform preview:"
+            android:textSize="16sp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal"
+        >
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
+
+        <lecho.lib.hellocharts.view.LineChartView
+            android:id="@+id/edit_preview_chart"
+            android:layout_width="1dp"
+            android:layout_height="120dp"
+            android:layout_weight="8"
+            />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/ZanDeeperBlur"
+        />
+
+</LinearLayout>

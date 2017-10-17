@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2013 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="toolbarStyle">@style/ClubToolbar</item>
+    </style>
+
+    <style name="ZanTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="toolbarStyle">@style/ClubToolbar</item>
+    </style>
+
+    <style name="ZanTheme.Transparent" parent="ZanTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="toolbarStyle">@style/ClubToolbar</item>
+    </style>
+
+    <style name="ZanTheme.Main" parent="ZanTheme">
+
+        <item name="android:colorPrimary">#607D8B</item>
+        <item name="android:colorPrimaryDark">#546E7A</item>
+        <item name="android:windowBackground">@color/ZanBackground</item>
+
+
+    </style>
+
+    <color name="black">#FF000000</color>
+    <color name="whitegrey">#FFF2F2F2</color>
+    <!-- AlertDialog text color fix thanks to Shawn Castrianni, see: http://groups.google.com/group/android-developers/browse_thread/thread/f0b34621d3a70c4b -->
+    <!--<style name="DialogLight" parent="@android:style/Theme.Dialog">-->
+    <style name="DialogLight" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/whitegrey</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+
+    </style>
+
+
+    <style name="EditWindowAnimation">
+        <item name="android:windowEnterAnimation">@anim/edit_window_popup_in</item>
+        <item name="android:windowExitAnimation">@anim/edit_window_popup_out</item>
+    </style>
+
+
+    <style name="DeviceWindowAnimation">
+        <item name="android:windowEnterAnimation">@anim/device_window_popup_in</item>
+        <item name="android:windowExitAnimation">@anim/device_window_popup_out</item>
+    </style>
+
+
+    <style name="ClubToolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="contentInsetStart">0dp</item><!-- 设置该属性解决toobar左侧空白部分-->
+    </style>
+
+
+</resources>
