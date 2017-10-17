@@ -146,6 +146,7 @@ public class SendCardAdapter extends RecyclerView.Adapter<SendCardAdapter.ViewHo
         if (position < 0 || position >= mDataList.size()) {
             Log.e(TAG, "The position is wrong: " + position);
         }
+        Log.d(TAG, "removeOneCardByPosition: to stop");
         SendCardData cardData = mDataList.get(position);
         cardData.stopSendThread();
         mDataList.remove(position);

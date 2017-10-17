@@ -184,7 +184,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         int n = mDataList.size();
         for (int i = 0; i < n; i++) {
             if (mDataList.get(i).getChannel() == channel) {
-                Log.d(TAG, "addMessageByChannel: " + channel + "   " + message);
+                Log.d(TAG, "addMessageByChannel: "+channel+"   "+message);
                 mDataList.get(i).addMessage(message);
             }
         }

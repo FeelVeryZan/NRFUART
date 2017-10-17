@@ -185,7 +185,6 @@ public class CreateCardWindow {
         //参数单独广播
         if (mCardType == MODE_SENDCARD) {
             intent=mParameterAdapter.makeBroadcast(mSelectAdapter.getSelectedItemId(),intent);
-            intent = mParameterAdapter.makeBroadcast(mSelectAdapter.getSelectedItemId(), intent);
         }
         //发广播
         LocalBroadcastManager.getInstance(MyApplication.getContext()).sendBroadcast(intent);

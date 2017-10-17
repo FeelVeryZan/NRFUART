@@ -118,21 +118,18 @@ public class CreateCardSelectAdapter {
             }
         }
     }
-
     //全选
     private void selectAll() {
         for (int i = 0; i < 4; i++) {
             mCheckBox[i].setChecked(true);
         }
     }
-
     //全不选
     private void selectNone() {
         for (int i = 0; i < 4; i++) {
             mCheckBox[i].setChecked(false);
         }
     }
-
     //反选
     private void selectOthers() {
         for (int i = 0; i < 4; i++) {
@@ -148,7 +145,6 @@ public class CreateCardSelectAdapter {
             return mSelectNow;
         }
     }
-
     //多选模式下，查询已经选中了多少个
     public int getSelectedItemCount() {
         if (mSelectMode == MODE_SINGLE) {
@@ -163,7 +159,6 @@ public class CreateCardSelectAdapter {
             return cnt;
         }
     }
-
     //多选模式下，传一个数组回去发广播
     public int[] getStateInArray() {
         if (mSelectMode == MODE_SINGLE) {
@@ -180,7 +175,6 @@ public class CreateCardSelectAdapter {
             return radio;
         }
     }
-
     //是否毛都没选
     public boolean isEmpty() {
         if (mSelectMode == MODE_SINGLE) {

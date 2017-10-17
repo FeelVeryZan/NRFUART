@@ -108,8 +108,7 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.ViewHo
         if (position < 0 || position >= mDataList.size()) {
             Log.e(TAG, "The position is wrong: " + position);
         }
-        SaveCardData cardData = mDataList.get(position);
-        cardData.stopSaveThread();
+        mDataList.get(position).stopSaveThread();
         mDataList.remove(position);
         notifyItemRemoved(position);
     }

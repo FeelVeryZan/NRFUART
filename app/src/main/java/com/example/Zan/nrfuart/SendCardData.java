@@ -1,6 +1,8 @@
 package com.example.Zan.nrfuart;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ class SendCardData extends BaseCardData {
 
     private static final String TAG = "SendCardData";
 
-    public double[] cc = new double[4];
+    public double[] cc=new double [4];
     public double dac_high;
     public double dac_low;
     public int cha;
@@ -52,17 +54,20 @@ class SendCardData extends BaseCardData {
 
 
     public void startSendThread() {
-        if (cha == -1)
-            new Thread(new SendRunner(data, channel, getIdentifier())).start();
+        if (cha==-1)
+            (sendThread=new Thread(send=new SendRunner(data, channel, getIdentifier()))).start();
         else
-            new Thread(new SendRunner(data, channel, getIdentifier(), cc, dac_high, dac_low, crp)).start();
+            (sendThread=new Thread(send=new SendRunner(data, channel, getIdentifier(),cc,dac_high,dac_low,crp))).start();
     }
+
 
     public void stopSendThread() {
         //TODO 安全的结束
+        Intent intent=new Intent(SendRunner.SendRunner_Off);
+        intent.putExtra("channel",channel);
+        LocalBroadcastManager.getInstance(MyApplication.getContext()).sendBroadcast(intent);
         Log.i(TAG, "stopSendThread(): TODO");
     }
-
     //TODO 整理下面这些乱七八糟的函数，没有用的就删了
 
 

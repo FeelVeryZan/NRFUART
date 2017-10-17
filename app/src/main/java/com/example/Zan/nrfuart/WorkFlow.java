@@ -72,9 +72,11 @@ public class WorkFlow extends BaseActivity {
     public static boolean[] channelHasSendThread = {false, false, false, false};    //这个数组大小应该和通道数相同
 
 
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-
+        
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.workflow);
@@ -93,9 +95,9 @@ public class WorkFlow extends BaseActivity {
         channelNumber = Integer.parseInt(chnstr);
 
 
-        if (!(ContextCompat.checkSelfPermission(MyApplication.getContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED))
+        if (!(ContextCompat.checkSelfPermission(MyApplication.getContext(),android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED))
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
-        if (!(ContextCompat.checkSelfPermission(MyApplication.getContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED))
+        if (!(ContextCompat.checkSelfPermission(MyApplication.getContext(),android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED))
             Log.d(TAG, "onCreate: no root");
         else
             Log.d(TAG, "onCreate: root");
@@ -299,8 +301,8 @@ public class WorkFlow extends BaseActivity {
                     mMonitorCardAdapter.addMessageByChannel(channel, txValue[i]);
                     channel = (channel + 1) % channelNumber;
                 }
-            } else if (action.equals(DataTransport.DataTransport)) {
-                final int[] data = intent.getIntArrayExtra("Data");
+            }else if (action.equals(DataTransport.DataTransport)){
+                final int[] data=intent.getIntArrayExtra("Data");
                 for (int i = 0; i < data.length; i++) {
                     //Log.d(TAG, "onReceive: send"+channel+"   "+data[i]);
                     mMonitorCardAdapter.addMessageByChannel(channel, data[i]);
@@ -339,15 +341,15 @@ public class WorkFlow extends BaseActivity {
                 SendCardData sendCardData = new SendCardData();
                 sendCardData.setTitle(intent.getStringExtra("Title"));
                 sendCardData.setChannel(intent.getIntExtra("Channel", -1));
-                sendCardData.cha = intent.getIntExtra("cha", -1);
-                if (sendCardData.cha != -1) {
-                    sendCardData.cc[0] = intent.getDoubleExtra("cc0", -1);
-                    sendCardData.cc[1] = intent.getDoubleExtra("cc1", -1);
-                    sendCardData.cc[2] = intent.getDoubleExtra("cc2", -1);
-                    sendCardData.cc[3] = intent.getDoubleExtra("cc3", -1);
-                    sendCardData.dac_high = intent.getDoubleExtra("cmx", -1);
-                    sendCardData.dac_low = intent.getDoubleExtra("cmn", -1);
-                    sendCardData.crp = intent.getIntExtra("crp", 1);
+                sendCardData.cha=intent.getIntExtra("cha",-1);
+                if (sendCardData.cha!=-1){
+                    sendCardData.cc[0]=intent.getDoubleExtra("cc0",-1);
+                    sendCardData.cc[1]=intent.getDoubleExtra("cc1",-1);
+                    sendCardData.cc[2]=intent.getDoubleExtra("cc2",-1);
+                    sendCardData.cc[3]=intent.getDoubleExtra("cc3",-1);
+                    sendCardData.dac_high=intent.getDoubleExtra("cmx",-1);
+                    sendCardData.dac_low=intent.getDoubleExtra("cmn",-1);
+                    sendCardData.crp=intent.getIntExtra("crp",1);
                 }
 
                 mSendCardAdapter.addOneCard(sendCardData);
@@ -355,9 +357,12 @@ public class WorkFlow extends BaseActivity {
             } else if (action.equals(SendRunner.DataReview)) {
                 int id = intent.getIntExtra("ID", -1);
                 mSendCardAdapter.reviewDataByIdentifier(id);
-            } else if (action.equals(SendRunner.DataSend)) {
-                byte[] data = intent.getByteArrayExtra("Data");
+            } else if (action.equals(SendRunner.DataSend)){
+                byte[] data=intent.getByteArrayExtra("Data");
                 //mService.writeRXCharacteristic(data);
+            } else if (action.equals(SendRunner.SendRunner_Off)){
+                Log.d(TAG, "onReceive: cancel zhuce"+intent.getIntExtra("channel",-1));
+                channelHasSendThread[intent.getIntExtra("channel",-1)]=false;
             }
 
         }
@@ -380,6 +385,7 @@ public class WorkFlow extends BaseActivity {
         intentFilter.addAction(SendRunner.DataReview);
         intentFilter.addAction(SendRunner.DataSend);
         intentFilter.addAction(DataTransport.DataTransport);
+        intentFilter.addAction(SendRunner.SendRunner_Off);
         return intentFilter;
     }
 
@@ -439,7 +445,7 @@ public class WorkFlow extends BaseActivity {
         }
     }
 
-    public void SendData() {
+    public void SendData(){
 
     }
 }
