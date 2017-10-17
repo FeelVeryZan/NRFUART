@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="unit_f">
+        <item> Hz</item>
+        <item>KHz</item>
+        <item>MHz</item>
+        <item>mHz</item>
+        <item>uHz</item>
+    </string-array>
+
+    <string-array name="unit_t">
+        <item>s</item>
+        <item>ms</item>
+        <item>us</item>
+        <item>min</item>
+        <item>h</item>
+        <item>Ks</item>
+        <item>Ms</item>
+    </string-array>
+
+    <string-array name="unit_ex">
+        <item>Ampere</item>
+        <item>Meter</item>
+        <item>Second</item>
+        <item>Kilogram</item>
+        <item>Kelvin</item>
+        <item>Candela</item>
+        <item>Mole</item>
+    </string-array>
+
+</resources>

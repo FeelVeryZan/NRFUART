@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="plot settings">
+    <ListPreference
+        android:key="channel_number"
+        android:summary="Tap to choose channel number"
+        android:title="Channel Number"
+        android:entries="@array/Channel_Number_List_Names"
+        android:entryValues="@array/Channel_Number_List_Values"
+        />
+    </PreferenceCategory>
+</PreferenceScreen>
