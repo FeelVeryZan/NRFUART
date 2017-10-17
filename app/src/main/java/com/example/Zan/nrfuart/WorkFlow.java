@@ -295,17 +295,21 @@ public class WorkFlow extends BaseActivity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             Log.d(TAG, "onReceive: " + action);
+            //这坨是之前的收数据，貌似废弃了？
             if (action.equals(UartService.ACTION_DATA_AVAILABLE)) {
                 final byte[] txValue = intent.getByteArrayExtra(UartService.EXTRA_DATA);
                 for (int i = 0; i < txValue.length; i++) {
                     mMonitorCardAdapter.addMessageByChannel(channel, txValue[i]);
                     channel = (channel + 1) % channelNumber;
                 }
-            }else if (action.equals(DataTransport.DataTransport)){
+            }
+            //貌似这是现在的收数据
+            else if (action.equals(DataTransport.DataTransport)){
                 final int[] data=intent.getIntArrayExtra("Data");
                 for (int i = 0; i < data.length; i++) {
                     //Log.d(TAG, "onReceive: send"+channel+"   "+data[i]);
                     mMonitorCardAdapter.addMessageByChannel(channel, data[i]);
+                    Log.d(TAG, "addMessageByChannel("+channel+",   "+data[i]+"  channelNumber = "+channelNumber);
                     channel = (channel + 1) % channelNumber;
                 }
             } else if (action.equals(CreateCardWindow.Action_CreateSaveCard)) {

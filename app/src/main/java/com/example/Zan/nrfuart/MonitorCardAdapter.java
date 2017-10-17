@@ -31,6 +31,8 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
 
     private Context mContext;
     private List<MonitorCardData> mDataList;
+    private List<RecyclerView.ViewHolder> mViewHolderList = new ArrayList<>();
+    private int counter = 0;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -41,6 +43,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         private Button mJumpToButton;
         private LineChartView mLineChartView;
 
+
         public ViewHolder(View itemView) {
             super(itemView);
             //获取各个View
@@ -48,7 +51,9 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
             mTitleView = (TextView) itemView.findViewById(R.id.card_title);
             mCloseButton = (ImageButton) itemView.findViewById(R.id.close_card);
             mEditChannelView = (EditText) itemView.findViewById(R.id.channel_editer);
+            mEditChannelView.setVisibility(View.GONE);
             mJumpToButton = (Button) itemView.findViewById(R.id.jump_to);
+            mJumpToButton.setVisibility(View.GONE);
             mLineChartView = (LineChartView) itemView.findViewById(R.id.line_chart);
             //设置LineChartView的一些基本属性
             mLineChartView.setInteractive(true);
@@ -78,6 +83,8 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        //先在List报道
+        mViewHolderList.add(position,holder);
         //把数据灌进去
         final MonitorCardData data = mDataList.get(position);
         holder.mTitleView.setText(data.getTitle());
@@ -182,10 +189,15 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
     //给某个通道的所有卡片添加一个数据
     public void addMessageByChannel(int channel, int message) {
         int n = mDataList.size();
+        counter ++;
         for (int i = 0; i < n; i++) {
             if (mDataList.get(i).getChannel() == channel) {
                 Log.d(TAG, "addMessageByChannel: "+channel+"   "+message);
                 mDataList.get(i).addMessage(message);
+                if ((counter = counter % 5) == 0)
+                {
+                    notifyItemChanged(i);
+                }
             }
         }
     }

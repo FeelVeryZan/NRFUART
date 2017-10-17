@@ -19,93 +19,92 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <!-- 标题和关闭 -->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            >
+            android:layout_height="40dp">
 
             <TextView
                 android:id="@+id/card_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="8dp"
-                android:layout_centerVertical="true"
                 android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="5dp"
                 android:text="Monitor Card Title"
-                />
+                android:textSize="20sp" />
 
             <ImageButton
                 android:id="@+id/close_card"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:layout_margin="2dp"
-                android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
-                android:src="@drawable/close"
-                android:scaleType="fitCenter"
+                android:layout_centerVertical="true"
+                android:layout_margin="2dp"
                 android:background="@android:color/white"
-                />
+                android:scaleType="fitCenter"
+                android:src="@drawable/close" />
 
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:orientation="vertical"
-            >
+            android:layout_height="124dp"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_height="wrap_content"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
-                >
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/this_id_is"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="7dp"
-                    android:textSize="16sp"
-                    android:text="This Channel's ID is :"
-                    />
+                    android:text="Channel ID: "
+                    android:textSize="16sp" />
 
                 <EditText
                     android:id="@+id/channel_editer"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
-                    android:maxWidth="50dp"
                     android:maxLines="1"
-                    android:textSize="12sp"
+                    android:maxWidth="50dp"
                     android:text="XX"
-                    android:singleLine="true"
-                    />
+                    android:textSize="12sp" />
 
                 <Button
                     android:id="@+id/jump_to"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="36dp"
                     android:layout_weight="3"
                     android:scaleType="centerInside"
                     android:text="Jump to"
-                    android:textSize="12sp"
-                    />
+                    android:textAllCaps="false"
+                    android:textSize="14sp" />
 
-            </LinearLayout>
+                <Spinner
+                    android:id="@+id/channel_num_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_alignParentRight="true"
+                    android:entries="@array/channel_num_array_4">
+
+                </Spinner>
+
+            </RelativeLayout>
 
             <lecho.lib.hellocharts.view.LineChartView
                 android:id="@+id/line_chart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="100dp"
                 android:layout_margin="5dp"
-                />
+                android:minHeight="100dp" />
 
         </LinearLayout>
 

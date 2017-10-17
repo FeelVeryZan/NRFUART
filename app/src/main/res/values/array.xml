@@ -28,4 +28,11 @@
         <item>Mole</item>
     </string-array>
 
+    <string-array name="channel_num_array_4">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
 </resources>
