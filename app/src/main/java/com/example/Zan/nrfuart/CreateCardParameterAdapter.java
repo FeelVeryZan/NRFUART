@@ -2,7 +2,6 @@ package com.example.Zan.nrfuart;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -320,27 +319,90 @@ public class CreateCardParameterAdapter {
 
     private void redrawPreviewChart() {
         Log.d(TAG, "redrawPreviewChart");
-        //生成点列
-        List<PointValue> valueList = new ArrayList<>();
-        valueList.add(new PointValue(0, 0));
-        valueList.add(new PointValue(0 + 1e-6f, (float) getMaximun()));
-        valueList.add(new PointValue(mTurningTimeAdapter[0].getPermillage(), (float) getMaximun()));
-        valueList.add(new PointValue(mTurningTimeAdapter[0].getPermillage() + 1e-6f, 0));
-        valueList.add(new PointValue(mTurningTimeAdapter[1].getPermillage(), 0));
-        valueList.add(new PointValue(mTurningTimeAdapter[1].getPermillage() + 1e-6f, (float) getMinimun()));
-        valueList.add(new PointValue(mTurningTimeAdapter[2].getPermillage(), (float) getMinimun()));
-        valueList.add(new PointValue(mTurningTimeAdapter[2].getPermillage() + 1e-6f, 0));
-        valueList.add(new PointValue(1000, 0));
-        //点序列变成线
-        Line line = new Line(valueList);
-        line.setColor(R.color.ZanDark);
-        line.setCubic(false);
-        line.setFilled(false);
-        line.setHasPoints(false);
-        line.setStrokeWidth(2);
-        //线变成线序列，但是线序列里面只有一条线
+        List<Float> xValue = new ArrayList<>();
+        //基本参数
+        xValue.add(0f);
+        xValue.add((float) mTurningTimeAdapter[0].getPermillage());
+        xValue.add((float) mTurningTimeAdapter[1].getPermillage());
+        xValue.add((float) mTurningTimeAdapter[2].getPermillage());
+        xValue.add(1000f);
+        float eps = 1e-6f;
+        //线序列
         List<Line> lineList = new ArrayList<>();
-        lineList.add(line);
+        //生成主线
+        List<PointValue> valueListMain = new ArrayList<>();
+        valueListMain.add(new PointValue(xValue.get(0), 0.0f));
+        valueListMain.add(new PointValue(xValue.get(0) + eps, (float) getMaximun()));
+        valueListMain.add(new PointValue(xValue.get(1), (float) getMaximun()));
+        valueListMain.add(new PointValue(xValue.get(1) + eps, 0.0f));
+        valueListMain.add(new PointValue(xValue.get(2), 0.0f));
+        valueListMain.add(new PointValue(xValue.get(2) + eps, (float) getMinimun()));
+        valueListMain.add(new PointValue(xValue.get(3), (float) getMinimun()));
+        valueListMain.add(new PointValue(xValue.get(3) + eps, 0.0f));
+        valueListMain.add(new PointValue(xValue.get(4), 0.0f));
+        Line lineMain = new Line(valueListMain);
+        lineMain.setColor(R.color.ZanLine);
+        lineMain.setCubic(false);       //直线或曲线
+        lineMain.setFilled(false);      //填充与x轴之间的区域
+        lineMain.setHasPoints(false);   //显示节点
+        lineMain.setHasLabels(false);   //显示节点数据
+        lineMain.setStrokeWidth(3);
+        lineList.add(lineMain);
+        //生成一条与x轴重合的卡位线，边缘扩充原长的20%
+        List<PointValue> valueListRangeX = new ArrayList<>();
+        valueListRangeX.add(new PointValue(-200.0f, 0));
+        valueListRangeX.add(new PointValue(1200.0f, 0));
+        Line lineRangeX = new Line(valueListRangeX);
+        lineRangeX.setColor(R.color.ZanAxis);
+        lineRangeX.setStrokeWidth(1);
+        lineRangeX.setCubic(false);         //直线或曲线
+        lineRangeX.setFilled(false);        //填充与x轴之间的区域
+        lineRangeX.setHasPoints(false);     //显示节点
+        lineRangeX.setHasLabels(false);     //显示节点数据
+        lineList.add(lineRangeX);
+        //生成x轴，要经过y轴原点
+        List<PointValue> valueListAxisX = new ArrayList<>();
+        for (int i = 0; i < xValue.size(); i++) {
+            valueListAxisX.add(new PointValue(xValue.get(i), 0).setLabel(new DecimalFormat("#.#%").format(xValue.get(i) * 0.001)));
+        }
+        Line lineAxisX = new Line(valueListAxisX);
+        lineAxisX.setColor(R.color.ZanAxis);
+        lineAxisX.setStrokeWidth(1);
+        lineAxisX.setCubic(false);      //直线或曲线
+        lineAxisX.setFilled(false);     //填充与x轴之间的区域
+        lineAxisX.setHasPoints(true);   //显示节点
+        lineAxisX.setPointRadius(2);    //节点半径
+        lineAxisX.setHasLabels(false);   //显示节点数据
+        lineList.add(lineAxisX);
+        //生成一条与y轴重合的卡位线，边缘扩充原长的20%
+        List<PointValue> valueListRangeY = new ArrayList<>();
+        valueListRangeY.add(new PointValue(0, (float) (getMinimun() - 0.1 * (getMaximun() - getMinimun()))));
+        valueListRangeY.add(new PointValue(0, (float) (getMaximun() + 0.1 * (getMaximun() - getMinimun()))));
+        Line lineRangeY = new Line(valueListRangeY);
+        lineRangeY.setColor(R.color.ZanAxis);
+        lineRangeY.setStrokeWidth(1);
+        lineRangeY.setCubic(false);         //直线或曲线
+        lineRangeY.setFilled(false);        //填充与x轴之间的区域
+        lineRangeY.setHasPoints(false);     //显示节点
+        lineRangeY.setHasLabels(false);     //显示节点数据
+        lineList.add(lineRangeY);
+        /*
+        //生成y轴，要经过x轴原点
+        List<PointValue> valueListAxisY = new ArrayList<>();
+        valueListAxisY.add(new PointValue(0, (float) getMinimun()).setLabel(new DecimalFormat("#.####V").format(getMinimun())));
+        valueListAxisY.add(new PointValue(0, 0).setLabel("0"));
+        valueListAxisY.add(new PointValue(0, (float) getMaximun()).setLabel(new DecimalFormat("#.####V").format(getMaximun())));
+        Line lineAxisY = new Line(valueListAxisY);
+        lineAxisY.setColor(R.color.ZanAxis);
+        lineAxisY.setStrokeWidth(1);
+        lineAxisY.setCubic(false);      //直线或曲线
+        lineAxisY.setFilled(false);     //填充与x轴之间的区域
+        lineAxisY.setHasPoints(true);   //显示节点
+        lineAxisY.setPointRadius(2);    //节点半径
+        lineAxisY.setHasLabels(false);   //显示节点数据
+        lineList.add(lineAxisY);
+        */
+        //把这些线放在一起变成线序列
         //新建一个可以传入的数据，填入数据
         LineChartData lineChartData = new LineChartData();
         lineChartData.setLines(lineList);

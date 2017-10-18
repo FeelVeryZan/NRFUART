@@ -294,7 +294,7 @@ public class WorkFlow extends BaseActivity {
     private final BroadcastReceiver UARTStatusChangeReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            Log.d(TAG, "onReceive: " + action);
+            Log.v(TAG, "onReceive: " + action);
             //这坨是之前的收数据，貌似废弃了？
             if (action.equals(UartService.ACTION_DATA_AVAILABLE)) {
                 final byte[] txValue = intent.getByteArrayExtra(UartService.EXTRA_DATA);
@@ -309,7 +309,7 @@ public class WorkFlow extends BaseActivity {
                 for (int i = 0; i < data.length; i++) {
                     //Log.d(TAG, "onReceive: send"+channel+"   "+data[i]);
                     mMonitorCardAdapter.addMessageByChannel(channel, data[i]);
-                    Log.d(TAG, "addMessageByChannel("+channel+",   "+data[i]+"  channelNumber = "+channelNumber);
+                    Log.v(TAG, "addMessageByChannel("+channel+",   "+data[i]+"  channelNumber = "+channelNumber);
                     channel = (channel + 1) % channelNumber;
                 }
             } else if (action.equals(CreateCardWindow.Action_CreateSaveCard)) {
