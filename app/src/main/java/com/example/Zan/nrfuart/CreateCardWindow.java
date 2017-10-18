@@ -153,7 +153,7 @@ public class CreateCardWindow {
         mContentView.findViewById(R.id.creat_card_window).setBackgroundDrawable(new BitmapDrawable(bmp2));
         //在屏幕中央显示
         mPopupWindow.showAtLocation(((Activity) mContext).getWindow().getDecorView(), Gravity.CENTER, 0, 0);
-    }
+}
     //提交
     public void submitPopupWindow() {
         ///一边创建广播，一边检测输入的合法性

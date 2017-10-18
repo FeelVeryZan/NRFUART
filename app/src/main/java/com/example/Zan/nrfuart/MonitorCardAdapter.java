@@ -43,6 +43,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         private Button mJumpToButton;
         private LineChartView mLineChartView;
 
+        private MonitorDetailedPopupWindow mMonitorDetailedPopupWindow;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -55,6 +56,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
             mJumpToButton = (Button) itemView.findViewById(R.id.jump_to);
             mJumpToButton.setVisibility(View.GONE);
             mLineChartView = (LineChartView) itemView.findViewById(R.id.line_chart);
+            mMonitorDetailedPopupWindow = new MonitorDetailedPopupWindow();
             //设置LineChartView的一些基本属性
             mLineChartView.setInteractive(true);
             mLineChartView.setZoomType(ZoomType.HORIZONTAL);
@@ -84,7 +86,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         //先在List报道
-        mViewHolderList.add(position,holder);
+        mViewHolderList.add(position, holder);
         //把数据灌进去
         final MonitorCardData data = mDataList.get(position);
         holder.mTitleView.setText(data.getTitle());
@@ -130,6 +132,18 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                 closeInputMethodAnyaway();
             }
         });
+
+        //点击绘图模块弹出不刷新、可拖动的大图
+        holder.mLineChartView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                holder.mMonitorDetailedPopupWindow.show(mContext, data);
+            }
+
+        });
+
+
+
     }
 
     @Override

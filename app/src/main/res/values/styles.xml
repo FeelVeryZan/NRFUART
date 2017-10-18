@@ -82,6 +82,11 @@
         <item name="android:windowExitAnimation">@anim/device_window_popup_out</item>
     </style>
 
+    <style name="DetailedWindowAnimation">
+        <item name="android:windowEnterAnimation">@anim/detailed_window_popup_in</item>
+        <item name="android:windowExitAnimation">@anim/detailed_window_popup_out</item>
+    </style>
+
 
     <style name="ClubToolbar" parent="Widget.AppCompat.Toolbar">
         <item name="contentInsetStart">0dp</item><!-- 设置该属性解决toobar左侧空白部分-->
