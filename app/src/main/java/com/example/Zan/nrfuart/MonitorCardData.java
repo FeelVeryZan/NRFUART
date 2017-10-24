@@ -33,9 +33,9 @@ class MonitorCardData extends BaseCardData {
     @Override
     public String getTitle() {
         if (title.equals("")) {
-            return "No title" + " (MonitorCard)";
+            return "No Tag Monitor" ;
         } else {
-            return title + " (MonitorCard)";
+            return title + " (Monitor)";
         }
     }
 
@@ -118,7 +118,7 @@ class MonitorCardData extends BaseCardData {
         line.setStrokeWidth(1);
 
         //创建一个ChartLength长度的透明线
-        for (int i = (message.size()<=ChartLength)? 0: (message.size()-1-ChartLength); i < ((message.size()<=ChartLength)? ChartLength: message.size()); i++)
+        for (int i = (message == null||message.size()<=ChartLength)? 0: (message.size()-1-ChartLength); i < ((message == null||message.size()<=ChartLength)? ChartLength: message.size()); i++)
         {
             PointValue pv = new PointValue(i, 0);
             voidValueList.add(pv);
@@ -127,7 +127,7 @@ class MonitorCardData extends BaseCardData {
         voidLine.setColor(0x00000000);
 
 
-        //线变成线序列，但是线序列里面只有一条空线和一条线
+        //线变成线序列
         List<Line> lineList = new ArrayList<>();
         lineList.add(voidLine);
         lineList.add(line);

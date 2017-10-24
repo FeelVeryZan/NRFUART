@@ -15,7 +15,7 @@
 -->
 <resources>
 
-    <string name="app_name">nRF UART v2.6.4</string>
+    <string name="app_name">nRF UART v2.7</string>
     <string name="device">Device:</string>
     <string name="no_device">&lt;Select a device&gt;</string>
     <string name="select_device">Select a device</string>

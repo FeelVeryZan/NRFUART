@@ -28,9 +28,9 @@ public class SaveCardData extends BaseCardData {
     @Override
     public String getTitle() {
         if (title.equals("")) {
-            return "No title" + " (SaveCard)";
+            return "No Tag Saver";
         } else {
-            return title + " (SaveCard)";
+            return title + " (Saver)";
         }
     }
 

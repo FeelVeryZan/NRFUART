@@ -79,39 +79,57 @@ public class SendCardAdapter extends RecyclerView.Adapter<SendCardAdapter.ViewHo
         return new ViewHolder(view);
     }
 
+    //TODO 写一个把虚拟的发送信号预览图copy过来显示的函数！
+
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        if (mEditWindow == null) {
-            mEditWindow = new SendCardEditWindow(mContext);
+    public void onBindViewHolder(final ViewHolder holder, int position)
+    {
+        //为空，不操作。
+    }
+
+
+    @Override
+    public void onBindViewHolder(final ViewHolder holder, int position, List<Object> payloads) {
+        if (payloads.isEmpty()) {
+            //响应非来自NotifyItemChanged(position, payloads);的调用
+            if (mEditWindow == null) {
+                mEditWindow = new SendCardEditWindow(mContext);
+            }
+            //把数据灌进去
+            final SendCardData cardData = mDataList.get(position);
+            Log.d(TAG, "把数据灌进去, position = " + position + " identifier = " + cardData.getIdentifier());
+            holder.mTitleView.setText(cardData.getTitle());
+            holder.mThisId.setText(String.valueOf(cardData.getChannel()));
+            holder.mNowState.setText(cardData.getStateInString());
+            holder.mLineChartView.setLineChartData(cardData.getLineChartData());
+            //监听关闭按钮
+            holder.mCloseButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d(TAG, "close: identifier = " + cardData.getIdentifier());
+                    removeOneCardByIdentifier(cardData.getIdentifier());
+                }
+            });
+            //监听设置按钮
+            holder.mEditButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d(TAG, "edit: identifier = " + cardData.getIdentifier());
+                    mEditWindow.show(new OnEditCallBack() {
+                        @Override
+                        public void onEdit() {
+                            //TODO 修改SendThread等信息的回调函数，可以自行添加onEdit的函数参数
+                        }
+                    });
+                }
+            });
         }
-        //把数据灌进去
-        final SendCardData cardData = mDataList.get(position);
-        Log.d(TAG, "把数据灌进去, position = " + position + " identifier = " + cardData.getIdentifier());
-        holder.mTitleView.setText(cardData.getTitle());
-        holder.mThisId.setText(String.valueOf(cardData.getChannel()));
-        holder.mNowState.setText(cardData.getStateInString());
-        holder.mLineChartView.setLineChartData(cardData.getLineChartData());
-        //监听关闭按钮
-        holder.mCloseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "close: identifier = " + cardData.getIdentifier());
-                removeOneCardByIdentifier(cardData.getIdentifier());
-            }
-        });
-        //监听设置按钮
-        holder.mEditButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "edit: identifier = " + cardData.getIdentifier());
-                mEditWindow.show(new OnEditCallBack() {
-                    @Override
-                    public void onEdit() {
-                        //TODO 修改SendThread等信息的回调函数，可以自行添加onEdit的函数参数
-                    }
-                });
-            }
-        });
+        else
+        {
+            //响应NotifyItemChanged(position, payloads);解决闪烁。
+            final SendCardData cardData = mDataList.get(position);
+            holder.mLineChartView.setLineChartData(cardData.getLineChartData());
+        }
     }
 
     @Override

@@ -101,7 +101,9 @@ public class WorkFlow extends BaseActivity {
             Log.d(TAG, "onCreate: no root");
         else
             Log.d(TAG, "onCreate: root");
-        new Thread(new DataSource()).start();
+
+        // 一个奇怪的调试数据发送线程。
+        // new Thread(new DataSource()).start();
 
     }
 
@@ -363,7 +365,8 @@ public class WorkFlow extends BaseActivity {
                 mSendCardAdapter.reviewDataByIdentifier(id);
             } else if (action.equals(SendRunner.DataSend)){
                 byte[] data=intent.getByteArrayExtra("Data");
-                //mService.writeRXCharacteristic(data);
+                if (mService != null)
+                    mService.writeRXCharacteristic(data);
             } else if (action.equals(SendRunner.SendRunner_Off)){
                 Log.d(TAG, "onReceive: cancel zhuce"+intent.getIntExtra("channel",-1));
                 channelHasSendThread[intent.getIntExtra("channel",-1)]=false;
