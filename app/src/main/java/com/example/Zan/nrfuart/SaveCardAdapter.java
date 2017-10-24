@@ -68,7 +68,7 @@ public class SaveCardAdapter extends RecyclerView.Adapter<SaveCardAdapter.ViewHo
         //holder.mThisId.setText(String.valueOf(cardData.getIdentifier()));
         holder.mThisId.setText(cardData.getChannelList());
         //holder.mContentView.setText(cardData.getContent());
-        holder.mContentView.setText("");
+        holder.mContentView.setText("已经开始存储");
         //监听关闭事件
         holder.mCloseButton.setOnClickListener(new View.OnClickListener() {
             @Override
