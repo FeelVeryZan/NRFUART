@@ -2,6 +2,7 @@ package com.example.Zan.nrfuart;
 
 import android.app.Activity;
 import android.content.Context;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -33,6 +34,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
     private List<MonitorCardData> mDataList;
     private List<RecyclerView.ViewHolder> mViewHolderList = new ArrayList<>();
     private int counter = 0;
+    private static int PAYLOADS_CHART = 0;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -80,41 +82,56 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         return new ViewHolder(view);
     }
 
+
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        //先在List报道
-        mViewHolderList.add(position, holder);
-        //把数据灌进去
-        final MonitorCardData data = mDataList.get(position);
-        holder.mTitleView.setText(data.getTitle());
-        holder.mChannelTextView.setText(String.valueOf(data.getChannel()));
-        holder.mLineChartView.setLineChartData(data.getLineChartData());
-        //监听关闭按钮
-        holder.mCloseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                removeOneCardByIdentifier(data.getIdentifier());
-            }
-        });
+    public void onBindViewHolder(final ViewHolder holder, int position)
+    {
+        //为空，不操作。
+    }
 
-        //监听Edit按钮
-        holder.mEditButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO EditWindow...
+    @Override
+    public void onBindViewHolder(final ViewHolder holder, int position, List<Object> payloads) {
 
-            }
-        });
+        if (payloads.isEmpty()) {
+            //响应非来自NotifyItemChanged(position, payloads);的调用
 
-        //点击绘图模块弹出不刷新、可拖动的大图
-        holder.mLineChartView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                holder.mMonitorDetailedPopupWindow.show(mContext, data);
-            }
+            //把数据灌进去
+            final MonitorCardData data = mDataList.get(position);
+            holder.mTitleView.setText(data.getTitle());
+            holder.mChannelTextView.setText(String.valueOf(data.getChannel()));
+            holder.mLineChartView.setLineChartData(data.getLineChartData());
+            //监听关闭按钮
+            holder.mCloseButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    removeOneCardByIdentifier(data.getIdentifier());
+                }
+            });
 
-        });
+            //监听Edit按钮
+            holder.mEditButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //TODO EditWindow...
 
+                }
+            });
+
+            //点击绘图模块弹出不刷新、可拖动的大图
+            holder.mLineChartView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    holder.mMonitorDetailedPopupWindow.show(mContext, data);
+                }
+
+            });
+        }
+        else
+        {
+            //响应NotifyItemChanged(position, payloads);解决闪烁。
+            final MonitorCardData data = mDataList.get(position);
+            holder.mLineChartView.setLineChartData(data.getLineChartData());
+        }
 
 
     }
@@ -181,10 +198,8 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
             if (mDataList.get(i).getChannel() == channel) {
                 Log.d(TAG, "addMessageByChannel: "+channel+"   "+message);
                 mDataList.get(i).addMessage(message);
-                if ((counter = counter % 5) == 0)
-                {
-                    notifyItemChanged(i);
-                }
+                notifyItemChanged(i, PAYLOADS_CHART);
+
             }
         }
     }
