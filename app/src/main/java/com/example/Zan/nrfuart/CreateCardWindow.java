@@ -135,13 +135,13 @@ public class CreateCardWindow {
         if (cardTag.length() != 0) {
             return cardTag;
         } else if (mCardType == MODE_MONITORCARD) {
-            return "No tag Monitor";
+            return "No Tag Monitor";
         } else if (mCardType == MODE_SAVECARD) {
-            return "No tag Saver";
+            return "No Tag Saver";
         } else if (mCardType == MODE_SENDCARD) {
-            return "No tag Sender";
+            return "No Tag Sender";
         } else {
-            return "No tag";
+            return "No Tag";
         }
     }
 

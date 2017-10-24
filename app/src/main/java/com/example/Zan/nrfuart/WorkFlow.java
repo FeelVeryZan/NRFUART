@@ -105,6 +105,9 @@ public class WorkFlow extends BaseActivity {
         // 一个奇怪的调试数据发送线程。
         // new Thread(new DataSource()).start();
 
+        // 一个奇怪的数据处理线程
+        new Thread(new DataTransport()).start();
+
     }
 
     //悬浮按钮部分

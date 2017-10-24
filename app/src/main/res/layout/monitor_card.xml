@@ -85,15 +85,17 @@
                 <Button
                     android:id="@+id/edit_monitor_card"
                     android:layout_width="50dp"
-                    android:layout_height="36dp"
+                    android:layout_height="28dp"
                     android:background="@color/ZanLight"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="10dp"
                     android:maxLines="1"
                     android:text="Edit"
                     android:textSize="14sp"
                     android:textAllCaps="false"
-                    android:elevation="6dp"
+                    android:elevation="8dp"
                     android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentEnd="true"
                     android:shadowRadius="20"
                     />
 
