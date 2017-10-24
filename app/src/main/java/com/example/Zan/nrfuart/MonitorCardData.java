@@ -22,6 +22,8 @@ class MonitorCardData extends BaseCardData {
     private int channel;
     private List<Integer> message;
     private List<PointValue> valueList;
+    private static int ChartLength = 30;
+
 
     public MonitorCardData() {
         super();
@@ -60,6 +62,8 @@ class MonitorCardData extends BaseCardData {
 
     public void addMessage(int moreMessage) {
         message.add(moreMessage);
+
+
         //if (message.size()>=30) {message.remove(0);}
         //valueList.add(new PointValue(valueList.size(),moreMessage));
 
@@ -91,14 +95,20 @@ class MonitorCardData extends BaseCardData {
 
     //把数据数组变成LineChartData类型
     public LineChartData getLineChartData() {
-        //流数据变成点序列
+
+        //申明有效点集和透明点集
         valueList = new ArrayList<>();
+        List<PointValue> voidValueList = new ArrayList<>();
+
+        //流数据变成点序列
+
         if (message != null) {
-            for (int i = (message.size()<=30)? 0: (message.size()-31); i < message.size(); i++) {
+            for (int i = (message.size()<=ChartLength)? 0: (message.size()-1-ChartLength); i < message.size(); i++) {
                 valueList.add(new PointValue(i, message.get(i)));
                 Log.d("MonitorCardData", "getLineChartData()  "+i+"  "+message.get(i));
             }
         }
+
         //点序列变成线
         Line line = new Line(valueList);
         line.setColor(R.color.ZanDark);
@@ -107,9 +117,8 @@ class MonitorCardData extends BaseCardData {
         line.setHasPoints(false);
         line.setStrokeWidth(1);
 
-        //创建一个30长度的空线
-        List<PointValue> voidValueList = new ArrayList<>();
-        for (int i=0; i<30; i++)
+        //创建一个ChartLength长度的透明线
+        for (int i = (message.size()<=ChartLength)? 0: (message.size()-1-ChartLength); i < ((message.size()<=ChartLength)? ChartLength: message.size()); i++)
         {
             PointValue pv = new PointValue(i, 0);
             voidValueList.add(pv);
@@ -120,7 +129,7 @@ class MonitorCardData extends BaseCardData {
 
         //线变成线序列，但是线序列里面只有一条空线和一条线
         List<Line> lineList = new ArrayList<>();
-        //lineList.add(voidLine);
+        lineList.add(voidLine);
         lineList.add(line);
 
 

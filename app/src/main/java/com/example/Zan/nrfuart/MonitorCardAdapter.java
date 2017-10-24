@@ -39,10 +39,9 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         private CardView mCardView;
         private TextView mTitleView;
         private ImageButton mCloseButton;
-        private EditText mEditChannelView;
-        private Button mJumpToButton;
+        private TextView mChannelTextView;
         private LineChartView mLineChartView;
-
+        private Button mEditButton;
         private MonitorDetailedPopupWindow mMonitorDetailedPopupWindow;
 
         public ViewHolder(View itemView) {
@@ -51,11 +50,9 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
             mCardView = (CardView) itemView;
             mTitleView = (TextView) itemView.findViewById(R.id.card_title);
             mCloseButton = (ImageButton) itemView.findViewById(R.id.close_card);
-            mEditChannelView = (EditText) itemView.findViewById(R.id.channel_editer);
-            mEditChannelView.setVisibility(View.GONE);
-            mJumpToButton = (Button) itemView.findViewById(R.id.jump_to);
-            mJumpToButton.setVisibility(View.GONE);
+            mEditButton = (Button) itemView.findViewById(R.id.edit_monitor_card);
             mLineChartView = (LineChartView) itemView.findViewById(R.id.line_chart);
+            mChannelTextView = (TextView) itemView.findViewById(R.id.channel_id_monitor_card);
             mMonitorDetailedPopupWindow = new MonitorDetailedPopupWindow();
             //设置LineChartView的一些基本属性
             mLineChartView.setInteractive(true);
@@ -90,7 +87,7 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
         //把数据灌进去
         final MonitorCardData data = mDataList.get(position);
         holder.mTitleView.setText(data.getTitle());
-        holder.mEditChannelView.setText(String.valueOf(data.getChannel()));
+        holder.mChannelTextView.setText(String.valueOf(data.getChannel()));
         holder.mLineChartView.setLineChartData(data.getLineChartData());
         //监听关闭按钮
         holder.mCloseButton.setOnClickListener(new View.OnClickListener() {
@@ -99,37 +96,13 @@ public class MonitorCardAdapter extends RecyclerView.Adapter<MonitorCardAdapter.
                 removeOneCardByIdentifier(data.getIdentifier());
             }
         });
-        //监听输入框失去焦点
-        holder.mEditChannelView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    closeInputMethodAnyaway();
-                }
-            }
-        });
-        //监听跳转按钮
-        holder.mJumpToButton.setOnClickListener(new View.OnClickListener() {
+
+        //监听Edit按钮
+        holder.mEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String channelText = holder.mEditChannelView.getText().toString().trim();
-                int channelInt = -1;
-                try {
-                    channelInt = Integer.parseInt(channelText);
-                } catch (NumberFormatException e) {
-                    Log.d(TAG, "NumberFormatException: " + e.getMessage());
-                }
-                if (channelInt < 0 || channelInt >= WorkFlow.channelNumber) {
-                    CreateCardIgnoreFragment ignoreFragment = new CreateCardIgnoreFragment("Wrong channel.");
-                    ignoreFragment.show(((Activity) mContext).getFragmentManager(), "？蛤？");
-                    closeInputMethodAnyaway();
-                    return;
-                }
-                if (data.getChannel() != channelInt) {
-                    Log.d(TAG, "从通道" + data.getChannel() + "跳转到" + channelInt);
-                    changeChannelByIdentifier(data.getIdentifier(), channelInt);
-                }
-                closeInputMethodAnyaway();
+                //TODO EditWindow...
+
             }
         });
 

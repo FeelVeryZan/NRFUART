@@ -99,6 +99,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
                     android:background="@color/ZanLight"
+                    android:elevation="6dp"
                     android:maxLines="1"
                     android:text="Edit"
                     android:textSize="14sp"

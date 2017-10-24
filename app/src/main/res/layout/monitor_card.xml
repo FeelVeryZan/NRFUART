@@ -60,42 +60,42 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/this_id_is"
+                    android:id="@+id/this_id_is_monitor_card"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="7dp"
-                    android:text="Channel ID: "
-                    android:textSize="16sp" />
+                    android:layout_marginTop="8dp"
+                    android:text="Channel ID:  "
+                    android:textSize="16sp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true" />
 
-                <EditText
-                    android:id="@+id/channel_editer"
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/channel_id_monitor_card"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"
+                    android:layout_marginTop="8dp"
+                    android:layout_toEndOf="@id/this_id_is_monitor_card"
                     android:maxLines="1"
                     android:maxWidth="50dp"
                     android:text="XX"
-                    android:textSize="12sp" />
+                    android:textSize="16sp" />
+
 
                 <Button
-                    android:id="@+id/jump_to"
-                    android:layout_width="0dp"
+                    android:id="@+id/edit_monitor_card"
+                    android:layout_width="50dp"
                     android:layout_height="36dp"
-                    android:layout_weight="3"
-                    android:scaleType="centerInside"
-                    android:text="Jump to"
+                    android:background="@color/ZanLight"
+                    android:maxLines="1"
+                    android:text="Edit"
+                    android:textSize="14sp"
                     android:textAllCaps="false"
-                    android:textSize="14sp" />
-
-                <Spinner
-                    android:id="@+id/channel_num_spinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:layout_alignParentRight="true"
-                    android:entries="@array/channel_num_array_4">
-
-                </Spinner>
+                    android:elevation="6dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:shadowRadius="20"
+                    />
 
             </RelativeLayout>
 
