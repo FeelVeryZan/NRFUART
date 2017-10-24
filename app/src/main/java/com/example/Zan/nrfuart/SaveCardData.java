@@ -52,6 +52,15 @@ public class SaveCardData extends BaseCardData {
         return channelList;
     }
 
+    public String getChannelList(){
+        String SS="";
+        for (int i=0;i<channelList.length;i++)
+            if (channelList[i]==1)
+            SS=SS+String.valueOf(i)+',';
+        return SS;
+    }
+
+
     //设置初始内容、增加内容、清空内容
     public void setContent(String content) {
         this.content = content == null ? "" : content;
