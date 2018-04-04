@@ -5,7 +5,7 @@ android {
     buildToolsVersion "26.0.2"
 
     defaultConfig {
-        applicationId "com.example.Zan.nrfuart"
+        applicationId "com.example.Crofun.Hmilab"
         minSdkVersion 18
         targetSdkVersion 26
         versionCode 9
