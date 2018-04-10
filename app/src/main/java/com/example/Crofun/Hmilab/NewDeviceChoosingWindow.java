@@ -123,6 +123,7 @@ public class NewDeviceChoosingWindow {
                     public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
                         try {
                             mDeviceAdapter.addDevice(device);
+                            Log.d(TAG,"Scanning Thread is Running now.");
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.d(TAG, e.getMessage());
