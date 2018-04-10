@@ -5,9 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/HMILAB_app.iml" filepath="$PROJECT_DIR$/HMILAB_app.iml" />
       <module fileurl="file://D:\AndroidProjects\HMILAB_app\NRFUART.iml" filepath="D:\AndroidProjects\HMILAB_app\NRFUART.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://D:\AndroidProjects\HMILAB_app\app\app.iml" filepath="D:\AndroidProjects\HMILAB_app\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
-      <module fileurl="file://D:\AndroidProjects\HMILAB_app\library\library.iml" filepath="D:\AndroidProjects\HMILAB_app\library\library.iml" />
     </modules>
   </component>
 </project>
