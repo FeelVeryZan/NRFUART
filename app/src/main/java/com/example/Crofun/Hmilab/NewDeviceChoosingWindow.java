@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.PopupWindow;
+
 
 import java.util.List;
 
@@ -38,7 +40,11 @@ public class NewDeviceChoosingWindow {
     //蓝牙部分
     private BluetoothAdapter mBluetoothAdapter;
     private List<BluetoothDevice> mDeviceList;
+    private BluetoothAdapter.LeScanCallback mLeScanCallBack;
+    private Handler mHandler;
     private boolean isScanning = false;
+
+    private static final long SCAN_PERIOD = 10000;
 
     public static interface GoDismissListenter {
         public void onDismiss();
@@ -109,28 +115,47 @@ public class NewDeviceChoosingWindow {
         findDevice();
     }
 
+    // Device scan callback.
+    private BluetoothAdapter.LeScanCallback mLeScanCallback =
+            new BluetoothAdapter.LeScanCallback() {
+                @Override
+                public void onLeScan(final BluetoothDevice device, int rssi,
+                                     byte[] scanRecord) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mDeviceAdapter.addDevice(device);
+                            mDeviceAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            };
+
+
+    // Scan
     private void findDevice() {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null || !mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+            isScanning = false;
+            mBluetoothAdapter.stopLeScan(mLeScanCallBack);
             return;
         }
-        //新开个线程扫描蓝牙设备
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mBluetoothAdapter.startLeScan(new BluetoothAdapter.LeScanCallback() {
-                    @Override
-                    public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-                        try {
-                            mDeviceAdapter.addDevice(device);
-                            Log.d(TAG,"Scanning Thread is Running now.");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.d(TAG, e.getMessage());
-                        }
-                    }
-                });
-            }
-        }).start();
+        else{
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    isScanning = false;
+                    mBluetoothAdapter.stopLeScan(mLeScanCallBack);
+                    Log.d(TAG,"LeScan Stop.");
+                }
+            }, SCAN_PERIOD);
+
+            isScanning = true;
+            mBluetoothAdapter.startLeScan(mLeScanCallBack);
+            Log.d(TAG,"LeScan Start.");
+        }
+
     }
+
+
 }
