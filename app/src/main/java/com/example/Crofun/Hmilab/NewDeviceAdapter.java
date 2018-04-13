@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.text.TextUtils.isEmpty;
 
 /**
  * Created by nodgd on 2017/09/19.
@@ -46,19 +49,30 @@ public class NewDeviceAdapter extends RecyclerView.Adapter<NewDeviceAdapter.View
     public NewDeviceAdapter(NewDeviceChoosingWindow.GoDismissListenter listener) {
         mGoDismissListener = listener;
         mDeviceList = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
+        /*for (int i = 0; i < 6; i++) {
             mDeviceList.add(null);
-        }
+        }*/
         mDeviceCnt = 0;
     }
 
     //重写添加函数，使界面上自动保持行数
     public void addDevice(BluetoothDevice device) {
+        //Check if it is among the devices found before.
+        for(int i = 0; i<mDeviceCnt; i++)
+        {
+            if(device.getAddress().equals(mDeviceList.get(i).getAddress()))
+            {
+                return;
+            }
+        }
+
+
         if (mDeviceCnt < mDeviceList.size()) {
             mDeviceList.set(mDeviceCnt, device);
             mDeviceCnt++;
             notifyItemChanged(mDeviceCnt);
         } else {
+
             mDeviceList.add(device);
             mDeviceCnt++;
             notifyItemInserted(mDeviceList.size());
@@ -79,7 +93,7 @@ public class NewDeviceAdapter extends RecyclerView.Adapter<NewDeviceAdapter.View
     public void onBindViewHolder(ViewHolder holder, final int pos) {
         BluetoothDevice device = mDeviceList.get(pos);
         if (device != null) {
-            holder.mDeviceNameText.setText(device.getName());
+            holder.mDeviceNameText.setText(isEmpty(device.getName())?"(Null)"+device.getAddress():device.getName());
         } else {
             holder.mDeviceGogogo.setVisibility(View.GONE);
         }
@@ -90,7 +104,7 @@ public class NewDeviceAdapter extends RecyclerView.Adapter<NewDeviceAdapter.View
                 BluetoothDevice device = mDeviceList.get(pos);
                 if (device == null) {
                     Toast.makeText(mContext, "这是个假的设备", Toast.LENGTH_SHORT).show();
-                    mGoDismissListener.onDismiss();
+                    //mGoDismissListener.onDismiss();
                 } else {
                     Toast.makeText(mContext, "连接蓝牙：" + device.getName() + "\n然后：" + device.getAddress(), Toast.LENGTH_SHORT).show();
                     Bundle b = new Bundle();
