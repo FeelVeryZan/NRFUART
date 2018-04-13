@@ -490,8 +490,8 @@ public class WorkFlow extends BaseActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
             switch (requestCode) {
 
-                /*
-                老版本中应用了一个Activity来进行设备Scan，新版本则是弹窗+Thread
+
+
             case REQUEST_SELECT_DEVICE:
                 //When the DeviceListActivity return, with the selected device address
                 if (resultCode == Activity.RESULT_OK && data != null) {
@@ -511,16 +511,16 @@ public class WorkFlow extends BaseActivity {
                     mConnectBtnHint.setVisibility(View.VISIBLE);
                 }
                 break;
-                */
+
             case REQUEST_ENABLE_BT:
                 // When the request to enable Bluetooth returns
                 if (resultCode == Activity.RESULT_OK) {
                     Toast.makeText(this, "Bluetooth has turned on ", Toast.LENGTH_SHORT).show();
-                    //Intent newIntent = new Intent(WorkFlow.this, DeviceListActivity.class);
-                    //startActivityForResult(newIntent, REQUEST_SELECT_DEVICE);
-                    //打开蓝牙弹窗
-                    NewDeviceChoosingWindow window = new NewDeviceChoosingWindow(WorkFlow.this);
-                    window.show();
+
+                    //打开蓝牙扫描弹窗activity
+                    Intent newIntent = new Intent(WorkFlow.this, NewDeviceChoosingWindow.class);
+                    startActivityForResult(newIntent, REQUEST_SELECT_DEVICE);
+
 
                 } else {
                     // User did not enable Bluetooth or an error occurred
