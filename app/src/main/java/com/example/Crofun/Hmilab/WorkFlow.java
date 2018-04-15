@@ -204,14 +204,22 @@ public class WorkFlow extends BaseActivity {
 
 
         }
+        //蓝牙连接按钮
         mConnectBtn = (ImageButton) findViewById(R.id.connect_hint);
         mConnectBtnHint = (TextView) findViewById(R.id.connect_hint_text);
         mConnectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //新版蓝牙
-                NewDeviceChoosingWindow window = new NewDeviceChoosingWindow(WorkFlow.this);
-                window.show();
+                if (!mBtAdapter.isEnabled()) {
+                    //如果蓝牙未打开
+                    Log.i(TAG, "onClick - BT not enabled yet");
+                    Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+                }
+                else {
+                    NewDeviceChoosingWindow window = new NewDeviceChoosingWindow(WorkFlow.this);
+                    window.show();
+                }
             }
         });
     }
@@ -412,7 +420,9 @@ public class WorkFlow extends BaseActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
+            switch (requestCode) {
+
+
 
             case REQUEST_SELECT_DEVICE:
                 //When the DeviceListActivity return, with the selected device address
@@ -433,14 +443,16 @@ public class WorkFlow extends BaseActivity {
                     mConnectBtnHint.setVisibility(View.VISIBLE);
                 }
                 break;
+
             case REQUEST_ENABLE_BT:
                 // When the request to enable Bluetooth returns
                 if (resultCode == Activity.RESULT_OK) {
                     Toast.makeText(this, "Bluetooth has turned on ", Toast.LENGTH_SHORT).show();
-                    Intent newIntent = new Intent(WorkFlow.this, DeviceListActivity.class);
+
+                    //打开蓝牙扫描弹窗activity
+                    Intent newIntent = new Intent(WorkFlow.this, NewDeviceChoosingWindow.class);
                     startActivityForResult(newIntent, REQUEST_SELECT_DEVICE);
-                    mConnectBtn.setVisibility(View.GONE);
-                    mConnectBtnHint.setVisibility(View.GONE);
+
 
                 } else {
                     // User did not enable Bluetooth or an error occurred

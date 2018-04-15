@@ -4,10 +4,14 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -16,13 +20,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.PopupWindow;
 
+
 import java.util.List;
+
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 
 /**
  * Created by nodgd on 2017/09/19.
  */
 
-public class NewDeviceChoosingWindow {
+public class NewDeviceChoosingWindow extends BaseActivity{
 
     public static String TAG = "NewDeviceChoosingWindow";
 
@@ -38,7 +45,10 @@ public class NewDeviceChoosingWindow {
     //蓝牙部分
     private BluetoothAdapter mBluetoothAdapter;
     private List<BluetoothDevice> mDeviceList;
+    private Handler mHandler = new Handler();
     private boolean isScanning = false;
+
+    private static final long SCAN_PERIOD = 1000;
 
     public static interface GoDismissListenter {
         public void onDismiss();
@@ -84,16 +94,20 @@ public class NewDeviceChoosingWindow {
 
     //监听关闭事件
     private void initCloseEvent() {
+        /*
         mContentView.findViewById(R.id.new_device_window).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mPopupWindow.dismiss();
             }
-        });
+        });*/
         mContentView.findViewById(R.id.new_device_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mPopupWindow.dismiss();
+                Intent intent = new Intent();
+                setResult(RESULT_CANCELED, intent);
+                finish();
             }
         });
     }
@@ -109,27 +123,66 @@ public class NewDeviceChoosingWindow {
         findDevice();
     }
 
+    // Device scan Callback.
+    private BluetoothAdapter.LeScanCallback mLeScanCallback =
+            new BluetoothAdapter.LeScanCallback() {
+                @Override
+                public void onLeScan(final BluetoothDevice device, int rssi,
+                                     byte[] scanRecord) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d(TAG, "device found: "+device.getName()+"  "+device.getAddress());
+                            mDeviceAdapter.addDevice(device);
+                            mDeviceAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            };
+
+
+    // Scan
     private void findDevice() {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null || !mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-            return;
+            isScanning = false;
+            mBluetoothAdapter.stopLeScan(mLeScanCallback);
+            Intent intent = new Intent();
+            setResult(RESULT_CANCELED, intent);
+            finish();
         }
-        //新开个线程扫描蓝牙设备
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mBluetoothAdapter.startLeScan(new BluetoothAdapter.LeScanCallback() {
-                    @Override
-                    public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-                        try {
-                            mDeviceAdapter.addDevice(device);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Log.d(TAG, e.getMessage());
-                        }
-                    }
-                });
-            }
-        }).start();
+        else{
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    isScanning = false;
+                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                    Log.d(TAG,"LeScan Stop.");
+                }
+            }, SCAN_PERIOD);
+
+            isScanning = true;
+            mBluetoothAdapter.startLeScan(mLeScanCallback);
+            Log.d(TAG,"LeScan Start.");
+        }
+    }
+
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //设置弹出窗口的基本属性
+        initPopupWindow();
+        //处理设备列表
+        initDeviceList();
+        //关闭事件的监听
+        initCloseEvent();
+        show();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

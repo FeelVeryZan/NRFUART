@@ -3,11 +3,14 @@ package com.example.Crofun.Hmilab;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 
 public class WelcomeActivity extends BaseActivity {
@@ -36,6 +39,19 @@ public class WelcomeActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+        // Use this check to determine whether BLE is supported on the device. Then
+        // you can selectively disable BLE-related features.
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+            Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
+            Log.d("BLE", getString(R.string.ble_not_supported));
+            finish();
+        }
+        else
+        {
+            Toast.makeText(this, "BLE is supported by this device.", Toast.LENGTH_SHORT).show();
+            Log.d("BLE", "BLE is supported by this device.");
+        }
     }
 
 
