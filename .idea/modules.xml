@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/HMILAB_app.iml" filepath="$PROJECT_DIR$/HMILAB_app.iml" />
-      <module fileurl="file://D:\AndroidProjects\HMILAB_app\NRFUART.iml" filepath="D:\AndroidProjects\HMILAB_app\NRFUART.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HMILAB_2nd_stage.iml" filepath="$PROJECT_DIR$/HMILAB_2nd_stage.iml" />
+      <module fileurl="file://D:/AndroidProjects/HMILAB_app/NRFUART.iml" filepath="D:/AndroidProjects/HMILAB_app/NRFUART.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
     </modules>
