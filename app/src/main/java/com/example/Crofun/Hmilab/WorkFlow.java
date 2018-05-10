@@ -291,7 +291,7 @@ public class WorkFlow extends BaseActivity {
         switch(item.getItemId()){
             case R.id.nav_User_info_title:
                 for(int i=0; i<3; i++){
-                    mUser_info_Items[i].setVisible(!);
+                    mUser_info_Items[i].setVisible(false);
                 }
                 return true;
             default :
