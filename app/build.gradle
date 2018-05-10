@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
-        applicationId "com.example.Zan.nrfuart"
+        applicationId "com.example.Crofun.Hmilab"
         minSdkVersion 18
         targetSdkVersion 26
-        versionCode 9
-        versionName "2.7"
+        versionCode 10
+        versionName "3.0"
     }
     buildTypes {
         release {

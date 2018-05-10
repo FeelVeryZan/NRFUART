@@ -8,9 +8,9 @@
     animateLayoutChanges="true">
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                     android:orientation="vertical"
-                                                     android:layout_width="match_parent"
-                                                     android:layout_height="match_parent">
+         android:orientation="vertical"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,14 +29,12 @@
                     android:id="@+id/connect_hint"
                     android:layout_width="wrap_content"
                     android:layout_height="120dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:scaleType="fitCenter"
+                    android:layout_alignTop="@+id/device_name"
+                    android:layout_toEndOf="@+id/device_name"
                     android:background="@color/ZanButtonBackground"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/bluetoothsearch"
 
-                    />
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/bluetoothsearch" />
 
                 <TextView
                     android:id="@+id/connect_hint_text"
@@ -178,5 +176,13 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
+    <android.support.design.widget.NavigationView
+        android:id="@+id/work_flow_navi"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/nav_menu"
+        app:headerLayout="@layout/nav_header"
+        />
 
 </android.support.v4.widget.DrawerLayout>

@@ -3,9 +3,38 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
-    <group android:checkableBehavior="single"
+
+
+    <group android:checkableBehavior="none"
+
         >
 
+            <item
+                android:title="User"
+                android:id="@+id/nav_User"
+                />
+
+    </group>
+
+    <group android:checkableBehavior="single"
+        android:visible="true"
+        >
+        <item android:title="User Info"
+            android:id="@+id/nav_User_info_title">
+            <menu >
+                <item android:title="info a"
+                    android:id="@+id/nav_User_info_a" />
+                <item android:title="info b"
+                    android:id="@+id/nav_User_info_b" />
+                <item android:title="info c"
+                    android:id="@+id/nav_User_info_c" />
+            </menu>
+        </item>
+    </group>
+
+
+    <group android:checkableBehavior="single"
+    >
         <item
             android:title="Theme"
             android:id="@+id/nav_Theme"
