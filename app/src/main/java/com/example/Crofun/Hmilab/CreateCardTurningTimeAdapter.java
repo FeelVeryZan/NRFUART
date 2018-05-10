@@ -55,7 +55,7 @@ public class CreateCardTurningTimeAdapter {
     //描述文字模块
     private void initDescription() {
         TextView mDescription = (TextView) mTurningTimeLayout.findViewById(R.id.edit_turn_description);
-        mDescription.setText("Turning time #" + mId + ":");
+        mDescription.setText("Turning time #" + (mId + 1) + ":");
     }
 
     //输入框模块
@@ -145,6 +145,16 @@ public class CreateCardTurningTimeAdapter {
     //获取千分比
     public int getPermillage() {
         return mPermillage;
+    }
+    //设置千分比
+    public boolean setPermillage(int permillage) {
+        if (mRangeCallBack.getMinimun() <= permillage && permillage <= mRangeCallBack.getMaximun()) {
+            mPermillage = permillage;
+            mAbsoluteValue = mPeriod * mPermillage * 0.001;
+            mPEditText.setText(new DecimalFormat("#.#########").format(mAbsoluteValue));
+            return true;
+        }
+        return false;
     }
     //设置获取范围回调接口
     public void setRangeCallBack(RangeCallBack rangeCallBack) {

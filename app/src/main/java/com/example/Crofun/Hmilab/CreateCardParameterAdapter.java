@@ -6,6 +6,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -49,6 +51,7 @@ public class CreateCardParameterAdapter {
     private int mRepetitionValue;
     //转折点们
     private CreateCardTurningTimeAdapter[] mTurningTimeAdapter = new CreateCardTurningTimeAdapter[3];
+    private View mDuctCycleReturnZero[] = new View[3];
     //预览图
     private LineChartView mPreviewChart;
 
@@ -61,6 +64,7 @@ public class CreateCardParameterAdapter {
         initMaxAndMin();
         initRepetition();
         initTurningTime();
+        initDutyReturn();
         initPreviewChart();
     }
 
@@ -298,6 +302,46 @@ public class CreateCardParameterAdapter {
             @Override
             public int getMaximun() {
                 return 999;
+            }
+        });
+    }
+
+    //占空比归零
+    private void initDutyReturn() {
+        mDuctCycleReturnZero[0] = mParameterLayout.findViewById(R.id.edit_dcrz_0);
+        mDuctCycleReturnZero[1] = mParameterLayout.findViewById(R.id.edit_dcrz_1);
+        mDuctCycleReturnZero[2] = mParameterLayout.findViewById(R.id.edit_dcrz_2);
+        mDuctCycleReturnZero[0].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int per0 = mTurningTimeAdapter[0].getPermillage();
+                int per1 = mTurningTimeAdapter[1].getPermillage();
+                int per2 = mTurningTimeAdapter[2].getPermillage();
+                if (! mTurningTimeAdapter[0].setPermillage(per2 - per1)) {
+                    Toast.makeText(mContext, "Failed to modify #1.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        mDuctCycleReturnZero[1].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int per0 = mTurningTimeAdapter[0].getPermillage();
+                int per1 = mTurningTimeAdapter[1].getPermillage();
+                int per2 = mTurningTimeAdapter[2].getPermillage();
+                if (! mTurningTimeAdapter[1].setPermillage(per2 - per0)) {
+                    Toast.makeText(mContext, "Failed to modify #2.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        mDuctCycleReturnZero[2].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int per0 = mTurningTimeAdapter[0].getPermillage();
+                int per1 = mTurningTimeAdapter[1].getPermillage();
+                int per2 = mTurningTimeAdapter[2].getPermillage();
+                if (! mTurningTimeAdapter[2].setPermillage(per0 + per1)) {
+                    Toast.makeText(mContext, "Failed to modify #3.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
