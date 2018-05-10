@@ -34,8 +34,10 @@ public class CreateCardParameterAdapter {
     //频率or周期
     private EditText mFrequencyEText;
     private double mFrequencyValue;
+    private String mFrequencyStr;
     private EditText mPeriodEText;
     private double mPeriodValue;
+    private String mPeriodStr;
     private boolean mFPSyncLock;
     //最值
     private EditText mMaxEText;
@@ -71,6 +73,7 @@ public class CreateCardParameterAdapter {
         mFrequencyEText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                mFrequencyStr = s.toString();
             }
 
             @Override
@@ -82,7 +85,7 @@ public class CreateCardParameterAdapter {
                         mPeriodEText.setText("");
                     } else if (str.length() > 8) {
                         Toast.makeText(mContext, "The input is too long.", Toast.LENGTH_SHORT).show();
-                        mFrequencyEText.setText("" + mFrequencyValue);
+                        mFrequencyEText.setText(mFrequencyStr);
                     } else {
                         try {
                             double f = Double.parseDouble(str);
@@ -90,6 +93,7 @@ public class CreateCardParameterAdapter {
                                 throw new NumberFormatException();
                             }
                             mFrequencyValue = f;
+                            CreateCardParameterAdapter.this.setNewPeriod(1.0 / f);
                             str = new DecimalFormat("#.######").format(1.0 / mFrequencyValue);
                             mPeriodEText.setText(str);
                         } catch (NumberFormatException e) {
@@ -115,6 +119,7 @@ public class CreateCardParameterAdapter {
         mPeriodEText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                mPeriodStr = s.toString();
             }
 
             @Override
@@ -126,14 +131,14 @@ public class CreateCardParameterAdapter {
                         mFrequencyEText.setText("");
                     } else if (str.length() > 8) {
                         Toast.makeText(mContext, "The input is too long.", Toast.LENGTH_SHORT).show();
-                        mPeriodEText.setText("" + mPeriodValue);
+                        mPeriodEText.setText("" + mPeriodStr);
                     } else {
                         try {
                             double T = Double.parseDouble(str);
                             if (T < 1e-6 || T > 1e6) {
                                 throw new NumberFormatException();
                             }
-                            mPeriodValue = T;
+                            CreateCardParameterAdapter.this.setNewPeriod(T);
                             str = new DecimalFormat("#.######").format(1.0 / mPeriodValue);
                             mFrequencyEText.setText(str);
                         } catch (NumberFormatException e) {
@@ -150,6 +155,16 @@ public class CreateCardParameterAdapter {
             }
         });
 
+    }
+
+    //设置新周期后改变转折点显示和重新绘制预览图
+    private void setNewPeriod(double T) {
+        CreateCardTurningTimeAdapter.setRangeCheckingFlag(false);
+        mTurningTimeAdapter[0].setPeriod(T);
+        mTurningTimeAdapter[1].setPeriod(T);
+        mTurningTimeAdapter[2].setPeriod(T);
+        CreateCardTurningTimeAdapter.setRangeCheckingFlag(true);
+        mPeriodValue = T;
     }
 
     //最值模块
@@ -249,11 +264,11 @@ public class CreateCardParameterAdapter {
         //先创建适配器
         View mTurningTimeLayout;
         mTurningTimeLayout = (View) mParameterLayout.findViewById(R.id.edit_tt0);
-        mTurningTimeAdapter[0] = new CreateCardTurningTimeAdapter(mContext, mTurningTimeLayout, 0);
+        mTurningTimeAdapter[0] = new CreateCardTurningTimeAdapter(mContext, mTurningTimeLayout, 0, mPeriodValue);
         mTurningTimeLayout = (View) mParameterLayout.findViewById(R.id.edit_tt1);
-        mTurningTimeAdapter[1] = new CreateCardTurningTimeAdapter(mContext, mTurningTimeLayout, 1);
+        mTurningTimeAdapter[1] = new CreateCardTurningTimeAdapter(mContext, mTurningTimeLayout, 1, mPeriodValue);
         mTurningTimeLayout = (View) mParameterLayout.findViewById(R.id.edit_tt2);
-        mTurningTimeAdapter[2] = new CreateCardTurningTimeAdapter(mContext, mTurningTimeLayout, 2);
+        mTurningTimeAdapter[2] = new CreateCardTurningTimeAdapter(mContext, mTurningTimeLayout, 2, mPeriodValue);
         //设置回调接口
         mTurningTimeAdapter[0].setRangeCallBack(new CreateCardTurningTimeAdapter.RangeCallBack() {
             @Override
