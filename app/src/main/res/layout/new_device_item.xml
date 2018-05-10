@@ -21,7 +21,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:text=""
-            android:textSize="30sp"
+            android:textSize="18sp"
             android:textColor="@android:color/black"
             android:singleLine="true"
             />
@@ -31,8 +31,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginEnd="10dp"
-            android:maxHeight="40dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginVertical="12dp"
+            android:maxHeight="30dp"
             android:adjustViewBounds="true"
             android:src="@mipmap/right"
             />
